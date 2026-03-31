@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chidori0543-sys.github.io/fanza-navi/sitemap.xml
