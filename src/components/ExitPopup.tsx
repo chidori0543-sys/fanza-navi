@@ -2,8 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTimes, FaGift } from "react-icons/fa";
+import { FaTimes, FaBookOpen } from "react-icons/fa";
 
+/**
+ * 離脱時に役立つコンテンツを提案するポップアップ。
+ * 偽のセール訴求ではなく、ガイド記事・ジャンル一覧など有用な情報を提示。
+ */
 export default function ExitPopup() {
   const [show, setShow] = useState(false);
 
@@ -12,7 +16,6 @@ export default function ExitPopup() {
     if (shown) return;
 
     const handler = (e: MouseEvent) => {
-      // マウスが画面上部から出ようとした時（離脱意図）
       if (e.clientY < 10) {
         setShow(true);
         sessionStorage.setItem("exit-popup-shown", "1");
@@ -20,10 +23,9 @@ export default function ExitPopup() {
       }
     };
 
-    // 5秒後から検知開始（すぐ出るとUX悪い）
     const timer = setTimeout(() => {
       document.addEventListener("mousemove", handler);
-    }, 5000);
+    }, 10000);
 
     return () => {
       clearTimeout(timer);
@@ -52,31 +54,37 @@ export default function ExitPopup() {
             <button
               onClick={() => setShow(false)}
               className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-[var(--color-text-secondary)] hover:text-white transition-colors"
+              aria-label="閉じる"
             >
               <FaTimes size={14} />
             </button>
 
-            <div className="w-16 h-16 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center mx-auto mb-4">
-              <FaGift size={28} className="text-[var(--color-primary)]" />
+            <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4">
+              <FaBookOpen size={28} className="text-blue-400" />
             </div>
 
             <h3 className="text-xl font-extrabold mb-2">
-              ちょっと待って！🎁
+              お探しの作品が見つかりませんでしたか？
             </h3>
             <p className="text-[var(--color-text-secondary)] text-sm mb-4 leading-relaxed">
-              今なら<span className="text-[var(--color-primary)] font-bold">春の大感謝セール</span>で
-              人気作品が<span className="text-white font-bold">最大80%OFF</span>！
-              <br />
-              この機会をお見逃しなく。
+              初めての方には<span className="text-white font-bold">完全ガイド</span>がおすすめです。
+              登録方法からお得な使い方まで解説しています。
             </p>
 
             <div className="space-y-3">
               <a
-                href="#ranking"
+                href="/fanza-navi/guide"
                 onClick={() => setShow(false)}
-                className="block w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] hover:opacity-90 transition-opacity pulse-glow"
+                className="block w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:opacity-90 transition-opacity"
               >
-                🔥 セール作品を見る
+                📚 初心者ガイドを読む
+              </a>
+              <a
+                href="/fanza-navi/search"
+                onClick={() => setShow(false)}
+                className="block w-full py-3 rounded-xl font-bold text-white bg-white/5 border border-[var(--color-border)] hover:bg-white/10 transition-colors"
+              >
+                🔍 作品を検索する
               </a>
               <button
                 onClick={() => setShow(false)}

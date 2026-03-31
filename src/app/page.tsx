@@ -102,7 +102,7 @@ export default function HomePage() {
         <RelatedProducts />
       </section>
 
-      {/* Sale banner */}
+      {/* About section */}
       <section id="sale" className="max-w-5xl mx-auto px-4 pb-20">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -115,19 +115,18 @@ export default function HomePage() {
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
           </div>
           <div className="relative text-center">
-            <div className="text-5xl mb-4">🎉</div>
+            <div className="text-5xl mb-4">📊</div>
             <h3 className="text-2xl md:text-4xl font-extrabold mb-3">
-              春の大感謝セール開催中！
+              FANZAセール情報を毎日チェック
             </h3>
             <p className="text-lg opacity-90 mb-6">
-              対象作品が最大<span className="font-extrabold text-2xl">80%OFF</span>
-              ！見逃すな！
+              最新のセール・キャンペーン情報を自動で収集してお届け
             </p>
             <a
               href="/fanza-navi/sale"
               className="inline-block px-8 py-4 rounded-2xl font-bold text-[var(--color-primary)] bg-white hover:bg-gray-100 transition-colors text-lg"
             >
-              セール会場へ →
+              セール情報を見る →
             </a>
           </div>
         </motion.div>

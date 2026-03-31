@@ -3,6 +3,9 @@ import "./globals.css";
 import Header from "@/components/Header";
 import JsonLd from "@/components/JsonLd";
 import Analytics from "@/components/Analytics";
+import ErrorTracker from "@/components/ErrorTracker";
+
+const SITE_URL = "https://chidori0543-sys.github.io/fanza-navi";
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "FANZAナビ",
     images: [
       {
-        url: "https://chidori0543-sys.github.io/fanza-navi/images/ogp.svg",
+        url: `${SITE_URL}/images/ogp.svg`,
         width: 1200,
         height: 630,
         alt: "FANZAおすすめ作品ナビ",
@@ -30,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "FANZAおすすめ作品ナビ",
     description: "FANZAの人気作品をジャンル別にランキング形式で紹介",
-    images: ["https://chidori0543-sys.github.io/fanza-navi/images/ogp.svg"],
+    images: [`${SITE_URL}/images/ogp.svg`],
   },
   robots: {
     index: true,
@@ -47,6 +50,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className="antialiased min-h-screen">
         <Analytics />
+        <ErrorTracker />
         <JsonLd />
         <Header />
         {children}

@@ -145,14 +145,20 @@ export default function ProductCard({
         </div>
 
         {/* CTA */}
-        <a
-          href={product.affiliateUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full text-center py-3 rounded-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] transition-all duration-300 pulse-glow"
-        >
-          詳細を見る →
-        </a>
+        {product.affiliateUrl ? (
+          <a
+            href={product.affiliateUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full text-center py-3 rounded-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] transition-all duration-300"
+          >
+            詳細を見る →
+          </a>
+        ) : (
+          <span className="block w-full text-center py-3 rounded-xl font-bold text-white/50 bg-white/5 border border-white/10 cursor-not-allowed">
+            準備中
+          </span>
+        )}
       </div>
     </motion.div>
   );

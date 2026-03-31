@@ -141,19 +141,22 @@ export async function fetchByGenre(
 async function fetchProducts(url: string): Promise<DmmProduct[]> {
   const { apiId } = getConfig();
 
-  // APIキー未設定時はサンプルデータを返す
   if (!apiId) {
-    console.log("[DMM API] API key not set, returning sample data");
     return [];
   }
 
   try {
     const res = await fetch(url, { next: { revalidate: 3600 } });
-    if (!res.ok) throw new Error(`DMM API error: ${res.status}`);
+    if (!res.ok) {
+      throw new Error(`DMM API error: ${res.status}`);
+    }
     const data: DmmApiResponse = await res.json();
-    return data.result.items || [];
+    if (!data?.result?.items || !Array.isArray(data.result.items)) {
+      throw new Error("Invalid API response structure");
+    }
+    return data.result.items;
   } catch (e) {
-    console.error("[DMM API] Fetch error:", e);
+    console.error("[DMM API] Fetch error:", e instanceof Error ? e.message : e);
     return [];
   }
 }

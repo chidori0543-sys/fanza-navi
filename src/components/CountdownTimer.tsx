@@ -3,34 +3,28 @@
 import { useState, useEffect } from "react";
 import { FaClock } from "react-icons/fa";
 
-interface Props {
-  endDate?: Date;
-  label?: string;
-}
-
-export default function CountdownTimer({
-  endDate,
-  label = "セール終了まで",
-}: Props) {
-  const target = endDate || getNextMondayMidnight();
+/**
+ * 次回データ更新までのカウントダウン。
+ * 実際のcronスケジュール（毎日9:00 JST）に基づく正確な表示。
+ */
+export default function CountdownTimer() {
+  const target = getNextUpdateTime();
   const [timeLeft, setTimeLeft] = useState(calcTimeLeft(target));
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(calcTimeLeft(target));
+      setTimeLeft(calcTimeLeft(getNextUpdateTime()));
     }, 1000);
     return () => clearInterval(timer);
-  }, [target]);
+  }, []);
 
   return (
     <div className="flex items-center justify-center gap-3 py-4">
-      <FaClock className="text-[var(--color-primary)] animate-pulse" />
+      <FaClock className="text-[var(--color-primary)]" />
       <span className="text-sm text-[var(--color-text-secondary)]">
-        {label}
+        次回データ更新まで
       </span>
       <div className="flex gap-1.5">
-        <TimeUnit value={timeLeft.days} unit="日" />
-        <span className="text-[var(--color-primary)] font-bold self-center">:</span>
         <TimeUnit value={timeLeft.hours} unit="時間" />
         <span className="text-[var(--color-primary)] font-bold self-center">:</span>
         <TimeUnit value={timeLeft.minutes} unit="分" />
@@ -54,19 +48,24 @@ function TimeUnit({ value, unit }: { value: number; unit: string }) {
   );
 }
 
-function getNextMondayMidnight(): Date {
+/** 次の9:00 JST (= 0:00 UTC) を返す */
+function getNextUpdateTime(): Date {
   const now = new Date();
-  const daysUntilMonday = (8 - now.getDay()) % 7 || 7;
-  const next = new Date(now);
-  next.setDate(now.getDate() + daysUntilMonday);
-  next.setHours(0, 0, 0, 0);
-  return next;
+  const utcToday9amJST = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    0, 0, 0, 0
+  ));
+  if (now.getTime() >= utcToday9amJST.getTime()) {
+    utcToday9amJST.setUTCDate(utcToday9amJST.getUTCDate() + 1);
+  }
+  return utcToday9amJST;
 }
 
 function calcTimeLeft(target: Date) {
   const diff = Math.max(0, target.getTime() - Date.now());
   return {
-    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
     hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
     minutes: Math.floor((diff / (1000 * 60)) % 60),
     seconds: Math.floor((diff / 1000) % 60),
