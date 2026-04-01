@@ -1,27 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { FaSearch } from "react-icons/fa";
-import ProductCard from "@/components/ProductCard";
+import { FaSearch, FaArrowRight, FaDatabase } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import Footer from "@/components/Footer";
-import { sampleProducts } from "@/data/products";
 
 export default function SearchPage() {
-  const [query, setQuery] = useState("");
-
-  const results = useMemo(() => {
-    if (!query.trim()) return [];
-    const q = query.toLowerCase();
-    return sampleProducts.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q))
-    );
-  }, [query]);
-
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
       <Breadcrumb items={[{ label: "検索" }]} />
@@ -34,45 +18,43 @@ export default function SearchPage() {
         <h1 className="text-3xl font-extrabold mb-6">
           🔍 <span className="gradient-text">作品検索</span>
         </h1>
-
-        <div className="max-w-xl mx-auto relative">
-          <FaSearch
-            size={16}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-secondary)]"
-          />
-          <input
-            type="text"
-            placeholder="キーワードで検索..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-4 rounded-2xl bg-white/5 border border-[var(--color-border)] text-white placeholder-[var(--color-text-secondary)] focus:outline-none focus:border-[var(--color-primary)] transition-colors text-lg"
-          />
-        </div>
       </motion.div>
 
-      {query && (
-        <p className="text-sm text-[var(--color-text-secondary)] mb-6 text-center">
-          「{query}」の検索結果: {results.length}件
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+        className="glass-card p-8 md:p-12 text-center mb-12"
+      >
+        <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-6">
+          <FaDatabase size={24} className="text-blue-400" />
+        </div>
+        <h2 className="text-xl font-bold mb-3">FANZA API連携 準備中</h2>
+        <p className="text-[var(--color-text-secondary)] mb-6 max-w-lg mx-auto leading-relaxed">
+          現在、FANZA公式APIとの連携を準備しています。
+          連携完了後、キーワード・ジャンル・女優名などでFANZAの作品をリアルタイム検索できるようになります。
         </p>
-      )}
-
-      {results.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {results.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} />
-          ))}
+        <p className="text-sm text-[var(--color-text-secondary)] mb-6">
+          今すぐFANZAで検索したい方は公式サイトをご利用ください。
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <a
+            href="https://www.dmm.co.jp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] hover:opacity-90 transition-opacity"
+          >
+            <FaSearch size={14} />
+            FANZA公式で検索 <FaArrowRight size={12} />
+          </a>
+          <a
+            href="/fanza-navi/articles"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-[var(--color-text-secondary)] bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+          >
+            記事を読む <FaArrowRight size={12} />
+          </a>
         </div>
-      ) : query ? (
-        <div className="text-center py-20 text-[var(--color-text-secondary)]">
-          <div className="text-5xl mb-4">😢</div>
-          <p>一致する作品が見つかりませんでした</p>
-        </div>
-      ) : (
-        <div className="text-center py-20 text-[var(--color-text-secondary)]">
-          <div className="text-5xl mb-4">💡</div>
-          <p>キーワードを入力して作品を検索</p>
-        </div>
-      )}
+      </motion.div>
 
       <Footer />
     </main>

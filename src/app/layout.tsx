@@ -9,15 +9,15 @@ const SITE_URL = "https://entrynavi.github.io/fanza-navi";
 
 export const metadata: Metadata = {
   title: {
-    default: "FANZAおすすめ作品ナビ | 人気ランキング＆レビュー",
+    default: "FANZAおすすめ作品ナビ | 使い方ガイド＆お得情報",
     template: "%s | FANZAナビ",
   },
   description:
-    "FANZAの人気作品をジャンル別にランキング形式で紹介。厳選レビューとお得なセール情報も毎日更新中。",
-  keywords: ["FANZA", "DMM", "おすすめ", "ランキング", "レビュー", "セール"],
+    "FANZAの使い方・支払い方法・VR設定・セール攻略法まで徹底解説。初心者でもわかるガイド記事を公開中。",
+  keywords: ["FANZA", "DMM", "使い方", "ガイド", "VR", "セール", "支払い方法", "お得"],
   openGraph: {
     title: "FANZAおすすめ作品ナビ",
-    description: "FANZAの人気作品をジャンル別にランキング形式で紹介",
+    description: "FANZAの使い方・お得情報をわかりやすく解説するガイドメディア",
     type: "website",
     siteName: "FANZAナビ",
     images: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "FANZAおすすめ作品ナビ",
-    description: "FANZAの人気作品をジャンル別にランキング形式で紹介",
+    description: "FANZAの使い方・お得情報をわかりやすく解説するガイドメディア",
     images: [`${SITE_URL}/images/ogp.svg`],
   },
   robots: {

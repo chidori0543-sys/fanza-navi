@@ -32,7 +32,10 @@ export default function AboutPage() {
             <tr>
               <td className="py-4 pr-4 font-bold text-white">お問い合わせ</td>
               <td className="py-4 text-[var(--color-text-secondary)]">
-                サイト内お問い合わせフォームよりご連絡ください
+                <a href="/fanza-navi/contact" className="text-[var(--color-primary)] hover:underline">
+                  お問い合わせフォーム
+                </a>
+                よりご連絡ください
               </td>
             </tr>
           </tbody>
@@ -44,7 +47,7 @@ export default function AboutPage() {
           <FaGlobe size={24} className="text-blue-400 mx-auto mb-3" />
           <h3 className="font-bold text-sm mb-1">サイトについて</h3>
           <p className="text-xs text-[var(--color-text-secondary)]">
-            FANZAの作品情報をランキング形式で紹介するアフィリエイトサイトです
+            FANZAの使い方・お得情報をわかりやすく解説するガイドメディアです
           </p>
         </div>
         <div className="glass-card p-5 text-center">

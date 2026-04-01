@@ -4,7 +4,7 @@ export default function JsonLd() {
     "@type": "WebSite",
     name: "FANZAおすすめ作品ナビ",
     url: "https://entrynavi.github.io/fanza-navi",
-    description: "FANZAの人気作品をジャンル別にランキング形式で紹介",
+    description: "FANZAの使い方・お得情報をわかりやすく解説するガイドメディア",
     potentialAction: {
       "@type": "SearchAction",
       target: {
