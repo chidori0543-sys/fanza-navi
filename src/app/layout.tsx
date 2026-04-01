@@ -52,6 +52,10 @@ export default function RootLayout({
         <Analytics />
         <ErrorTracker />
         <JsonLd />
+        {/* ステマ規制対応 PR表記 (2023年10月施行 景品表示法) */}
+        <div className="bg-[#1a1a2e] border-b border-[var(--color-border)] py-1.5 text-center text-[11px] text-[var(--color-text-secondary)]">
+          当サイトはアフィリエイト広告（PR）を利用しています
+        </div>
         <Header />
         {children}
       </body>

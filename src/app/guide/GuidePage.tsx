@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaArrowRight } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
-import RelatedProducts from "@/components/RelatedProducts";
 import Footer from "@/components/Footer";
 
 const steps = [
@@ -83,6 +82,21 @@ export default function GuidePage() {
         </p>
       </motion.div>
 
+      {/* Personal intro */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="glass-card p-6 mb-10 border-blue-500/20"
+      >
+        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+          <span className="text-blue-400 font-bold">💬 筆者より：</span>
+          FANZAを使い始めて3年以上になりますが、最初は「登録って面倒？」「明細にバレない？」と不安だらけでした。
+          実際に使ってみると、思っていたよりずっと簡単で安全。このガイドでは、私が最初に知りたかった情報を
+          すべてまとめました。特に支払い方法の選び方とセールの活用法は、知っているだけで年間数万円の差が出ます。
+        </p>
+      </motion.div>
+
       {/* Steps */}
       <section className="mb-16">
         <h2 className="text-2xl font-bold mb-8 text-center">
@@ -116,13 +130,15 @@ export default function GuidePage() {
 
         <div className="text-center mt-8">
           <a
-            href="#"
+            href="https://www.dmm.co.jp/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] hover:opacity-90 transition-opacity text-lg pulse-glow"
           >
             FANZAに無料登録する <FaArrowRight />
           </a>
           <p className="text-xs text-[var(--color-text-secondary)] mt-2">
-            ※ 登録は1分で完了・無料です
+            ※ 登録は1分で完了・無料です ※ PR
           </p>
         </div>
       </section>
@@ -182,17 +198,19 @@ export default function GuidePage() {
           さっそく始めてみよう！
         </h2>
         <p className="text-[var(--color-text-secondary)] mb-6">
-          登録は無料。今ならセール開催中でお得にスタートできます。
+          登録は無料。まずは無料サンプルで気になる作品をチェックしてみましょう。
         </p>
         <a
-          href="#"
+          href="https://www.dmm.co.jp/"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] hover:opacity-90 transition-opacity text-lg pulse-glow"
         >
-          🎉 FANZAに無料登録する <FaArrowRight />
+          FANZAに無料登録する <FaArrowRight />
         </a>
+        <p className="text-xs text-[var(--color-text-secondary)] mt-2">※ PR</p>
       </section>
 
-      <RelatedProducts />
       <Footer />
     </main>
   );

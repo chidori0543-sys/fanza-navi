@@ -1,27 +1,13 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
-import ProductCard from "@/components/ProductCard";
-import GenreFilter from "@/components/GenreFilter";
 import Footer from "@/components/Footer";
 import StickyCTA from "@/components/StickyCTA";
-import SocialProof from "@/components/SocialProof";
-import CountdownTimer from "@/components/CountdownTimer";
 import ExitPopup from "@/components/ExitPopup";
-import RelatedProducts from "@/components/RelatedProducts";
-import { genres, sampleProducts } from "@/data/products";
-import { FaArrowUp, FaArrowRight, FaBookOpen, FaBalanceScale, FaCreditCard, FaVrCardboard, FaCoins } from "react-icons/fa";
+import { FaArrowUp, FaArrowRight, FaBookOpen, FaBalanceScale, FaCreditCard, FaVrCardboard, FaCoins, FaRocket, FaDatabase } from "react-icons/fa";
 
 export default function HomePage() {
-  const [activeGenre, setActiveGenre] = useState("all");
-
-  const filteredProducts = useMemo(() => {
-    if (activeGenre === "all") return sampleProducts;
-    return sampleProducts.filter((p) => p.genre === activeGenre);
-  }, [activeGenre]);
-
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
@@ -32,105 +18,6 @@ export default function HomePage() {
       </div>
 
       <HeroSection />
-
-      {/* Social proof + Countdown */}
-      <div className="max-w-4xl mx-auto px-4">
-        <SocialProof />
-        <CountdownTimer />
-      </div>
-
-      {/* Main content */}
-      <section id="ranking" className="max-w-6xl mx-auto px-4 pb-20">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-10"
-        >
-          <h2 className="text-3xl font-extrabold mb-2">
-            🏆 <span className="gradient-text">作品ランキング</span>
-          </h2>
-          <p className="text-[var(--color-text-secondary)]">
-            ジャンル別に人気作品をチェック
-          </p>
-        </motion.div>
-
-        {/* Genre filter */}
-        <div className="mb-10">
-          <GenreFilter
-            genres={genres}
-            activeGenre={activeGenre}
-            onSelect={setActiveGenre}
-          />
-        </div>
-
-        {/* Product grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeGenre}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {filteredProducts.map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} />
-            ))}
-          </motion.div>
-        </AnimatePresence>
-
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-20 text-[var(--color-text-secondary)]">
-            <div className="text-5xl mb-4">🔍</div>
-            <p>このジャンルの作品はまだありません</p>
-          </div>
-        )}
-
-        {/* Load more */}
-        <div className="text-center mt-12">
-          <a
-            href="/fanza-navi/ranking"
-            className="inline-block px-10 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] hover:opacity-90 transition-opacity text-lg"
-          >
-            ランキングをもっと見る →
-          </a>
-        </div>
-
-        {/* Related */}
-        <RelatedProducts />
-      </section>
-
-      {/* About section */}
-      <section id="sale" className="max-w-5xl mx-auto px-4 pb-20">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] p-8 md:p-12"
-        >
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
-          </div>
-          <div className="relative text-center">
-            <div className="text-5xl mb-4">📊</div>
-            <h3 className="text-2xl md:text-4xl font-extrabold mb-3">
-              FANZAセール情報を毎日チェック
-            </h3>
-            <p className="text-lg opacity-90 mb-6">
-              最新のセール・キャンペーン情報を自動で収集してお届け
-            </p>
-            <a
-              href="/fanza-navi/sale"
-              className="inline-block px-8 py-4 rounded-2xl font-bold text-[var(--color-primary)] bg-white hover:bg-gray-100 transition-colors text-lg"
-            >
-              セール情報を見る →
-            </a>
-          </div>
-        </motion.div>
-      </section>
 
       {/* Article links for SEO — prominent section */}
       <section className="max-w-5xl mx-auto px-4 pb-20">
@@ -168,7 +55,7 @@ export default function HomePage() {
               />
             </div>
             <p className="text-sm text-[var(--color-text-secondary)]">
-              登録方法・使い方・お得な買い方まで完全解説
+              登録方法・使い方・お得な買い方まで完全解説。これ1本でFANZAの全体像がわかります。
             </p>
           </motion.a>
           <motion.a
@@ -197,7 +84,7 @@ export default function HomePage() {
               />
             </div>
             <p className="text-sm text-[var(--color-text-secondary)]">
-              あなたに最適な楽しみ方を見つけよう
+              あなたに最適な楽しみ方を見つけよう。料金・画質・対応デバイスまで徹底比較。
             </p>
           </motion.a>
         </div>
@@ -268,6 +155,73 @@ export default function HomePage() {
             すべての記事を見る ({5}本) <FaArrowRight size={12} />
           </a>
         </div>
+      </section>
+
+      {/* Site features section */}
+      <section className="max-w-5xl mx-auto px-4 pb-20">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] p-8 md:p-12"
+        >
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
+          </div>
+          <div className="relative text-center">
+            <div className="text-5xl mb-4">🚀</div>
+            <h3 className="text-2xl md:text-4xl font-extrabold mb-3">
+              今後の機能追加予定
+            </h3>
+            <p className="text-lg opacity-90 mb-6">
+              FANZA公式APIとの連携により、ランキング・新作・セール情報を自動取得予定
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a
+                href="/fanza-navi/ranking"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-[var(--color-primary)] bg-white hover:bg-gray-100 transition-colors"
+              >
+                <FaRocket size={14} />
+                ランキング（準備中）
+              </a>
+              <a
+                href="/fanza-navi/sale"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-white bg-white/20 hover:bg-white/30 transition-colors"
+              >
+                <FaDatabase size={14} />
+                セール情報（準備中）
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* About this site */}
+      <section className="max-w-3xl mx-auto px-4 pb-20">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="glass-card p-8"
+        >
+          <h2 className="text-xl font-extrabold mb-4 text-center">
+            このサイトについて
+          </h2>
+          <div className="text-sm text-[var(--color-text-secondary)] leading-relaxed space-y-3">
+            <p>
+              「FANZAおすすめ作品ナビ」は、FANZA（DMM）をもっと便利に、もっとお得に使いたい方のための情報メディアです。
+            </p>
+            <p>
+              実際にFANZAを利用している筆者が、登録方法から支払いの選び方、VRの始め方、セール攻略法まで、
+              経験をもとにわかりやすくまとめています。
+            </p>
+            <p>
+              今後はFANZA公式APIを活用して、人気ランキングや新作情報、セール速報なども
+              リアルタイムでお届けしていく予定です。ぜひブックマークしてお待ちください。
+            </p>
+          </div>
+        </motion.div>
       </section>
 
       <Footer />

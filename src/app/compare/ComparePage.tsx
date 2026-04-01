@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { FaCheck, FaTimes, FaArrowRight } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
-import RelatedProducts from "@/components/RelatedProducts";
 import Footer from "@/components/Footer";
 
 const vrComparison = [
@@ -41,6 +40,22 @@ export default function ComparePage() {
         </h1>
         <p className="text-[var(--color-text-secondary)] text-lg">
           あなたに最適な楽しみ方を見つけよう
+        </p>
+      </motion.div>
+
+      {/* Personal intro */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="glass-card p-6 mb-10 border-purple-500/20"
+      >
+        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+          <span className="text-purple-400 font-bold">💬 筆者より：</span>
+          「VRと通常、どっちがいいの？」「月額と単品、どっちが得？」——FANZAを使い始めた頃、
+          私もこの疑問でかなり悩みました。両方を1年以上使い込んだ実体験をもとに、
+          それぞれのメリット・デメリットを正直にまとめました。結論から言うと、
+          「まずは通常作品で試して、気に入ったらVRに挑戦」が最もリスクの少ないスタートです。
         </p>
       </motion.div>
 
@@ -158,14 +173,16 @@ export default function ComparePage() {
           </div>
         </div>
         <a
-          href="#"
+          href="https://www.dmm.co.jp/"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] hover:opacity-90 transition-opacity text-lg pulse-glow"
         >
-          🎉 FANZAでお得に始める <FaArrowRight />
+          FANZAでお得に始める <FaArrowRight />
         </a>
+        <p className="text-xs text-[var(--color-text-secondary)] mt-2">※ PR</p>
       </section>
 
-      <RelatedProducts />
       <Footer />
     </main>
   );

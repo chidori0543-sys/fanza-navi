@@ -32,6 +32,9 @@ export default function Footer() {
           <a href="/fanza-navi/about" className="hover:text-[var(--color-primary)] transition-colors">
             運営者情報
           </a>
+          <a href="/fanza-navi/contact" className="hover:text-[var(--color-primary)] transition-colors">
+            お問い合わせ
+          </a>
           <a href="/fanza-navi/guide" className="hover:text-[var(--color-primary)] transition-colors">
             初心者ガイド
           </a>

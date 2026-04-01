@@ -1,28 +1,28 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaBookOpen, FaShieldAlt } from "react-icons/fa";
 
 const features = [
   {
-    icon: "🔥",
-    title: "毎日更新ランキング",
-    desc: "売上・評価データを元に毎日ランキングを更新",
+    icon: "📖",
+    title: "充実のガイド記事",
+    desc: "登録方法から支払い・VR設定まで初心者向けに徹底解説",
   },
   {
     icon: "💰",
-    title: "セール情報速報",
-    desc: "見逃せないセール・キャンペーン情報をいち早くお届け",
-  },
-  {
-    icon: "⭐",
-    title: "厳選レビュー",
-    desc: "実際のユーザー評価を元にした信頼できるレビュー",
+    title: "節約テクニック",
+    desc: "セール・クーポン・ポイント活用で賢くお得に楽しむ方法",
   },
   {
     icon: "🥽",
-    title: "VR特集",
-    desc: "最新VR作品の没入感をジャンル別に徹底紹介",
+    title: "VR完全ガイド",
+    desc: "デバイス別のセットアップ手順をわかりやすく紹介",
+  },
+  {
+    icon: "⚖️",
+    title: "比較＆検証",
+    desc: "VR vs 通常・サブスク vs 単品などを実体験をもとに比較",
   },
 ];
 
@@ -43,8 +43,8 @@ export default function HeroSection() {
           transition={{ duration: 0.6 }}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 mb-6"
         >
-          <span className="text-sm">🎉 春の大セール開催中</span>
-          <FaExternalLinkAlt size={10} className="text-[var(--color-primary)]" />
+          <FaShieldAlt size={12} className="text-[var(--color-primary)]" />
+          <span className="text-sm">FANZA公式情報をもとにした総合ガイド</span>
         </motion.div>
 
         {/* Title */}
@@ -64,9 +64,9 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="text-lg md:text-xl text-[var(--color-text-secondary)] mb-10 max-w-2xl mx-auto"
         >
-          人気作品をランキング形式で紹介。
+          FANZAの使い方・お得な活用法・VR設定ガイドなど、
           <br className="hidden sm:block" />
-          セール情報・新作・高評価作品を毎日チェック！
+          役立つ情報をわかりやすくお届けするメディアサイトです。
         </motion.p>
 
         {/* CTA */}
@@ -77,16 +77,17 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
           <a
-            href="#ranking"
+            href="/fanza-navi/guide"
             className="px-8 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] transition-all duration-300 text-lg pulse-glow"
           >
-            🔥 ランキングを見る
+            <FaBookOpen className="inline mr-2" />
+            初心者ガイドを読む
           </a>
           <a
-            href="#sale"
+            href="/fanza-navi/articles"
             className="px-8 py-4 rounded-2xl font-bold text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 text-lg"
           >
-            💰 セール情報
+            📚 すべての記事を見る
           </a>
         </motion.div>
 
