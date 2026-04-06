@@ -20,6 +20,9 @@ const AGE_GATE_BOOTSTRAP = `
     try {
       if (window.localStorage.getItem("${AGE_GATE_STORAGE_KEY}") === "1") {
         document.documentElement.dataset.${AGE_GATE_MARKER} = "1";
+        const appShell = document.getElementById("app-shell");
+        appShell?.removeAttribute("inert");
+        appShell?.removeAttribute("aria-hidden");
       }
     } catch (error) {}
   })();
@@ -79,7 +82,8 @@ export default function RootLayout({
           当サイトはアフィリエイト広告（PR）を利用しています
         </div>
         <AgeGate />
-        <div id="app-shell">
+        <div id="app-shell" inert={true} aria-hidden="true">
+          <script dangerouslySetInnerHTML={{ __html: AGE_GATE_BOOTSTRAP }} />
           <Header />
           {children}
         </div>

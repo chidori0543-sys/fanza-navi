@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import AgeGate from "@/components/AgeGate";
+import RootLayout from "@/app/layout";
 
 const createStorage = () => {
   const store = new Map<string, string>();
@@ -56,8 +57,20 @@ describe("AgeGate", () => {
     const html = renderToString(<AgeGate />);
 
     expect(html).toContain("18歳以上ですか？");
-    expect(html).not.toContain('opacity:0');
-    expect(html).not.toContain('transform:translateY(24px)');
+    expect(html).not.toContain('style="opacity:0"');
+    expect(html).not.toContain('style="transform:translateY(24px) scale(0.96)"');
+  });
+
+  it("renders the app shell inert in static layout HTML", () => {
+    const html = renderToString(
+      <RootLayout>
+        <main>Layout child</main>
+      </RootLayout>
+    );
+
+    expect(html).toContain('id="app-shell" inert="" aria-hidden="true"');
+    expect(html).toContain('removeAttribute("inert")');
+    expect(html).toContain('removeAttribute("aria-hidden")');
   });
 
   it("skips the gate immediately when the accepted marker is present before render", () => {
