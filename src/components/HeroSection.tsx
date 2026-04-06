@@ -1,28 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaBookOpen, FaShieldAlt } from "react-icons/fa";
+import { FaArrowRight, FaChartLine, FaShieldAlt, FaTags } from "react-icons/fa";
+import SocialProof from "@/components/SocialProof";
+import { ROUTES } from "@/lib/site";
 
 const features = [
   {
-    icon: "📖",
-    title: "充実のガイド記事",
-    desc: "登録方法から支払い・VR設定まで初心者向けに徹底解説",
+    icon: <FaChartLine size={18} />,
+    title: "月間ランキングを起点に比較",
+    desc: "いま売れている作品を上から確認して迷いを減らします。",
   },
   {
-    icon: "💰",
-    title: "節約テクニック",
-    desc: "セール・クーポン・ポイント活用で賢くお得に楽しむ方法",
+    icon: <FaTags size={18} />,
+    title: "セール導線をすぐ横に配置",
+    desc: "ランキングの次に値引き作品へ移って価格差を確認できます。",
   },
   {
-    icon: "🥽",
-    title: "VR完全ガイド",
-    desc: "デバイス別のセットアップ手順をわかりやすく紹介",
+    icon: "📝",
+    title: "レビューで失敗を避ける",
+    desc: "ジャンル別のレビュー記事から作品の傾向を先に把握できます。",
   },
   {
-    icon: "⚖️",
-    title: "比較＆検証",
-    desc: "VR vs 通常・サブスク vs 単品などを実体験をもとに比較",
+    icon: "🧭",
+    title: "6ジャンルへそのまま移動",
+    desc: "人気作、セール、VRなど高意図カテゴリへ直行できます。",
   },
 ];
 
@@ -44,7 +46,7 @@ export default function HeroSection() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 mb-6"
         >
           <FaShieldAlt size={12} className="text-[var(--color-primary)]" />
-          <span className="text-sm">FANZA公式情報をもとにした総合ガイド</span>
+          <span className="text-sm">ランキングとセール導線を先に置いたFANZA landing</span>
         </motion.div>
 
         {/* Title */}
@@ -55,7 +57,7 @@ export default function HeroSection() {
           className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight"
         >
           <span className="gradient-text">FANZA</span>
-          <span className="text-white">おすすめ作品ナビ</span>
+          <span className="text-white">月間ランキングとセール導線を最短チェック</span>
         </motion.h1>
 
         <motion.p
@@ -64,9 +66,9 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="text-lg md:text-xl text-[var(--color-text-secondary)] mb-10 max-w-2xl mx-auto"
         >
-          FANZAの使い方・お得な活用法・VR設定ガイドなど、
+          売れ筋の確認、値下げ作品の探索、レビュー経由の比較までを
           <br className="hidden sm:block" />
-          役立つ情報をわかりやすくお届けするメディアサイトです。
+          1ページで繋げる commerce-first の導線に組み直しました。
         </motion.p>
 
         {/* CTA */}
@@ -77,18 +79,28 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
           <a
-            href="/guide"
+            href={ROUTES.ranking}
             className="px-8 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] transition-all duration-300 text-lg pulse-glow"
           >
-            <FaBookOpen className="inline mr-2" />
-            初心者ガイドを読む
+            <FaChartLine className="inline mr-2" />
+            いま売れ筋へ
           </a>
           <a
-            href="/articles"
+            href={ROUTES.sale}
             className="px-8 py-4 rounded-2xl font-bold text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 text-lg"
           >
-            📚 すべての記事を見る
+            <FaTags className="inline mr-2" />
+            値下げ作品へ
           </a>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.35 }}
+          className="mb-10"
+        >
+          <SocialProof />
         </motion.div>
 
         {/* Feature cards */}
@@ -101,7 +113,9 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
               className="glass-card p-5 text-center"
             >
-              <div className="text-3xl mb-2">{f.icon}</div>
+              <div className="mb-2 flex justify-center text-2xl text-[var(--color-primary)]">
+                {f.icon}
+              </div>
               <h3 className="font-bold text-sm mb-1">{f.title}</h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 {f.desc}
@@ -109,6 +123,20 @@ export default function HeroSection() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.6 }}
+          className="mt-8"
+        >
+          <a
+            href={ROUTES.reviews}
+            className="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-primary)] hover:underline"
+          >
+            レビュー一覧へ進む <FaArrowRight size={12} />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

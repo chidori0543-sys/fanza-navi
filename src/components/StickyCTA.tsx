@@ -33,19 +33,19 @@ export default function StickyCTA() {
               <FaTags className="shrink-0" />
               <div className="min-w-0">
                 <p className="font-bold text-sm truncate">
-                  📖 FANZAの使い方・お得情報ガイド
+                  💰 値下げ中の作品をセール会場から先に確認
                 </p>
                 <p className="text-xs opacity-80 hidden sm:block">
-                  初心者向けガイド記事を公開中
+                  ランキングのあとに割引作品へ直行できる導線です
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <a
-                href="/guide"
+                href="/sale"
                 className="px-5 py-2 rounded-xl text-sm font-bold text-[var(--color-primary)] bg-white hover:bg-gray-100 transition-colors whitespace-nowrap"
               >
-                ガイドを読む
+                セール会場へ
               </a>
               <button
                 onClick={() => setDismissed(true)}

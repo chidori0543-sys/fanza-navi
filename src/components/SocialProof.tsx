@@ -8,25 +8,42 @@ import { FaChartLine, FaTags, FaStar } from "react-icons/fa";
  */
 export default function SocialProof() {
   return (
-    <div className="flex flex-wrap justify-center gap-6 py-4 text-sm text-[var(--color-text-secondary)]">
-      <span className="flex items-center gap-2">
-        <FaChartLine size={14} className="text-green-400" />
-        <span>
-          毎日 <strong className="text-white">自動更新</strong>
-        </span>
-      </span>
-      <span className="flex items-center gap-2">
-        <FaTags size={14} className="text-yellow-400" />
-        <span>
-          <strong className="text-white">6ジャンル</strong> を網羅
-        </span>
-      </span>
-      <span className="flex items-center gap-2">
-        <FaStar size={14} className="text-blue-400" />
-        <span>
-          FANZA公式データ連携
-        </span>
-      </span>
+    <div className="grid gap-3 sm:grid-cols-3">
+      <div className="glass-card flex items-start gap-3 p-4 text-left">
+        <div className="mt-1 rounded-xl bg-green-500/10 p-2 text-green-400">
+          <FaChartLine size={14} />
+        </div>
+        <div>
+          <p className="font-bold text-white">自動更新</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">
+            月間ランキングとセール導線を見返しやすい順で整理
+          </p>
+        </div>
+      </div>
+
+      <div className="glass-card flex items-start gap-3 p-4 text-left">
+        <div className="mt-1 rounded-xl bg-yellow-500/10 p-2 text-yellow-400">
+          <FaTags size={14} />
+        </div>
+        <div>
+          <p className="font-bold text-white">6ジャンル</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">
+            人気作からVRまで高意図ジャンルへ最短で移動
+          </p>
+        </div>
+      </div>
+
+      <div className="glass-card flex items-start gap-3 p-4 text-left">
+        <div className="mt-1 rounded-xl bg-blue-500/10 p-2 text-blue-400">
+          <FaStar size={14} />
+        </div>
+        <div>
+          <p className="font-bold text-white">FANZA公式データ連携</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">
+            ランキング、レビュー、セール確認まで導線を分離
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -5,13 +5,79 @@ import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
 import StickyCTA from "@/components/StickyCTA";
 import ExitPopup from "@/components/ExitPopup";
-import { FaArrowUp, FaArrowRight, FaBookOpen, FaBalanceScale, FaCreditCard, FaVrCardboard, FaCoins, FaRocket, FaDatabase } from "react-icons/fa";
+import ReviewCard from "@/components/ReviewCard";
+import { genrePages } from "@/data/genres";
+import { reviews } from "@/data/reviews";
+import { sampleProducts, type Product } from "@/data/products";
+import { ROUTES, getGenreRoute } from "@/lib/site";
+import {
+  FaArrowRight,
+  FaArrowUp,
+  FaBalanceScale,
+  FaBookOpen,
+  FaCoins,
+  FaCompass,
+  FaCreditCard,
+  FaTags,
+} from "react-icons/fa";
+
+function getDiscountPercent(product: Product) {
+  if (!product.salePrice) {
+    return 0;
+  }
+
+  return Math.round((1 - product.salePrice / product.price) * 100);
+}
+
+const rankingPreview = sampleProducts
+  .filter((product) => product.rank)
+  .sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999))
+  .slice(0, 3);
+
+const salePreview = sampleProducts
+  .filter((product) => product.isSale && product.salePrice)
+  .sort((a, b) => getDiscountPercent(b) - getDiscountPercent(a))
+  .slice(0, 3);
+
+const featuredGenres = genrePages;
+const featuredReviews = reviews.slice(0, 3);
+
+const supportingGuides = [
+  {
+    href: ROUTES.guide,
+    title: "FANZA完全ガイド",
+    description: "最初の登録から購入までの流れを短時間で確認できます。",
+    icon: FaBookOpen,
+    accent: "bg-blue-500/10 text-blue-400",
+  },
+  {
+    href: ROUTES.compare,
+    title: "VR・通常作品の比較",
+    description: "視聴スタイルごとの違いを整理して無駄買いを減らします。",
+    icon: FaBalanceScale,
+    accent: "bg-purple-500/10 text-purple-400",
+  },
+  {
+    href: ROUTES.articleFanzaPayment,
+    title: "支払い方法ガイド",
+    description: "クレカ、PayPay、ポイントの使い分けをまとめています。",
+    icon: FaCreditCard,
+    accent: "bg-green-500/10 text-green-400",
+  },
+  {
+    href: ROUTES.articleSaveMoney,
+    title: "セール攻略法",
+    description: "クーポンとポイント活用で購入単価を抑える記事です。",
+    icon: FaCoins,
+    accent: "bg-amber-500/10 text-amber-400",
+  },
+];
 
 export default function HomePage() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <main>
+    <main className="pb-24">
       {/* Age gate banner */}
       <div className="bg-[var(--color-primary)]/10 border-b border-[var(--color-primary)]/20 py-2 text-center text-xs text-[var(--color-text-secondary)]">
         ⚠️ 本サイトは18歳以上の方を対象としています
@@ -19,209 +85,285 @@ export default function HomePage() {
 
       <HeroSection />
 
-      {/* Article links for SEO — prominent section */}
-      <section className="max-w-5xl mx-auto px-4 pb-20">
-        <h2 className="text-2xl font-extrabold mb-3 text-center">
-          📚 <span className="gradient-text">お役立ちコンテンツ</span>
-        </h2>
-        <p className="text-center text-[var(--color-text-secondary)] mb-8 text-sm">
-          FANZAを快適に使いこなすためのガイド記事を公開中
-        </p>
-
-        {/* Featured articles — 2 column */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <motion.a
-            href="/guide"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="glass-card p-6 group"
-          >
-            <div className="flex items-center gap-4 mb-3">
-              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400">
-                <FaBookOpen size={20} />
-              </div>
-              <div>
-                <h3 className="font-bold group-hover:text-[var(--color-primary-light)] transition-colors">
-                  FANZA完全ガイド
-                </h3>
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  初心者向け・読了10分
-                </p>
-              </div>
-              <FaArrowRight
-                size={14}
-                className="ml-auto text-[var(--color-text-secondary)] group-hover:text-[var(--color-primary)] transition-colors"
-              />
-            </div>
-            <p className="text-sm text-[var(--color-text-secondary)]">
-              登録方法・使い方・お得な買い方まで完全解説。これ1本でFANZAの全体像がわかります。
+      <section className="max-w-6xl mx-auto px-4 pb-16">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-extrabold">月間ランキングを先にチェック</h2>
+            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              最初に売れ筋を確認してから、レビューやセールに移る導線を上段に固定しています。
             </p>
-          </motion.a>
-          <motion.a
-            href="/compare"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="glass-card p-6 group"
-          >
-            <div className="flex items-center gap-4 mb-3">
-              <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-400">
-                <FaBalanceScale size={20} />
-              </div>
-              <div>
-                <h3 className="font-bold group-hover:text-[var(--color-primary-light)] transition-colors">
-                  徹底比較
-                </h3>
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  VR vs 通常・サブスク vs 単品
-                </p>
-              </div>
-              <FaArrowRight
-                size={14}
-                className="ml-auto text-[var(--color-text-secondary)] group-hover:text-[var(--color-primary)] transition-colors"
-              />
-            </div>
-            <p className="text-sm text-[var(--color-text-secondary)]">
-              あなたに最適な楽しみ方を見つけよう。料金・画質・対応デバイスまで徹底比較。
-            </p>
-          </motion.a>
-        </div>
-
-        {/* Additional articles — 3 column */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <motion.a
-            href="/articles/fanza-payment"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.05 }}
-            className="glass-card p-5 group"
-          >
-            <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 mb-3">
-              <FaCreditCard size={16} />
-            </div>
-            <h3 className="font-bold text-sm mb-1 group-hover:text-[var(--color-primary-light)] transition-colors">
-              支払い方法ガイド
-            </h3>
-            <p className="text-xs text-[var(--color-text-secondary)] line-clamp-2">
-              クレカ・PayPay・ポイントを徹底比較。バレない方法も紹介
-            </p>
-          </motion.a>
-          <motion.a
-            href="/articles/vr-setup"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="glass-card p-5 group"
-          >
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-3">
-              <FaVrCardboard size={16} />
-            </div>
-            <h3 className="font-bold text-sm mb-1 group-hover:text-[var(--color-primary-light)] transition-colors">
-              VRセットアップ
-            </h3>
-            <p className="text-xs text-[var(--color-text-secondary)] line-clamp-2">
-              スマホ・Meta Quest・PCデバイス別の設定手順
-            </p>
-          </motion.a>
-          <motion.a
-            href="/articles/save-money"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="glass-card p-5 group"
-          >
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-3">
-              <FaCoins size={16} />
-            </div>
-            <h3 className="font-bold text-sm mb-1 group-hover:text-[var(--color-primary-light)] transition-colors">
-              セール攻略法
-            </h3>
-            <p className="text-xs text-[var(--color-text-secondary)] line-clamp-2">
-              クーポン・ポイント・セール活用で年間数万円節約
-            </p>
-          </motion.a>
-        </div>
-
-        <div className="text-center">
+          </div>
           <a
-            href="/articles"
-            className="inline-flex items-center gap-2 text-sm text-[var(--color-primary)] font-bold hover:underline"
+            href={ROUTES.ranking}
+            className="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-primary)] hover:underline"
           >
-            すべての記事を見る ({5}本) <FaArrowRight size={12} />
+            月間ランキングを見る <FaArrowRight size={12} />
           </a>
         </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          {rankingPreview.map((product, index) => (
+            <motion.article
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.08 }}
+              className="glass-card p-6"
+            >
+              <div className="mb-4 flex items-start justify-between gap-4">
+                <span className="inline-flex rounded-full bg-[var(--color-primary)]/15 px-3 py-1 text-xs font-bold text-[var(--color-primary)]">
+                  #{product.rank}
+                </span>
+                <span className="text-xs text-[var(--color-text-secondary)]">
+                  レビュー {product.reviewCount}件
+                </span>
+              </div>
+              <h3 className="mb-3 text-lg font-bold leading-tight">{product.title}</h3>
+              <p className="mb-4 text-sm leading-relaxed text-[var(--color-text-secondary)] line-clamp-3">
+                {product.description}
+              </p>
+              <div className="mb-4 flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-xs text-[var(--color-text-secondary)]">通常価格</p>
+                  <p className="text-lg font-bold">
+                    ¥{product.salePrice?.toLocaleString() ?? product.price.toLocaleString()}
+                  </p>
+                </div>
+                <a
+                  href={product.affiliateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                >
+                  作品詳細を見る <FaArrowRight size={11} />
+                </a>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {product.tags.slice(0, 3).map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-xs text-[var(--color-text-secondary)]"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </motion.article>
+          ))}
+        </div>
       </section>
 
-      {/* Site features section */}
-      <section className="max-w-5xl mx-auto px-4 pb-20">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] p-8 md:p-12"
-        >
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
-          </div>
-          <div className="relative text-center">
-            <div className="text-5xl mb-4">🚀</div>
-            <h3 className="text-2xl md:text-4xl font-extrabold mb-3">
-              今後の機能追加予定
-            </h3>
-            <p className="text-lg opacity-90 mb-6">
-              FANZA公式APIとの連携により、ランキング・新作・セール情報を自動取得予定
+      <section className="max-w-6xl mx-auto px-4 pb-16">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-extrabold">いま狙いたいセール導線</h2>
+            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              値引き率が大きい作品と節約ガイドを近くに置いて、比較から購入判断までを短縮します。
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a
-                href="/ranking"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-[var(--color-primary)] bg-white hover:bg-gray-100 transition-colors"
+          </div>
+          <a
+            href={ROUTES.sale}
+            className="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-primary)] hover:underline"
+          >
+            セール情報を見る <FaArrowRight size={12} />
+          </a>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-[1.25fr_0.95fr]">
+          <div className="grid gap-4 sm:grid-cols-3">
+            {salePreview.map((product, index) => (
+              <motion.article
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="glass-card p-5"
               >
-                <FaRocket size={14} />
-                ランキング（準備中）
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-bold text-amber-300">
+                    <FaTags size={10} /> {getDiscountPercent(product)}% OFF
+                  </span>
+                  <span className="text-xs text-[var(--color-text-secondary)]">
+                    {product.reviewCount}件
+                  </span>
+                </div>
+                <h3 className="mb-2 font-bold leading-tight">{product.title}</h3>
+                <p className="mb-4 text-sm text-[var(--color-text-secondary)] line-clamp-3">
+                  {product.description}
+                </p>
+                <div className="flex items-end justify-between gap-3">
+                  <div>
+                    <p className="text-xs text-[var(--color-text-secondary)] line-through">
+                      ¥{product.price.toLocaleString()}
+                    </p>
+                    <p className="text-lg font-bold text-white">
+                      ¥{product.salePrice?.toLocaleString()}
+                    </p>
+                  </div>
+                  <a
+                    href={product.affiliateUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                  >
+                    FANZAで見る <FaArrowRight size={11} />
+                  </a>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+
+          <motion.aside
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass-card flex h-full flex-col justify-between p-6"
+          >
+            <div>
+              <p className="mb-2 text-sm font-bold text-[var(--color-primary)]">購入前の確認</p>
+              <h3 className="mb-3 text-xl font-extrabold">セール会場に入る前に節約パターンも確認</h3>
+              <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                クーポン、ポイント還元、まとめ買いの順で見ていくと、割引率だけで判断するより失敗しにくくなります。
+              </p>
+            </div>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:flex-col">
+              <a
+                href={ROUTES.articleSaveMoney}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
+              >
+                節約ガイドを読む <FaArrowRight size={12} />
               </a>
               <a
-                href="/sale"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-white bg-white/20 hover:bg-white/30 transition-colors"
+                href={ROUTES.sale}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-white/10"
               >
-                <FaDatabase size={14} />
-                セール情報（準備中）
+                セール会場へ進む <FaArrowRight size={12} />
               </a>
             </div>
-          </div>
-        </motion.div>
+          </motion.aside>
+        </div>
       </section>
 
-      {/* About this site */}
-      <section className="max-w-3xl mx-auto px-4 pb-20">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="glass-card p-8"
-        >
-          <h2 className="text-xl font-extrabold mb-4 text-center">
-            このサイトについて
-          </h2>
-          <div className="text-sm text-[var(--color-text-secondary)] leading-relaxed space-y-3">
-            <p>
-              「FANZAおすすめ作品ナビ」は、FANZA（DMM）をもっと便利に、もっとお得に使いたい方のための情報メディアです。
-            </p>
-            <p>
-              実際にFANZAを利用している筆者が、登録方法から支払いの選び方、VRの始め方、セール攻略法まで、
-              経験をもとにわかりやすくまとめています。
-            </p>
-            <p>
-              今後はFANZA公式APIを活用して、人気ランキングや新作情報、セール速報なども
-              リアルタイムでお届けしていく予定です。ぜひブックマークしてお待ちください。
+      <section className="max-w-6xl mx-auto px-4 pb-16">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-extrabold">ジャンルから探す</h2>
+            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              レビュー導線付きのジャンルページへ直接入れるよう、主要6ジャンルを前面に置いています。
             </p>
           </div>
-        </motion.div>
+          <span className="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
+            <FaCompass size={12} className="text-[var(--color-primary)]" />
+            6ジャンルを静的ページで公開
+          </span>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {featuredGenres.map((genre, index) => (
+            <motion.a
+              key={genre.slug}
+              href={getGenreRoute(genre.slug)}
+              aria-label={`${genre.name}ジャンルへ`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              className="glass-card group p-5 transition-colors hover:border-[var(--color-primary)]/30"
+            >
+              <div className="mb-3 flex items-center gap-3">
+                <div
+                  className="flex h-11 w-11 items-center justify-center rounded-2xl text-xl"
+                  style={{ backgroundColor: `${genre.color}1A`, color: genre.color }}
+                >
+                  {genre.icon}
+                </div>
+                <div>
+                  <h3 className="font-bold">{genre.name}</h3>
+                  <p className="text-xs text-[var(--color-text-secondary)]">{genre.headline}</p>
+                </div>
+              </div>
+              <p className="mb-4 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                {genre.highlight}
+              </p>
+              <span className="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-primary)]">
+                このジャンルを見る <FaArrowRight size={11} />
+              </span>
+            </motion.a>
+          ))}
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 pb-16">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-extrabold">まず読まれているレビュー</h2>
+            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              購入前に作風と満足度を把握できるよう、導線の中段にレビューを配置しています。
+            </p>
+          </div>
+          <a
+            href={ROUTES.reviews}
+            className="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-primary)] hover:underline"
+          >
+            レビュー一覧を見る <FaArrowRight size={12} />
+          </a>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          {featuredReviews.map((review) => (
+            <ReviewCard key={review.slug} review={review} />
+          ))}
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 pb-20">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-extrabold">比較・節約ガイドもまとめて読む</h2>
+            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              高意図導線のあとに、支払い方法や比較記事をまとめて置いて補助情報へ送ります。
+            </p>
+          </div>
+          <a
+            href={ROUTES.articles}
+            className="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-primary)] hover:underline"
+          >
+            ガイド記事を一覧で見る <FaArrowRight size={12} />
+          </a>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {supportingGuides.map((guide, index) => {
+            const Icon = guide.icon;
+
+            return (
+              <motion.a
+                key={guide.href}
+                href={guide.href}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.06 }}
+                className="glass-card group p-5"
+              >
+                <div className={`mb-4 flex h-11 w-11 items-center justify-center rounded-2xl ${guide.accent}`}>
+                  <Icon size={18} />
+                </div>
+                <h3 className="mb-2 font-bold group-hover:text-[var(--color-primary-light)] transition-colors">
+                  {guide.title}
+                </h3>
+                <p className="mb-4 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                  {guide.description}
+                </p>
+                <span className="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-primary)]">
+                  続きを読む <FaArrowRight size={11} />
+                </span>
+              </motion.a>
+            );
+          })}
+        </div>
       </section>
 
       <Footer />
