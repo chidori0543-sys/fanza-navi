@@ -12,7 +12,7 @@ const baseProduct: Product = {
   price: 1980,
   rating: 4.5,
   reviewCount: 100,
-  genre: "動画",
+  genre: "popular",
   tags: ["タグ1", "タグ2"],
   releaseDate: "2026-01-01",
 };
@@ -58,16 +58,10 @@ describe("ProductCard Component", () => {
     expect(reviewCounts.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("renders a safe outbound CTA when affiliateUrl is empty", () => {
-    const { getAllByRole } = render(
-      <ProductCard product={baseProduct} index={0} />
-    );
-    const links = getAllByRole("link", { name: "詳細を見る →" });
-    expect(
-      links.some(
-        (link) => link.getAttribute("href") === "https://www.dmm.co.jp/digital/videoa/"
-      )
-    ).toBe(true);
+  it("renders a disabled CTA when affiliateUrl is empty", () => {
+    render(<ProductCard product={baseProduct} index={0} />);
+    expect(screen.getAllByText("準備中").length).toBeGreaterThan(0);
+    expect(screen.queryByRole("link", { name: "詳細を見る →" })).toBeNull();
   });
 
   it("shows '詳細を見る →' when affiliateUrl is set", () => {
@@ -93,7 +87,7 @@ describe("ProductCard Component", () => {
 
   it("renders genre label", () => {
     render(<ProductCard product={baseProduct} index={0} />);
-    const genreLabels = screen.getAllByText("動画");
+    const genreLabels = screen.getAllByText("人気作品");
     expect(genreLabels.length).toBeGreaterThanOrEqual(1);
   });
 

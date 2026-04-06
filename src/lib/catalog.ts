@@ -1,4 +1,3 @@
-import { buildAffiliateUrl } from "@/lib/affiliate";
 import { sampleProducts, type Product } from "@/data/products";
 import {
   fetchByGenre,
@@ -13,6 +12,7 @@ export interface CatalogLoadOptions {
   limit?: number;
   hits?: number;
   offset?: number;
+  articleId?: string;
 }
 
 export interface RelatedCatalogLoadOptions extends CatalogLoadOptions {
@@ -25,22 +25,49 @@ function normalizeLimit(options: CatalogLoadOptions = {}): number {
   return limit > 0 ? limit : 0;
 }
 
-function ensureAffiliateReady(product: Product): Product {
-  if (product.affiliateUrl.trim()) {
-    return product;
+const CANONICAL_GENRE_ALIASES: Record<string, string> = {
+  popular: "popular",
+  "人気": "popular",
+  "人気作品": "popular",
+  "動画": "popular",
+  "new-release": "new-release",
+  newrelease: "new-release",
+  "新作": "new-release",
+  sale: "sale",
+  "セール": "sale",
+  "high-rated": "high-rated",
+  highrated: "high-rated",
+  "高評価": "high-rated",
+  amateur: "amateur",
+  "素人": "amateur",
+  vr: "vr",
+  "VR": "vr",
+};
+
+function canonicalizeGenreKey(label?: string): string {
+  const normalized = label?.trim() ?? "";
+  if (!normalized) {
+    return "popular";
   }
 
-  return {
-    ...product,
-    affiliateUrl: buildAffiliateUrl(""),
-  };
+  return (
+    CANONICAL_GENRE_ALIASES[normalized] ||
+    CANONICAL_GENRE_ALIASES[normalized.toLowerCase()] ||
+    "popular"
+  );
+}
+
+function stripRank(product: Product): Product {
+  const { rank, ...rest } = product;
+  return rest;
 }
 
 function mergeProducts(
   primary: Product[],
   fallback: Product[],
   limit: number,
-  excludedIds: Set<string> = new Set()
+  excludedIds: Set<string> = new Set(),
+  preserveRank = false
 ): Product[] {
   const merged: Product[] = [];
   const seen = new Set<string>();
@@ -53,7 +80,11 @@ function mergeProducts(
       return;
     }
     seen.add(product.id);
-    merged.push(ensureAffiliateReady(product));
+    const next = preserveRank ? product : stripRank(product);
+    if (!next.affiliateUrl.trim()) {
+      return;
+    }
+    merged.push(next);
   };
 
   primary.forEach(push);
@@ -75,27 +106,21 @@ function getCuratedRanking(limit: number): Product[] {
 }
 
 function getCuratedSale(limit: number): Product[] {
-  return sortByRank(sampleProducts.filter((product) => product.isSale)).slice(
-    0,
-    limit
-  );
+  return sortByRank(sampleProducts.filter((product) => product.isSale)).slice(0, limit);
 }
 
 function getCuratedNew(limit: number): Product[] {
-  return sortByRank(sampleProducts.filter((product) => product.isNew)).slice(
-    0,
-    limit
-  );
+  return sortByRank(sampleProducts.filter((product) => product.isNew)).slice(0, limit);
 }
 
-function getCuratedGenre(genre: string, limit: number): Product[] {
+function getCuratedGenre(genreKey: string, limit: number): Product[] {
   return sortByRank(
-    sampleProducts.filter((product) => product.genre === genre)
+    sampleProducts.filter((product) => canonicalizeGenreKey(product.genre) === genreKey)
   ).slice(0, limit);
 }
 
 function getCuratedRelated(
-  genre: string | undefined,
+  genreKey: string | undefined,
   currentId: string | undefined,
   limit: number
 ): Product[] {
@@ -103,29 +128,37 @@ function getCuratedRelated(
     if (currentId && product.id === currentId) {
       return false;
     }
-    if (!genre) {
+    if (!genreKey) {
       return true;
     }
-    return product.genre === genre;
+    return canonicalizeGenreKey(product.genre) === genreKey;
   });
 
   return sortByRank(related).slice(0, limit);
 }
 
-function mapApiProducts(items: DmmProduct[]): Product[] {
-  return items.map((item, index) => ensureAffiliateReady(toProduct(item, index + 1)));
+function mapApiProducts(items: DmmProduct[] | undefined, preserveRank = false): Product[] {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items.map((item, index) => {
+    const product = toProduct(item, preserveRank ? index + 1 : undefined);
+    return preserveRank ? product : stripRank(product);
+  });
 }
 
 async function loadCatalogProducts(
   fetcher: () => Promise<DmmProduct[]>,
   fallback: Product[],
-  options: CatalogLoadOptions = {}
+  options: CatalogLoadOptions = {},
+  preserveRank = false
 ): Promise<Product[]> {
   const limit = normalizeLimit(options);
   const apiItems = await fetcher();
-  const apiProducts = mapApiProducts(apiItems);
+  const apiProducts = mapApiProducts(apiItems, preserveRank);
 
-  return mergeProducts(apiProducts, fallback, limit);
+  return mergeProducts(apiProducts, fallback, limit, new Set(), preserveRank);
 }
 
 export async function loadRankingProducts(
@@ -137,7 +170,8 @@ export async function loadRankingProducts(
   return loadCatalogProducts(
     () => fetchRanking(hits, options.offset ?? 1),
     getCuratedRanking(limit),
-    { limit }
+    { limit },
+    true
   );
 }
 
@@ -173,10 +207,12 @@ export async function loadGenreProducts(
 ): Promise<Product[]> {
   const limit = normalizeLimit(options);
   const hits = options.hits ?? limit;
+  const genreKey = canonicalizeGenreKey(genreId);
+  const articleId = options.articleId ?? genreId;
 
   return loadCatalogProducts(
-    () => fetchByGenre(genreId, hits, options.offset ?? 1),
-    getCuratedGenre(genreId, limit),
+    () => fetchByGenre(articleId, hits, options.offset ?? 1),
+    getCuratedGenre(genreKey, limit),
     { limit }
   );
 }
@@ -186,14 +222,16 @@ export async function loadRelatedProducts(
 ): Promise<Product[]> {
   const limit = normalizeLimit(options);
   const hits = options.hits ?? limit;
-  const fallback = getCuratedRelated(options.genre, options.currentId, limit);
+  const genreKey = options.genre ? canonicalizeGenreKey(options.genre) : undefined;
+  const articleId = options.articleId ?? options.genre;
+  const fallback = getCuratedRelated(genreKey, options.currentId, limit);
   const excludedIds = new Set(options.currentId ? [options.currentId] : []);
 
-  const fetcher = options.genre
-    ? () => fetchByGenre(options.genre!, hits, options.offset ?? 1)
+  const fetcher = articleId
+    ? () => fetchByGenre(articleId, hits, options.offset ?? 1)
     : () => fetchRanking(hits, options.offset ?? 1);
 
-  const apiProducts = mapApiProducts(await fetcher()).filter(
+  const apiProducts = mapApiProducts(await fetcher(), false).filter(
     (product) => !excludedIds.has(product.id)
   );
 

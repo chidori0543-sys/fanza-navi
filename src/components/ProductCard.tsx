@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { FaStar, FaFire, FaTag, FaBolt } from "react-icons/fa";
-import { buildAffiliateUrl } from "@/lib/affiliate";
 import type { Product } from "@/data/products";
 
 const rankColors: Record<number, string> = {
@@ -11,13 +10,13 @@ const rankColors: Record<number, string> = {
   3: "from-orange-400 to-orange-700",
 };
 
-const genreImageColors: Record<string, { from: string; to: string; icon: string }> = {
-  動画: { from: "#e4007f", to: "#ff6b35", icon: "▶" },
-  VR: { from: "#6366f1", to: "#8b5cf6", icon: "◉" },
-  素人: { from: "#ec4899", to: "#f43f5e", icon: "♡" },
-  アニメ: { from: "#06b6d4", to: "#3b82f6", icon: "★" },
-  成人向け漫画: { from: "#f59e0b", to: "#ef4444", icon: "◆" },
-  ゲーム: { from: "#10b981", to: "#14b8a6", icon: "⬡" },
+const genreMeta: Record<string, { from: string; to: string; icon: string; label: string }> = {
+  popular: { from: "#e4007f", to: "#ff6b35", icon: "▶", label: "人気作品" },
+  "new-release": { from: "#06b6d4", to: "#3b82f6", icon: "✨", label: "新作" },
+  sale: { from: "#f59e0b", to: "#ef4444", icon: "💰", label: "セール" },
+  "high-rated": { from: "#10b981", to: "#14b8a6", icon: "★", label: "高評価" },
+  amateur: { from: "#ec4899", to: "#f43f5e", icon: "♡", label: "素人" },
+  vr: { from: "#6366f1", to: "#8b5cf6", icon: "◉", label: "VR" },
 };
 
 export default function ProductCard({
@@ -31,8 +30,8 @@ export default function ProductCard({
     ? Math.round((1 - product.salePrice / product.price) * 100)
     : 0;
 
-  const genreColor = genreImageColors[product.genre] ?? { from: "#e4007f", to: "#ff6b35", icon: "▶" };
-  const affiliateHref = product.affiliateUrl.trim() || buildAffiliateUrl("");
+  const genreColor = genreMeta[product.genre] ?? genreMeta.popular;
+  const hasAffiliateUrl = product.affiliateUrl.trim().length > 0;
 
   return (
     <motion.div
@@ -86,7 +85,7 @@ export default function ProductCard({
           {genreColor.icon}
         </div>
         <div className="absolute bottom-2 left-3 text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: `${genreColor.from}33`, color: genreColor.from }}>
-          {product.genre}
+          {genreColor.label}
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       </div>
@@ -147,14 +146,20 @@ export default function ProductCard({
         </div>
 
         {/* CTA */}
-        <a
-          href={affiliateHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full text-center py-3 rounded-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] transition-all duration-300"
-        >
-          詳細を見る →
-        </a>
+        {hasAffiliateUrl ? (
+          <a
+            href={product.affiliateUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full text-center py-3 rounded-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-light)] hover:to-[var(--color-primary)] transition-all duration-300"
+          >
+            詳細を見る →
+          </a>
+        ) : (
+          <span className="block w-full text-center py-3 rounded-xl font-bold text-white/50 bg-white/5 border border-white/10 cursor-not-allowed">
+            準備中
+          </span>
+        )}
       </div>
     </motion.div>
   );

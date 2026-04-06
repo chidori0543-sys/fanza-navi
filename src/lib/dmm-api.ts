@@ -1,4 +1,24 @@
+import { buildAffiliateUrl } from "@/lib/affiliate";
+
 const DMM_API_BASE = "https://api.dmm.com/affiliate/v3";
+const CANONICAL_GENRE_ALIASES: Record<string, string> = {
+  popular: "popular",
+  "人気": "popular",
+  "人気作品": "popular",
+  "動画": "popular",
+  "new-release": "new-release",
+  newrelease: "new-release",
+  "新作": "new-release",
+  sale: "sale",
+  "セール": "sale",
+  "high-rated": "high-rated",
+  highrated: "high-rated",
+  "高評価": "high-rated",
+  amateur: "amateur",
+  "素人": "amateur",
+  vr: "vr",
+  "VR": "vr",
+};
 
 export interface DmmApiConfig {
   apiId: string;
@@ -164,21 +184,31 @@ async function fetchProducts(url: string): Promise<DmmProduct[]> {
 // DmmProduct → 表示用Productへの変換
 import type { Product } from "@/data/products";
 
+function canonicalizeGenreKey(label?: string): string {
+  const normalized = label?.trim() ?? "";
+  if (!normalized) {
+    return "popular";
+  }
+
+  return CANONICAL_GENRE_ALIASES[normalized] || CANONICAL_GENRE_ALIASES[normalized.toLowerCase()] || "popular";
+}
+
 export function toProduct(item: DmmProduct, rank?: number): Product {
   const priceStr = item.prices?.price?.replace(/[^0-9]/g, "") || "0";
   const price = parseInt(priceStr) || 0;
   const genres = item.iteminfo?.genre?.map((g) => g.name) || [];
+  const genreKey = canonicalizeGenreKey(genres[0]);
 
   return {
     id: item.content_id,
     title: item.title,
     description: genres.join(" / ") || "FANZA作品",
     imageUrl: item.imageURL?.large || item.imageURL?.small || "",
-    affiliateUrl: item.affiliateURL || item.URL,
+    affiliateUrl: item.affiliateURL || (item.URL ? buildAffiliateUrl(item.URL) : ""),
     price: price,
     rating: item.review?.average || 0,
     reviewCount: item.review?.count || 0,
-    genre: genres[0] || "popular",
+    genre: genreKey,
     tags: genres.slice(0, 3),
     rank: rank,
     isNew: isNewRelease(item.date),

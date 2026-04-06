@@ -2,32 +2,26 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { sampleProducts } from "@/data/products";
 import type { DmmProduct } from "@/lib/dmm-api";
 
-vi.mock("@/lib/dmm-api", () => ({
-  fetchRanking: vi.fn(),
-  fetchNewReleases: vi.fn(),
-  fetchSaleProducts: vi.fn(),
-  fetchByGenre: vi.fn(),
-  toProduct: vi.fn((item: DmmProduct, rank?: number) => ({
-    id: item.content_id,
-    title: item.title,
-    description: "API product",
-    imageUrl: item.imageURL?.large || item.imageURL?.small || "",
-    affiliateUrl: item.affiliateURL || item.URL,
-    price: 1000,
-    rating: item.review?.average ?? 0,
-    reviewCount: item.review?.count ?? 0,
-    genre: item.iteminfo?.genre?.[0]?.name || "popular",
-    tags: item.iteminfo?.genre?.map((genre) => genre.name) || [],
-    rank,
-    releaseDate: item.date || "",
-  })),
-}));
+vi.mock("@/lib/dmm-api", async () => {
+  const actual = await vi.importActual<typeof import("@/lib/dmm-api")>(
+    "@/lib/dmm-api"
+  );
+
+  return {
+    ...actual,
+    fetchRanking: vi.fn(),
+    fetchNewReleases: vi.fn(),
+    fetchSaleProducts: vi.fn(),
+    fetchByGenre: vi.fn(),
+  };
+});
 
 import {
   fetchByGenre,
   fetchNewReleases,
   fetchRanking,
   fetchSaleProducts,
+  toProduct,
 } from "@/lib/dmm-api";
 import {
   loadGenreProducts,
@@ -72,6 +66,7 @@ describe("catalog loaders", () => {
 
     expect(products.map((product) => product.id)).toEqual(["1", "2", "3"]);
     expect(products.every((product) => product.affiliateUrl)).toBe(true);
+    expect(products[0].rank).toBe(1);
   });
 
   it("uses API sale products before fallback products", async () => {
@@ -81,25 +76,43 @@ describe("catalog loaders", () => {
 
     expect(products[0].id).toBe("api-1");
     expect(products[0].title).toBe("API title");
+    expect(products[0].rank).toBeUndefined();
   });
 
-  it.each([
-    ["loadNewProducts", "new-release", fetchNewReleases, loadNewProducts, ["9", "10"]],
-    ["loadGenreProducts", "vr", fetchByGenre, loadGenreProducts, ["41", "42"]],
-  ] as const)(
-    "falls back to curated products for %s when API returns empty",
-    async (_label, genre, fetchFn, loader, expectedIds) => {
-      vi.mocked(fetchFn).mockResolvedValueOnce([]);
+  it("maps DMM genre labels to canonical local genre keys", () => {
+    const product = toProduct(
+      makeApiProduct({
+        iteminfo: {
+          genre: [{ id: 1, name: "VR" }],
+        },
+      })
+    );
 
-      const products =
-        _label === "loadGenreProducts"
-          ? await loader(genre, { limit: expectedIds.length })
-          : await loader({ limit: expectedIds.length });
+    expect(product.genre).toBe("vr");
+  });
 
-      expect(products.map((product) => product.id)).toEqual(expectedIds);
-      expect(products.every((product) => product.affiliateUrl)).toBe(true);
-    }
-  );
+  it("keeps rank off non-ranking catalog surfaces", async () => {
+    vi.mocked(fetchNewReleases).mockResolvedValue([]);
+    vi.mocked(fetchByGenre).mockResolvedValue([]);
+    vi.mocked(fetchRanking).mockResolvedValue([]);
+
+    const [newProducts, genreProducts, relatedProducts] = await Promise.all([
+      loadNewProducts({ limit: 2 }),
+      loadGenreProducts("vr", { limit: 2 }),
+      loadRelatedProducts({
+        currentId: "41",
+        genre: "vr",
+        limit: 2,
+      }),
+    ]);
+
+    expect(newProducts.every((product) => product.rank === undefined)).toBe(true);
+    expect(newProducts.every((product) => product.genre === "new-release")).toBe(true);
+    expect(genreProducts.every((product) => product.rank === undefined)).toBe(true);
+    expect(genreProducts.every((product) => product.genre === "vr")).toBe(true);
+    expect(relatedProducts.every((product) => product.rank === undefined)).toBe(true);
+    expect(relatedProducts.every((product) => product.genre === "vr")).toBe(true);
+  });
 
   it("falls back to same-genre related products without the current product", async () => {
     vi.mocked(fetchByGenre).mockResolvedValueOnce([]);
