@@ -36,6 +36,12 @@ describe("Product Data Integrity", () => {
     }
   });
 
+  it("every product has a valid outbound affiliate URL", () => {
+    for (const p of sampleProducts) {
+      expect(p.affiliateUrl).toMatch(/^https?:\/\//);
+    }
+  });
+
   it("sale products have valid sale price less than regular price", () => {
     const saleProducts = sampleProducts.filter((p) => p.isSale && p.salePrice);
     expect(saleProducts.length).toBeGreaterThan(0);

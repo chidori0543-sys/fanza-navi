@@ -1,3 +1,5 @@
+import { buildFallbackOutboundUrl } from "@/lib/affiliate";
+
 export interface Product {
   id: string;
   title: string;
@@ -74,9 +76,9 @@ export const genres: Genre[] = [
  * サンプル商品データ。
  * DMM API承認後は実データに自動切替される。
  * imageUrl は空文字 — ProductCard がジャンル別カラーのプレースホルダーを表示する。
- * affiliateUrl は空文字 — API接続後に実URLが入る。
+ * affiliateUrl は後段で正規化し、空文字のまま公開しない。
  */
-export const sampleProducts: Product[] = [
+const fallbackProducts: Product[] = [
   // ── popular（人気作品）──
   {
     id: "1",
@@ -888,3 +890,8 @@ export const sampleProducts: Product[] = [
     releaseDate: "2026-01-08",
   },
 ];
+
+export const sampleProducts: Product[] = fallbackProducts.map((product) => ({
+  ...product,
+  affiliateUrl: product.affiliateUrl || buildFallbackOutboundUrl(product.title),
+}));
