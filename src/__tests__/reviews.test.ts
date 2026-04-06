@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getReviewBySlug, reviews } from "@/data/reviews";
 import { sampleProducts } from "@/data/products";
+import { genreSlugs } from "@/data/genres";
 
 describe("review data", () => {
   beforeEach(() => {
@@ -22,7 +23,13 @@ describe("review data", () => {
       expect(review.title).toBeTruthy();
       expect(review.excerpt).toBeTruthy();
       expect(review.publishedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      expect(review.body.length).toBeGreaterThan(0);
+      expect(review.updatedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(review.genreSlug).toBeTruthy();
+      expect(review.heroImageUrl).toBeTruthy();
+      expect(review.heroImageAlt).toBeTruthy();
+      expect(review.ctaLabel).toBeTruthy();
+      expect(review.body.length).toBeGreaterThanOrEqual(3);
+      expect(review.relatedProductIds.length).toBeGreaterThanOrEqual(3);
       expect(review.productId).toBeTruthy();
     }
   });
@@ -37,6 +44,17 @@ describe("review data", () => {
 
     for (const review of reviews) {
       expect(productIds.has(review.productId)).toBe(true);
+      expect(review.relatedProductIds.every((productId) => productIds.has(productId))).toBe(
+        true
+      );
+    }
+  });
+
+  it("maps every review to a static genre landing page", () => {
+    const genreSet = new Set(genreSlugs);
+
+    for (const review of reviews) {
+      expect(genreSet.has(review.genreSlug)).toBe(true);
     }
   });
 

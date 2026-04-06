@@ -9,9 +9,14 @@ import {
   FaBalanceScale,
   FaClock,
   FaArrowRight,
+  FaCompass,
 } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import Footer from "@/components/Footer";
+import ReviewCard from "@/components/ReviewCard";
+import { genrePages } from "@/data/genres";
+import { reviews } from "@/data/reviews";
+import { ROUTES, getGenreRoute } from "@/lib/site";
 
 const articles = [
   {
@@ -75,6 +80,11 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export default function ArticlesPage() {
+  const featuredReviews = reviews.slice(0, 3);
+  const featuredGenres = genrePages.filter((genre) =>
+    ["popular", "sale", "vr"].includes(genre.slug)
+  );
+
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
       <Breadcrumb items={[{ label: "記事一覧" }]} />
@@ -132,6 +142,59 @@ export default function ArticlesPage() {
           </motion.a>
         ))}
       </div>
+
+      <section className="mb-16">
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-extrabold">
+              📝 <span className="gradient-text">作品レビュー</span>
+            </h2>
+            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              記事を読んだあとに、そのまま作品レビューとジャンル別ページへ進めます。
+            </p>
+          </div>
+          <a
+            href={ROUTES.reviews}
+            className="inline-flex items-center gap-2 text-sm font-bold text-[var(--color-primary)] hover:underline"
+          >
+            レビュー一覧を見る <FaArrowRight size={12} />
+          </a>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          {featuredReviews.map((review) => (
+            <ReviewCard key={review.slug} review={review} />
+          ))}
+        </div>
+      </section>
+
+      <section className="glass-card mb-16 border border-white/10 p-6">
+        <div className="mb-4 flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--color-primary)]/15 text-[var(--color-primary)]">
+            <FaCompass size={18} />
+          </div>
+          <div>
+            <h2 className="text-xl font-extrabold">ジャンル別に探す</h2>
+            <p className="text-sm text-[var(--color-text-secondary)]">
+              気になるカテゴリから、レビュー付きの導線で作品ページへ移動できます。
+            </p>
+          </div>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          {featuredGenres.map((genre) => (
+            <a
+              key={genre.slug}
+              href={getGenreRoute(genre.slug)}
+              className="rounded-2xl border border-white/10 bg-white/5 p-4 transition-colors hover:border-[var(--color-primary)]/30 hover:bg-white/10"
+            >
+              <div className="mb-2 text-2xl">{genre.icon}</div>
+              <h3 className="mb-1 font-bold">{genre.name}</h3>
+              <p className="text-sm text-[var(--color-text-secondary)]">{genre.headline}</p>
+            </a>
+          ))}
+        </div>
+      </section>
 
       <section className="glass-card p-8 mb-12 border-[var(--color-primary)]/20">
         <h2 className="text-xl font-extrabold mb-4 text-center">

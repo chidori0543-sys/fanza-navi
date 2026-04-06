@@ -5,6 +5,8 @@ export const ROUTES = {
   ranking: "/ranking",
   newReleases: "/new",
   sale: "/sale",
+  genres: "/genre",
+  reviews: "/reviews",
   search: "/search",
   guide: "/guide",
   compare: "/compare",
@@ -20,4 +22,12 @@ export const ROUTES = {
 
 export function toAbsoluteUrl(path = "") {
   return new URL(path, `${SITE_URL}/`).toString();
+}
+
+export function getGenreRoute(slug: string) {
+  return `${ROUTES.genres}/${slug}`;
+}
+
+export function getReviewRoute(slug: string) {
+  return `${ROUTES.reviews}/${slug}`;
 }
