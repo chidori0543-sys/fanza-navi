@@ -7,7 +7,7 @@ export interface Review {
   publishedAt: string;
   updatedAt: string;
   productTitle: string;
-  affiliateUrl: string;
+  destinationUrl: string;
   rating: number;
   reviewCount: number;
   tags: string[];
@@ -31,7 +31,7 @@ export const reviews: Review[] = [
     publishedAt: "2026-03-29",
     updatedAt: "2026-03-29",
     productTitle: "【FANZA限定】人気シリーズ最新作 Vol.28",
-    affiliateUrl: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=test-series-28/",
+    destinationUrl: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=test-series-28/",
     rating: 4.7,
     reviewCount: 342,
     tags: ["シリーズ", "特典付き", "人気作"],
@@ -55,7 +55,7 @@ export const reviews: Review[] = [
     publishedAt: "2026-03-26",
     updatedAt: "2026-03-26",
     productTitle: "【VR】没入体験 〜あなたのすぐそばに〜",
-    affiliateUrl: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=test-vr-01/",
+    destinationUrl: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=test-vr-01/",
     rating: 4.6,
     reviewCount: 89,
     tags: ["VR", "没入感", "視聴環境"],
@@ -79,7 +79,7 @@ export const reviews: Review[] = [
     publishedAt: "2026-03-22",
     updatedAt: "2026-03-23",
     productTitle: "【72%OFF】春の大感謝祭セット",
-    affiliateUrl: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=test-sale-72/",
+    destinationUrl: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=test-sale-72/",
     rating: 4.4,
     reviewCount: 234,
     tags: ["セール", "セット", "お得"],

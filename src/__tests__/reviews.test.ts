@@ -58,15 +58,15 @@ describe("review data", () => {
     }
   });
 
-  it("does not change review links when affiliate env changes", async () => {
+  it("does not change review destination urls when affiliate env changes", async () => {
     vi.stubEnv("DMM_AFFILIATE_ID", "review-affiliate");
     vi.resetModules();
 
     const { reviews: envReviews } = await import("@/data/reviews");
 
-    expect(envReviews[0].affiliateUrl).toBe(
+    expect(envReviews[0].destinationUrl).toBe(
       "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=test-series-28/"
     );
-    expect(envReviews[0].affiliateUrl).not.toContain("al.dmm.co.jp");
+    expect(envReviews[0].destinationUrl).not.toContain("al.dmm.co.jp");
   });
 });

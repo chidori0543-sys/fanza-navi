@@ -6,6 +6,7 @@ import ProductGridSection from "@/components/ProductGridSection";
 import { sampleProducts } from "@/data/products";
 import { getGenreBySlug } from "@/data/genres";
 import { getReviewBySlug, reviewSlugs } from "@/data/reviews";
+import { buildAffiliateUrl } from "@/lib/affiliate";
 import { loadRelatedProducts } from "@/lib/catalog";
 import { ROUTES, getGenreRoute, getReviewRoute, toAbsoluteUrl } from "@/lib/site";
 
@@ -98,11 +99,42 @@ export default async function ReviewPage({
     notFound();
   }
 
+  const reviewAffiliateUrl = buildAffiliateUrl(review.destinationUrl);
   const sortedRelatedProducts = sortRelatedProducts(
     review.relatedProductIds,
     review.productId,
     relatedProducts
   ).slice(0, 4);
+  const reviewStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    headline: review.title,
+    name: review.title,
+    description: review.excerpt,
+    mainEntityOfPage: toAbsoluteUrl(getReviewRoute(review.slug)),
+    datePublished: review.publishedAt,
+    dateModified: review.updatedAt,
+    author: {
+      "@type": "Organization",
+      name: "FANZAおすすめ作品ナビ",
+    },
+    itemReviewed: {
+      "@type": "Product",
+      name: product.title,
+      image: [toAbsoluteUrl(product.imageUrl || review.heroImageUrl)],
+      offers: {
+        "@type": "Offer",
+        priceCurrency: "JPY",
+        price: String(product.salePrice ?? product.price),
+        url: reviewAffiliateUrl,
+      },
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: review.rating.toFixed(1),
+      bestRating: "5",
+    },
+  };
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
@@ -115,6 +147,10 @@ export default async function ReviewPage({
       />
 
       <article className="glass-card overflow-hidden border border-white/10">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewStructuredData) }}
+        />
         <div className="relative flex min-h-64 items-end overflow-hidden bg-black p-8">
           <img
             src={review.heroImageUrl}
@@ -143,7 +179,7 @@ export default async function ReviewPage({
               <span>{review.reviewCount}件</span>
             </div>
 
-            <div className="space-y-5 text-[15px] leading-8 text-[var(--color-text-secondary)]">
+            <div className="prose prose-invert max-w-none text-[15px] leading-8">
               {review.body.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -151,6 +187,13 @@ export default async function ReviewPage({
           </div>
 
           <aside className="space-y-5 rounded-3xl border border-white/10 bg-white/5 p-6">
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+              <img
+                src={product.imageUrl || review.heroImageUrl}
+                alt={`${product.title}の商品画像`}
+                className="aspect-[4/3] w-full object-cover"
+              />
+            </div>
             <div>
               <p className="text-sm font-bold text-[var(--color-primary)]">総評</p>
               <h2 className="mt-2 text-xl font-extrabold">{product.title}</h2>
@@ -169,7 +212,7 @@ export default async function ReviewPage({
               ))}
             </div>
             <a
-              href={review.affiliateUrl}
+              href={reviewAffiliateUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="block rounded-2xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] px-5 py-4 text-center text-sm font-bold text-white transition-opacity hover:opacity-90"

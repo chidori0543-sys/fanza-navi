@@ -9,8 +9,8 @@ afterEach(() => {
 });
 
 describe("HomePage", () => {
-  it("prioritizes commerce sections and primary ranking CTA", () => {
-    const { container } = render(<HomePage />);
+  it("prioritizes commerce sections and primary ranking CTA", async () => {
+    const { container } = render(await HomePage());
 
     const headings = Array.from(container.querySelectorAll("h2")).map((heading) =>
       heading.textContent?.replace(/\s+/g, " ").trim()
@@ -40,16 +40,17 @@ describe("HomePage", () => {
     expect(
       screen.getByRole("link", { name: "ガイド記事を一覧で見る" })
     ).toHaveAttribute("href", ROUTES.articles);
+    expect(screen.getAllByRole("link", { name: /作品詳細を見る|FANZAで見る/ }).length).toBeGreaterThan(0);
   });
 
-  it("uses the sticky CTA to send scrolled visitors to sale", () => {
+  it("uses the sticky CTA to send scrolled visitors to sale", async () => {
     Object.defineProperty(window, "scrollY", {
       configurable: true,
       writable: true,
       value: 480,
     });
 
-    render(<HomePage />);
+    render(await HomePage());
     fireEvent.scroll(window);
 
     expect(

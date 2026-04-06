@@ -29,6 +29,7 @@ import {
   getReviewRoute,
   toAbsoluteUrl,
 } from "@/lib/site";
+import { buildAffiliateUrl } from "@/lib/affiliate";
 
 describe("site routes", () => {
   it("builds root-relative routes for genres and reviews", () => {
@@ -129,7 +130,7 @@ describe("site routes", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: reviews[0].ctaLabel })).toHaveAttribute(
       "href",
-      reviews[0].affiliateUrl
+      buildAffiliateUrl(reviews[0].destinationUrl)
     );
     expect(screen.getByRole("link", { name: "レビュー一覧" })).toHaveAttribute(
       "href",
@@ -138,6 +139,7 @@ describe("site routes", () => {
     const image = screen.getByAltText(reviews[0].heroImageAlt);
     expect(image.tagName).toBe("IMG");
     expect(image).toHaveAttribute("src", reviews[0].heroImageUrl);
+    expect(screen.getByAltText(/の商品画像$/)).toBeInTheDocument();
     expect(screen.getByText(/こちらもおすすめ/i)).toBeInTheDocument();
   });
 
