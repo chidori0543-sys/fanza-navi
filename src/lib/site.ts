@@ -1,4 +1,6 @@
-export const SITE_URL = "https://fragrant-thunder-2202.chidori0543.workers.dev";
+import { getSiteConfig } from "@/lib/env";
+
+export const SITE_URL = getSiteConfig().siteUrl;
 
 export const ROUTES = {
   home: "/",

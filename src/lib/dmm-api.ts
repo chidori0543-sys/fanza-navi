@@ -1,4 +1,5 @@
 import { buildAffiliateUrl } from "@/lib/affiliate";
+import { getSiteConfig } from "@/lib/env";
 
 const DMM_API_BASE = "https://api.dmm.com/affiliate/v3";
 const CANONICAL_GENRE_ALIASES: Record<string, string> = {
@@ -77,8 +78,9 @@ export interface DmmApiResponse {
 }
 
 function getConfig(): DmmApiConfig {
-  const apiId = process.env.DMM_API_ID || "";
-  const affiliateId = process.env.DMM_AFFILIATE_ID || "";
+  const { dmmApiId, dmmAffiliateId } = getSiteConfig();
+  const apiId = dmmApiId || "";
+  const affiliateId = dmmAffiliateId || "";
   return { apiId, affiliateId };
 }
 

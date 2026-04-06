@@ -1,3 +1,5 @@
+import { getSiteConfig } from "@/lib/env";
+
 const DMM_AFFILIATE_TRACKING_URL = "https://al.dmm.co.jp/";
 const DMM_DEFAULT_OUTBOUND_URL = "https://www.dmm.co.jp/digital/videoa/";
 const ALLOWED_OUTBOUND_HOSTS = [
@@ -6,7 +8,7 @@ const ALLOWED_OUTBOUND_HOSTS = [
 ];
 
 function getAffiliateId(): string {
-  return process.env.DMM_AFFILIATE_ID?.trim() ?? "";
+  return getSiteConfig().dmmAffiliateId;
 }
 
 function isAllowedOutboundHost(hostname: string): boolean {
@@ -47,6 +49,7 @@ export function buildAffiliateUrl(
   affiliateId = getAffiliateId()
 ): string {
   const normalizedDestination = normalizeOutboundTarget(destinationUrl);
+  const trackingUrl = getSiteConfig().dmmAffiliateLink || DMM_AFFILIATE_TRACKING_URL;
 
   if (!affiliateId) {
     return normalizedDestination;
@@ -57,7 +60,7 @@ export function buildAffiliateUrl(
     af_id: affiliateId,
   });
 
-  return `${DMM_AFFILIATE_TRACKING_URL}?${searchParams.toString()}`;
+  return `${trackingUrl}?${searchParams.toString()}`;
 }
 
 export function buildFallbackOutboundUrl(target: string = ""): string {
