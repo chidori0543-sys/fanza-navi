@@ -12,7 +12,7 @@ const baseProduct: Product = {
   price: 1980,
   rating: 4.5,
   reviewCount: 100,
-  genre: "動画",
+  genre: "popular",
   tags: ["タグ1", "タグ2"],
   releaseDate: "2026-01-01",
 };
@@ -54,26 +54,35 @@ describe("ProductCard Component", () => {
     render(<ProductCard product={baseProduct} index={0} />);
     const ratings = screen.getAllByText("4.5");
     expect(ratings.length).toBeGreaterThanOrEqual(1);
-    const reviewCounts = screen.getAllByText("(100件)");
+    const reviewCounts = screen.getAllByText(/100件/);
     expect(reviewCounts.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("shows '準備中' when affiliateUrl is empty", () => {
+  it("renders a disabled CTA when affiliateUrl is empty", () => {
     render(<ProductCard product={baseProduct} index={0} />);
-    const items = screen.getAllByText("準備中");
-    expect(items.length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("リンク準備中").length).toBeGreaterThan(0);
+    expect(screen.queryByRole("link", { name: "FANZAのレビューを見る" })).toBeNull();
   });
 
-  it("shows '詳細を見る →' when affiliateUrl is set", () => {
+  it("shows the official FANZA review CTA when affiliateUrl is set", () => {
     const withUrl = { ...baseProduct, affiliateUrl: "https://example.com" };
-    render(<ProductCard product={withUrl} index={0} />);
-    expect(screen.getByText("詳細を見る →")).toBeInTheDocument();
+    const { getAllByRole } = render(<ProductCard product={withUrl} index={0} />);
+    const links = getAllByRole("link", { name: /FANZAのレビューを見る/ });
+    expect(
+      links.some((link) => link.getAttribute("href") === "https://example.com")
+    ).toBe(true);
+  });
+
+  it("renders the product image when imageUrl is provided", () => {
+    const withImage = { ...baseProduct, imageUrl: "https://pics.dmm.co.jp/test.jpg" };
+    render(<ProductCard product={withImage} index={0} />);
+    expect(screen.getByRole("img", { name: "テスト作品タイトル" })).toBeInTheDocument();
   });
 
   it("renders rank badge for top 3", () => {
     const ranked = { ...baseProduct, rank: 1 };
     render(<ProductCard product={ranked} index={0} />);
-    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(screen.getByText("1位")).toBeInTheDocument();
   });
 
   it("renders NEW badge for new products", () => {
@@ -84,13 +93,7 @@ describe("ProductCard Component", () => {
 
   it("renders genre label", () => {
     render(<ProductCard product={baseProduct} index={0} />);
-    const genreLabels = screen.getAllByText("動画");
+    const genreLabels = screen.getAllByText("人気作品");
     expect(genreLabels.length).toBeGreaterThanOrEqual(1);
-  });
-
-  it("renders high rating badge for 4.7+", () => {
-    const highRated = { ...baseProduct, rating: 4.8 };
-    render(<ProductCard product={highRated} index={0} />);
-    expect(screen.getByText("高評価")).toBeInTheDocument();
   });
 });

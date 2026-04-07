@@ -6,7 +6,7 @@ describe("Footer Component", () => {
   it("renders disclaimer", () => {
     render(<Footer />);
     expect(
-      screen.getByText(/アフィリエイトプログラムに参加/)
+      screen.getByText(/DMMアフィリエイトを利用しています/)
     ).toBeInTheDocument();
   });
 
@@ -23,7 +23,7 @@ describe("Footer Component", () => {
 
   it("renders copyright", () => {
     const { container } = render(<Footer />);
-    expect(container.textContent).toContain("FANZAおすすめナビ");
+    expect(container.textContent).toContain("FANZAナビ");
   });
 
   it("no links point to '#'", () => {

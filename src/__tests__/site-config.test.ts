@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { ROUTES, SITE_URL } from "@/lib/site";
+import { HAS_CANONICAL_SITE_URL, ROUTES, SITE_URL, toAbsoluteUrl } from "@/lib/site";
 
 describe("site config", () => {
-  it("uses a Cloudflare root-hosted site URL", () => {
-    expect(SITE_URL).toBe("https://fragrant-thunder-2202.chidori0543.workers.dev");
+  it("falls back to a local root URL until SITE_URL is configured", () => {
+    expect(SITE_URL).toBe("http://localhost:3000");
+    expect(HAS_CANONICAL_SITE_URL).toBe(false);
     expect(new URL(SITE_URL).pathname).toBe("/");
   });
 
@@ -12,5 +13,9 @@ describe("site config", () => {
     expect(ROUTES.ranking).toBe("/ranking");
     expect(ROUTES.articles).toBe("/articles");
     expect(Object.values(ROUTES).every((route) => !route.includes("/fanza-navi"))).toBe(true);
+  });
+
+  it("can still build absolute URLs from root-relative routes", () => {
+    expect(toAbsoluteUrl(ROUTES.ranking)).toBe("http://localhost:3000/ranking");
   });
 });

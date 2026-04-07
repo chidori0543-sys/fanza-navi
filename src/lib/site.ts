@@ -1,10 +1,19 @@
-export const SITE_URL = "https://fragrant-thunder-2202.chidori0543.workers.dev";
+import { getSiteConfig } from "@/lib/env";
+import { getActressSlug } from "@/lib/actress-ranking";
+
+const SITE_CONFIG = getSiteConfig();
+
+export const SITE_URL = SITE_CONFIG.siteUrl;
+export const HAS_CANONICAL_SITE_URL = SITE_CONFIG.hasCanonicalHost;
 
 export const ROUTES = {
   home: "/",
   ranking: "/ranking",
   newReleases: "/new",
   sale: "/sale",
+  genres: "/genre",
+  actresses: "/actress",
+  reviews: "/reviews",
   search: "/search",
   guide: "/guide",
   compare: "/compare",
@@ -20,4 +29,16 @@ export const ROUTES = {
 
 export function toAbsoluteUrl(path = "") {
   return new URL(path, `${SITE_URL}/`).toString();
+}
+
+export function getGenreRoute(slug: string) {
+  return `${ROUTES.genres}/${slug}`;
+}
+
+export function getActressRoute(name: string) {
+  return `${ROUTES.actresses}/${getActressSlug(name)}`;
+}
+
+export function getReviewRoute(slug: string) {
+  return `${ROUTES.reviews}/${slug}`;
 }

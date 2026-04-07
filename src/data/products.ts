@@ -10,6 +10,9 @@ export interface Product {
   reviewCount: number;
   genre: string;
   tags: string[];
+  maker?: string;
+  label?: string;
+  actresses?: string[];
   rank?: number;
   isNew?: boolean;
   isSale?: boolean;
@@ -74,9 +77,11 @@ export const genres: Genre[] = [
  * サンプル商品データ。
  * DMM API承認後は実データに自動切替される。
  * imageUrl は空文字 — ProductCard がジャンル別カラーのプレースホルダーを表示する。
- * affiliateUrl は空文字 — API接続後に実URLが入る。
+ * affiliateUrl は安全な DMM/FANZA の直接リンクか、同一ドメインのフォールバックを使う。
  */
-export const sampleProducts: Product[] = [
+const FALLBACK_OUTBOUND_URL = "https://www.dmm.co.jp/digital/videoa/";
+
+const fallbackProducts: Product[] = [
   // ── popular（人気作品）──
   {
     id: "1",
@@ -84,13 +89,14 @@ export const sampleProducts: Product[] = [
     description:
       "大人気シリーズの最新作が遂に登場。FANZA限定の特典映像付きで、ファン必見の完全保存版。",
     imageUrl: "",
-    affiliateUrl: "",
+    affiliateUrl: FALLBACK_OUTBOUND_URL,
     price: 2480,
     salePrice: 1480,
     rating: 4.7,
     reviewCount: 342,
     genre: "popular",
     tags: ["限定", "シリーズ", "特典付き"],
+    actresses: ["瀬戸環奈", "天使もえ"],
     rank: 1,
     isSale: true,
     releaseDate: "2026-03-28",
@@ -101,12 +107,13 @@ export const sampleProducts: Product[] = [
     description:
       "放課後の教室で繰り広げられる甘く危険な時間。誰にも言えない二人だけの秘密が、今ここに。大胆な展開に目が離せない。",
     imageUrl: "",
-    affiliateUrl: "",
+    affiliateUrl: FALLBACK_OUTBOUND_URL,
     price: 1980,
     rating: 4.5,
     reviewCount: 1287,
     genre: "popular",
     tags: ["ドラマ", "学園", "人気"],
+    actresses: ["瀬戸環奈", "河北彩花"],
     rank: 2,
     releaseDate: "2026-03-15",
   },
@@ -116,13 +123,14 @@ export const sampleProducts: Product[] = [
     description:
       "終電を逃した二人が誰もいないオフィスで過ごすひととき。張り詰めた空気が一気に弾ける瞬間を捉えた傑作。",
     imageUrl: "",
-    affiliateUrl: "",
+    affiliateUrl: FALLBACK_OUTBOUND_URL,
     price: 2480,
     salePrice: 1780,
     rating: 4.6,
     reviewCount: 876,
     genre: "popular",
     tags: ["OL", "オフィス", "ドラマ"],
+    actresses: ["相沢みなみ", "石川澪"],
     rank: 3,
     isSale: true,
     releaseDate: "2026-02-28",
@@ -133,12 +141,13 @@ export const sampleProducts: Product[] = [
     description:
       "情緒あふれる温泉宿を舞台にした癒しと刺激の物語。湯煙の中に浮かぶ美しいシルエットが幻想的な映像美を演出する。",
     imageUrl: "",
-    affiliateUrl: "",
+    affiliateUrl: FALLBACK_OUTBOUND_URL,
     price: 1980,
     rating: 4.4,
     reviewCount: 2341,
     genre: "popular",
     tags: ["温泉", "旅行", "癒し"],
+    actresses: ["河北彩花", "天使もえ"],
     rank: 4,
     releaseDate: "2026-02-10",
   },
@@ -148,13 +157,14 @@ export const sampleProducts: Product[] = [
     description:
       "シェアハウスで暮らす魅力的な女性たちの日常を覗き見。何気ない仕草に宿る色気を丁寧に映し出したシリーズ第3弾。",
     imageUrl: "",
-    affiliateUrl: "",
+    affiliateUrl: FALLBACK_OUTBOUND_URL,
     price: 2980,
     salePrice: 1980,
     rating: 4.3,
     reviewCount: 534,
     genre: "popular",
     tags: ["シリーズ", "日常", "ルームシェア"],
+    actresses: ["石川澪", "三上悠亜"],
     rank: 5,
     isSale: true,
     releaseDate: "2026-01-25",
@@ -165,12 +175,13 @@ export const sampleProducts: Product[] = [
     description:
       "ニーハイソックスとミニスカートの間に覗く絶対領域を徹底フィーチャー。フェチ心をくすぐる映像が満載の一作。",
     imageUrl: "",
-    affiliateUrl: "",
+    affiliateUrl: FALLBACK_OUTBOUND_URL,
     price: 1480,
     rating: 4.2,
     reviewCount: 1503,
     genre: "popular",
     tags: ["フェチ", "ニーハイ", "コスプレ"],
+    actresses: ["相沢みなみ", "河北彩花"],
     rank: 6,
     releaseDate: "2026-01-18",
   },
@@ -180,12 +191,13 @@ export const sampleProducts: Product[] = [
     description:
       "毎週金曜の夜だけ会える特別な関係。甘い時間と切ない別れを繰り返す、大人のラブストーリー。累計DL数10万突破の話題作。",
     imageUrl: "",
-    affiliateUrl: "",
+    affiliateUrl: FALLBACK_OUTBOUND_URL,
     price: 2480,
     rating: 4.8,
     reviewCount: 3012,
     genre: "popular",
     tags: ["恋愛", "ドラマ", "話題"],
+    actresses: ["三上悠亜", "瀬戸環奈"],
     rank: 7,
     releaseDate: "2026-03-01",
   },
@@ -195,13 +207,14 @@ export const sampleProducts: Product[] = [
     description:
       "凄腕マッサージ師による極上の施術シーンを完全収録。プロの手技が生み出す至福の時間を余すことなく映像化。",
     imageUrl: "",
-    affiliateUrl: "",
+    affiliateUrl: FALLBACK_OUTBOUND_URL,
     price: 1980,
     salePrice: 1280,
     rating: 4.1,
     reviewCount: 765,
     genre: "popular",
     tags: ["マッサージ", "テクニック", "完全版"],
+    actresses: ["天使もえ", "石川澪"],
     rank: 8,
     isSale: true,
     releaseDate: "2026-02-20",
@@ -213,7 +226,7 @@ export const sampleProducts: Product[] = [
     description:
       "注目の新人による衝撃のデビュー作。圧倒的なクオリティで話題沸騰中。初々しさと大胆さが共存する奇跡の一作。",
     imageUrl: "",
-    affiliateUrl: "",
+    affiliateUrl: FALLBACK_OUTBOUND_URL,
     price: 1980,
     rating: 4.8,
     reviewCount: 156,
@@ -888,3 +901,8 @@ export const sampleProducts: Product[] = [
     releaseDate: "2026-01-08",
   },
 ];
+
+export const sampleProducts: Product[] = fallbackProducts.map((product) => ({
+  ...product,
+  affiliateUrl: product.affiliateUrl || FALLBACK_OUTBOUND_URL,
+}));

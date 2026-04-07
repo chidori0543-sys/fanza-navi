@@ -1,4 +1,39 @@
+import { buildAffiliateUrl } from "@/lib/affiliate";
+import { getSiteConfig } from "@/lib/env";
+
 const DMM_API_BASE = "https://api.dmm.com/affiliate/v3";
+const CANONICAL_GENRE_ALIASES: Record<string, string> = {
+  popular: "popular",
+  "人気": "popular",
+  "人気作品": "popular",
+  "動画": "popular",
+  "new-release": "new-release",
+  newrelease: "new-release",
+  "新作": "new-release",
+  sale: "sale",
+  "セール": "sale",
+  "high-rated": "high-rated",
+  highrated: "high-rated",
+  "高評価": "high-rated",
+  amateur: "amateur",
+  "素人": "amateur",
+  vr: "vr",
+  "VR": "vr",
+};
+
+export function mapGenreLabelToKey(label?: string): string {
+  const normalized = label?.trim() ?? "";
+
+  if (!normalized) {
+    return "popular";
+  }
+
+  return (
+    CANONICAL_GENRE_ALIASES[normalized] ||
+    CANONICAL_GENRE_ALIASES[normalized.toLowerCase()] ||
+    normalized
+  );
+}
 
 export interface DmmApiConfig {
   apiId: string;
@@ -21,8 +56,8 @@ export interface DmmProduct {
   };
   date?: string;
   review?: {
-    count?: number;
-    average?: number;
+    count?: number | string;
+    average?: number | string;
   };
   iteminfo?: {
     genre?: { id: number; name: string }[];
@@ -43,8 +78,9 @@ export interface DmmApiResponse {
 }
 
 function getConfig(): DmmApiConfig {
-  const apiId = process.env.DMM_API_ID || "";
-  const affiliateId = process.env.DMM_AFFILIATE_ID || "";
+  const { dmmApiId, dmmAffiliateId } = getSiteConfig();
+  const apiId = dmmApiId || "";
+  const affiliateId = dmmAffiliateId || "";
   return { apiId, affiliateId };
 }
 
@@ -168,18 +204,27 @@ export function toProduct(item: DmmProduct, rank?: number): Product {
   const priceStr = item.prices?.price?.replace(/[^0-9]/g, "") || "0";
   const price = parseInt(priceStr) || 0;
   const genres = item.iteminfo?.genre?.map((g) => g.name) || [];
+  const genreKey = mapGenreLabelToKey(genres[0]);
+  const rating = Number(item.review?.average ?? 0) || 0;
+  const reviewCount = Number(item.review?.count ?? 0) || 0;
+  const actresses = item.iteminfo?.actress?.map((person) => person.name) || [];
+  const maker = item.iteminfo?.maker?.[0]?.name;
+  const label = item.iteminfo?.label?.[0]?.name;
 
   return {
     id: item.content_id,
     title: item.title,
     description: genres.join(" / ") || "FANZA作品",
     imageUrl: item.imageURL?.large || item.imageURL?.small || "",
-    affiliateUrl: item.affiliateURL || item.URL,
+    affiliateUrl: item.affiliateURL || (item.URL ? buildAffiliateUrl(item.URL) : ""),
     price: price,
-    rating: item.review?.average || 0,
-    reviewCount: item.review?.count || 0,
-    genre: genres[0] || "popular",
+    rating: rating,
+    reviewCount: reviewCount,
+    genre: genreKey,
     tags: genres.slice(0, 3),
+    maker,
+    label,
+    actresses,
     rank: rank,
     isNew: isNewRelease(item.date),
     releaseDate: item.date || "",

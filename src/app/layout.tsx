@@ -4,39 +4,71 @@ import Header from "@/components/Header";
 import JsonLd from "@/components/JsonLd";
 import Analytics from "@/components/Analytics";
 import ErrorTracker from "@/components/ErrorTracker";
-import { SITE_URL } from "@/lib/site";
+import AgeGate from "@/components/AgeGate";
+import DisclosureBar from "@/components/DisclosureBar";
+import { getSiteConfig } from "@/lib/env";
+import { HAS_CANONICAL_SITE_URL, ROUTES, SITE_URL } from "@/lib/site";
+
+const AGE_GATE_STORAGE_KEY = "fanza-age-gate-accepted";
+const AGE_GATE_MARKER = "ageGateAccepted";
+const SITE_CONFIG = getSiteConfig();
+const AGE_GATE_STYLE = `
+  html[data-${AGE_GATE_MARKER}="1"] [data-age-gate] {
+    display: none !important;
+  }
+`;
+
+const AGE_GATE_BOOTSTRAP = `
+  (() => {
+    try {
+      if (window.localStorage.getItem("${AGE_GATE_STORAGE_KEY}") === "1") {
+        document.documentElement.dataset.${AGE_GATE_MARKER} = "1";
+        const appShell = document.getElementById("app-shell");
+        appShell?.removeAttribute("inert");
+        appShell?.removeAttribute("aria-hidden");
+      }
+    } catch (error) {}
+  })();
+`;
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "FANZAおすすめ作品ナビ | 使い方ガイド＆お得情報",
+    default: "FANZAナビ | 落ち着いて比較できるランキングとレビュー",
     template: "%s | FANZAナビ",
   },
   description:
-    "FANZAの使い方・支払い方法・VR設定・セール攻略法まで徹底解説。初心者でもわかるガイド記事を公開中。",
-  keywords: ["FANZA", "DMM", "使い方", "ガイド", "VR", "セール", "支払い方法", "お得"],
+    "FANZA作品をランキング、セール、ジャンル、レビューから落ち着いて比較できるガイドサイト。価格差と向いている人を整理して、納得して選びやすくしています。",
+  keywords: ["FANZA", "DMM", "ランキング", "レビュー", "セール", "ジャンル", "VR", "支払い方法"],
+  alternates: {
+    canonical: ROUTES.home,
+  },
   openGraph: {
-    title: "FANZAおすすめ作品ナビ",
-    description: "FANZAの使い方・お得情報をわかりやすく解説するガイドメディア",
+    title: "FANZAナビ",
+    description:
+      "FANZA作品をランキング、セール、レビューから落ち着いて比較できるガイドサイト。",
     type: "website",
     siteName: "FANZAナビ",
+    url: ROUTES.home,
     images: [
       {
-        url: `${SITE_URL}/images/ogp.svg`,
+        url: "/images/ogp.svg",
         width: 1200,
         height: 630,
-        alt: "FANZAおすすめ作品ナビ",
+        alt: "FANZAナビ",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "FANZAおすすめ作品ナビ",
-    description: "FANZAの使い方・お得情報をわかりやすく解説するガイドメディア",
-    images: [`${SITE_URL}/images/ogp.svg`],
+    title: "FANZAナビ",
+    description:
+      "FANZA作品をランキング、セール、レビューから落ち着いて比較できるガイドサイト。",
+    images: ["/images/ogp.svg"],
   },
   robots: {
-    index: true,
-    follow: true,
+    index: HAS_CANONICAL_SITE_URL,
+    follow: HAS_CANONICAL_SITE_URL,
   },
 };
 
@@ -46,17 +78,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: AGE_GATE_STYLE }} />
+        <script dangerouslySetInnerHTML={{ __html: AGE_GATE_BOOTSTRAP }} />
+      </head>
       <body className="antialiased min-h-screen">
-        <Analytics />
+        <Analytics
+          measurementId={SITE_CONFIG.analyticsId}
+          gtmId={SITE_CONFIG.gtmId}
+        />
         <ErrorTracker />
         <JsonLd />
-        {/* ステマ規制対応 PR表記 (2023年10月施行 景品表示法) */}
-        <div className="bg-[#1a1a2e] border-b border-[var(--color-border)] py-1.5 text-center text-[11px] text-[var(--color-text-secondary)]">
-          当サイトはアフィリエイト広告（PR）を利用しています
+        <AgeGate />
+        <div id="app-shell" inert={true} aria-hidden="true">
+          <div className="sticky top-0 z-50">
+            <DisclosureBar />
+            <Header />
+          </div>
+          {children}
         </div>
-        <Header />
-        {children}
       </body>
     </html>
   );
