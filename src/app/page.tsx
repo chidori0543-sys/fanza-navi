@@ -13,8 +13,8 @@ function sortSalePreview(products: Awaited<ReturnType<typeof loadSaleProducts>>)
 
 export default async function HomePage() {
   const [rankingPreview, salePreview] = await Promise.all([
-    loadRankingProducts({ limit: 3 }),
-    loadSaleProducts({ limit: 3 }),
+    loadRankingProducts({ limit: 6 }),
+    loadSaleProducts({ limit: 4 }),
   ]);
 
   return (

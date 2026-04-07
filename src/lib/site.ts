@@ -1,6 +1,9 @@
 import { getSiteConfig } from "@/lib/env";
 
-export const SITE_URL = getSiteConfig().siteUrl;
+const SITE_CONFIG = getSiteConfig();
+
+export const SITE_URL = SITE_CONFIG.siteUrl;
+export const HAS_CANONICAL_SITE_URL = SITE_CONFIG.hasCanonicalHost;
 
 export const ROUTES = {
   home: "/",

@@ -2,12 +2,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import Footer from "@/components/Footer";
+import GenreRail from "@/components/GenreRail";
+import PrimaryCta from "@/components/PrimaryCta";
 import ProductGridSection from "@/components/ProductGridSection";
+import RelatedNavigation from "@/components/RelatedNavigation";
 import ReviewCard from "@/components/ReviewCard";
+import SectionIntro from "@/components/SectionIntro";
 import { getGenreBySlug, genrePages, genreSlugs } from "@/data/genres";
 import { getReviewsByGenreSlug } from "@/data/reviews";
 import { loadGenreProducts } from "@/lib/catalog";
-import { getGenreRoute, toAbsoluteUrl } from "@/lib/site";
+import { buildPageMetadata } from "@/lib/metadata";
+import { ROUTES, getGenreRoute } from "@/lib/site";
 
 export const dynamicParams = false;
 
@@ -28,27 +33,15 @@ export async function generateMetadata({
   }
 
   const path = getGenreRoute(genre.slug);
+  const title = `${genre.name}おすすめ作品と選び方`;
+  const description = `${genre.name}の注目作品をレビュー導線付きで整理。${genre.intro}`;
 
-  return {
-    title: `${genre.name}おすすめ作品と選び方`,
-    description: `${genre.name}の注目作品をレビュー導線付きで整理。${genre.intro}`,
-    alternates: {
-      canonical: toAbsoluteUrl(path),
-    },
-    openGraph: {
-      title: `${genre.name}おすすめ作品と選び方`,
-      description: `${genre.name}の注目作品をレビュー導線付きで整理。${genre.intro}`,
-      url: toAbsoluteUrl(path),
-      images: [
-        {
-          url: toAbsoluteUrl("/images/ogp.svg"),
-          width: 1200,
-          height: 630,
-          alt: `${genre.name}ページのOG画像`,
-        },
-      ],
-    },
-  };
+  return buildPageMetadata({
+    title,
+    description,
+    path,
+    imageAlt: `${genre.name}ページのOG画像`,
+  });
 }
 
 export default async function GenrePage({
@@ -71,8 +64,12 @@ export default async function GenrePage({
     Promise.resolve(getReviewsByGenreSlug(genre.slug)),
   ]);
 
+  const neighborGenres = genrePages.filter(
+    (candidate) => candidate.slug !== genre.slug
+  ).slice(0, 3);
+
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <main className="content-shell px-4 py-8">
       <Breadcrumb
         items={[
           { label: "ジャンル別" },
@@ -80,33 +77,37 @@ export default async function GenrePage({
         ]}
       />
 
-      <section className="glass-card border border-white/10 p-8">
+      <section className="editorial-surface p-6 md:p-8">
         <div className="mb-5 flex flex-wrap items-center gap-4">
-          <span className="text-4xl">{genre.icon}</span>
+          <span className="flex h-14 w-14 items-center justify-center rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] text-3xl">
+            {genre.icon}
+          </span>
           <div>
-            <p className="text-sm font-bold text-[var(--color-primary)]">Genre Landing</p>
-            <h1 className="text-3xl font-extrabold md:text-4xl">{genre.name}</h1>
+            <p className="eyebrow">Genre Landing</p>
+            <h1 className="mt-3 text-3xl font-semibold md:text-4xl">{genre.name}</h1>
           </div>
         </div>
 
-        <p className="mb-3 text-lg text-[var(--color-text-secondary)]">{genre.headline}</p>
-        <p className="mb-4 max-w-3xl leading-relaxed text-[var(--color-text-secondary)]">
+        <p className="text-lg text-[var(--color-text-secondary)]">{genre.headline}</p>
+        <p className="mt-4 max-w-3xl leading-8 text-[var(--color-text-secondary)]">
           {genre.intro}
         </p>
-        <div className="rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 p-4 text-sm leading-relaxed text-white/90">
+        <div className="mt-5 rounded-[24px] border border-[var(--color-border-strong)] bg-[var(--color-surface-highlight)] p-4 text-sm leading-7 text-[var(--color-text-primary)]">
           {genre.highlight}
         </div>
       </section>
 
       <section className="mt-12">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-extrabold">レビューから探す</h2>
-            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              ジャンルの見どころを短時間でつかめるレビューを先に読めます。
-            </p>
-          </div>
-        </div>
+        <SectionIntro
+          eyebrow="Reviews"
+          title="レビューから探す"
+          description="ジャンルの見どころを短時間でつかめるレビューを先に読めます。"
+          action={
+            <PrimaryCta href={ROUTES.reviews} size="sm" variant="outline">
+              レビュー一覧へ
+            </PrimaryCta>
+          }
+        />
 
         {relatedReviews.length > 0 ? (
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -115,13 +116,52 @@ export default async function GenrePage({
             ))}
           </div>
         ) : (
-          <p className="text-sm text-[var(--color-text-secondary)]">
+          <p className="rounded-[24px] border border-[var(--color-border)] bg-[var(--color-surface)] px-5 py-6 text-sm text-[var(--color-text-secondary)]">
             このジャンルのレビューは準備中です。先に作品一覧から比較できます。
           </p>
         )}
       </section>
 
-      <ProductGridSection title={`${genre.name}のおすすめ作品`} products={products} />
+      <ProductGridSection
+        eyebrow="Genre Picks"
+        title={`${genre.name}のおすすめ作品`}
+        description="このジャンルでよく見られている作品を、比較しやすい密度で並べています。"
+        products={products}
+      />
+
+      <section className="mt-12">
+        <SectionIntro
+          eyebrow="Neighbor Genres"
+          title="近いジャンルにも広げる"
+          description="作風が近いページへ横移動すると、比較の視野が広がります。"
+        />
+        <GenreRail genres={neighborGenres} />
+      </section>
+
+      <RelatedNavigation
+        title="次に見るページ"
+        description="このジャンルから別の切り口へ動くときに使いやすいページです。"
+        items={[
+          {
+            href: getGenreRoute("popular"),
+            title: "人気作品ジャンルへ",
+            description: "定番側の強さも合わせて見たいときに向いています。",
+            eyebrow: "Genre",
+          },
+          {
+            href: ROUTES.reviews,
+            title: "レビュー一覧へ",
+            description: "ジャンルをまたいで作風を比較したいときの入口です。",
+            eyebrow: "Review",
+          },
+          {
+            href: ROUTES.ranking,
+            title: "月間ランキングへ",
+            description: "今月全体の温度感を見直したいときに使えます。",
+            eyebrow: "Ranking",
+          },
+        ]}
+      />
 
       <Footer />
     </main>

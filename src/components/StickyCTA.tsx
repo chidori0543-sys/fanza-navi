@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTags, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import PrimaryCta from "@/components/PrimaryCta";
+import { ROUTES } from "@/lib/site";
 
 export default function StickyCTA() {
   const [visible, setVisible] = useState(false);
@@ -26,34 +28,33 @@ export default function StickyCTA() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-0 left-0 right-0 z-50 p-3 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] shadow-[0_-4px_30px_rgba(228,0,127,0.3)]"
+          className="fixed bottom-4 left-0 right-0 z-50 px-3"
         >
-          <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3 text-white min-w-0">
-              <FaTags className="shrink-0" />
-              <div className="min-w-0">
-                <p className="font-bold text-sm truncate">
-                  💰 値下げ中の作品をセール会場から先に確認
+          <div className="content-shell">
+            <div className="mx-auto flex items-center justify-between gap-3 rounded-[28px] border border-[var(--color-border-strong)] bg-[rgba(17,18,21,0.96)] p-3 shadow-[0_26px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+              <div className="min-w-0 text-white">
+                <p className="text-[11px] font-medium tracking-[0.12em] text-[var(--color-accent)] uppercase">
+                  Sale Route
                 </p>
-                <p className="text-xs opacity-80 hidden sm:block">
-                  ランキングのあとに割引作品へ直行できる導線です
+                <p className="mt-1 text-sm font-semibold text-[var(--color-text-primary)]">
+                  今回はセール対象を先に見たい人向けの入口です。
+                </p>
+                <p className="hidden text-xs leading-6 text-[var(--color-text-secondary)] sm:block">
+                  通常価格との差とレビュー件数をまとめて見られるので、値引きだけで決めたくないときに使えます。
                 </p>
               </div>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <a
-                href="/sale"
-                className="px-5 py-2 rounded-xl text-sm font-bold text-[var(--color-primary)] bg-white hover:bg-gray-100 transition-colors whitespace-nowrap"
-              >
-                セール会場へ
-              </a>
-              <button
-                onClick={() => setDismissed(true)}
-                className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-colors"
-                aria-label="閉じる"
-              >
-                <FaTimes size={12} />
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                <PrimaryCta href={ROUTES.sale} size="sm">
+                  セール一覧を見る
+                </PrimaryCta>
+                <button
+                  onClick={() => setDismissed(true)}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
+                  aria-label="閉じる"
+                >
+                  <FaTimes size={12} />
+                </button>
+              </div>
             </div>
           </div>
         </motion.div>

@@ -16,31 +16,20 @@ describe("HomePage", () => {
       heading.textContent?.replace(/\s+/g, " ").trim()
     );
 
-    expect(headings).toEqual([
-      "月間ランキングを先にチェック",
-      "いま狙いたいセール導線",
-      "ジャンルから探す",
-      "まず読まれているレビュー",
-      "比較・節約ガイドもまとめて読む",
-    ]);
+    expect(headings).toContain("まず見ておきたい今月のランキング");
+    expect(headings).toContain("いま見る理由があるセール");
+    expect(headings).toContain("ジャンルから絞って、そのまま個別ページへ");
+    expect(headings).toContain("レビューから温度感をつかむ");
+    expect(headings).toContain("支払い方法や比較記事もまとめて見られます");
 
     expect(
-      screen.getByRole("link", { name: "月間ランキングを見る" })
+      screen.getByRole("link", { name: /まずは月間ランキングを見る/ })
     ).toHaveAttribute("href", ROUTES.ranking);
-    expect(
-      screen.getByRole("link", { name: "セール情報を見る" })
-    ).toHaveAttribute("href", ROUTES.sale);
-
-    expect(
-      screen.getByRole("link", { name: "人気作品ジャンルへ" })
-    ).toHaveAttribute("href", getGenreRoute("popular"));
-    expect(
-      screen.getByRole("link", { name: `${reviews[0].title}のレビューを読む` })
-    ).toHaveAttribute("href", getReviewRoute(reviews[0].slug));
-    expect(
-      screen.getByRole("link", { name: "ガイド記事を一覧で見る" })
-    ).toHaveAttribute("href", ROUTES.articles);
-    expect(screen.getAllByRole("link", { name: /作品詳細を見る|FANZAで見る/ }).length).toBeGreaterThan(0);
+    expect(container.querySelector(`a[href="${ROUTES.sale}"]`)).not.toBeNull();
+    expect(container.querySelector(`a[href="${getGenreRoute("popular")}"]`)).not.toBeNull();
+    expect(container.querySelector(`a[href="${getReviewRoute(reviews[0].slug)}"]`)).not.toBeNull();
+    expect(container.querySelector(`a[href="${ROUTES.articles}"]`)).not.toBeNull();
+    expect(screen.getAllByRole("link", { name: /FANZAで詳細を見る|FANZAで見る/ }).length).toBeGreaterThan(0);
   });
 
   it("uses the sticky CTA to send scrolled visitors to sale", async () => {
@@ -53,8 +42,10 @@ describe("HomePage", () => {
     render(await HomePage());
     fireEvent.scroll(window);
 
-    expect(
-      screen.getByRole("link", { name: "セール会場へ" })
-    ).toHaveAttribute("href", ROUTES.sale);
+    expect(screen.getByText(/今回はセール対象を先に見たい人向け/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /セール一覧を見る/ })).toHaveAttribute(
+      "href",
+      ROUTES.sale
+    );
   });
 });

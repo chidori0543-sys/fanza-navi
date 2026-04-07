@@ -1,15 +1,15 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Footer from "@/components/Footer";
+import GenreRail from "@/components/GenreRail";
+import PrimaryCta from "@/components/PrimaryCta";
 import ProductGridSection from "@/components/ProductGridSection";
+import RelatedNavigation from "@/components/RelatedNavigation";
 import ReviewCard from "@/components/ReviewCard";
+import SectionIntro from "@/components/SectionIntro";
 import type { Product } from "@/data/products";
 import { genrePages } from "@/data/genres";
 import { reviews } from "@/data/reviews";
-import {
-  loadNewProducts,
-  loadRankingProducts,
-  loadSaleProducts,
-} from "@/lib/catalog";
+import { loadNewProducts, loadRankingProducts, loadSaleProducts } from "@/lib/catalog";
 import { ROUTES, getGenreRoute } from "@/lib/site";
 
 const discoveryGenres = genrePages.filter((genre) =>
@@ -45,73 +45,70 @@ export default async function SearchPage() {
   );
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <main className="content-shell px-4 py-8">
       <Breadcrumb items={[{ label: "検索" }]} />
 
-      <section className="glass-card border border-white/10 p-8">
-        <p className="mb-2 text-sm font-bold text-[var(--color-primary)]">Search Entry</p>
-        <h1 className="text-3xl font-extrabold md:text-4xl">作品検索の入口</h1>
-        <p className="mt-4 max-w-3xl text-[15px] leading-7 text-[var(--color-text-secondary)]">
-          静的サイトでも迷わず探せるように、人気、新着、セール、レビューへの入口を1ページにまとめています。
-          まずは比較しやすい切り口から進み、そのまま作品詳細へ移動できます。
-        </p>
+      <section className="editorial-surface p-6 md:p-8">
+        <SectionIntro
+          eyebrow="Search Entry"
+          title="作品検索の入口"
+          description="静的サイトでも迷わず探せるように、人気、新着、セール、レビューへの入口を1ページにまとめています。まずは比較しやすい切り口から進み、そのまま作品詳細へ移動できます。"
+        />
 
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-3">
           <a
             href={getGenreRoute("popular")}
-            className="rounded-2xl border border-white/10 bg-white/5 p-4 transition-colors hover:border-[var(--color-primary)]/30 hover:bg-white/10"
+            className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 transition-colors hover:border-[var(--color-border-strong)]"
           >
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-primary)]">
-              Popular
-            </p>
-            <h2 className="mt-2 font-bold">まずは人気から</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
+            <p className="eyebrow">Popular</p>
+            <h2 className="mt-3 text-xl font-semibold text-[var(--color-text-primary)]">まずは人気から</h2>
+            <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               定番タイトルを軸に比較したいときの入口です。
             </p>
           </a>
           <a
             href={getGenreRoute("sale")}
-            className="rounded-2xl border border-white/10 bg-white/5 p-4 transition-colors hover:border-[var(--color-primary)]/30 hover:bg-white/10"
+            className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 transition-colors hover:border-[var(--color-border-strong)]"
           >
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-primary)]">
-              Sale
-            </p>
-            <h2 className="mt-2 font-bold">割引から探す</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
+            <p className="eyebrow">Sale</p>
+            <h2 className="mt-3 text-xl font-semibold text-[var(--color-text-primary)]">割引から探す</h2>
+            <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               値下げ中の作品を優先して比較したいときに向いています。
             </p>
           </a>
           <a
             href={ROUTES.reviews}
-            className="rounded-2xl border border-white/10 bg-white/5 p-4 transition-colors hover:border-[var(--color-primary)]/30 hover:bg-white/10"
+            className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 transition-colors hover:border-[var(--color-border-strong)]"
           >
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-primary)]">
-              Review
-            </p>
-            <h2 className="mt-2 font-bold">レビューから探す</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
+            <p className="eyebrow">Review</p>
+            <h2 className="mt-3 text-xl font-semibold text-[var(--color-text-primary)]">レビューから探す</h2>
+            <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               選び方の基準を先に固めたいときはレビュー一覧から入れます。
             </p>
           </a>
         </div>
       </section>
 
-      <section className="mt-12">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-extrabold">レビュー付きの入口</h2>
-            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              代表的な切り口をレビュー経由で確かめてから商品ページへ進めます。
-            </p>
-          </div>
-          <a
-            href={ROUTES.reviews}
-            className="text-sm font-bold text-[var(--color-primary)] hover:underline"
-          >
-            レビュー一覧へ
-          </a>
-        </div>
+      <section id="genre-discovery" className="mt-12">
+        <SectionIntro
+          eyebrow="Genre Access"
+          title="ジャンル別の入口"
+          description="検索フォームがなくても、よく使う切り口へ迷わず移動できるようにしています。"
+          action={
+            <PrimaryCta href={ROUTES.newReleases} size="sm" variant="outline">
+              新作を見る
+            </PrimaryCta>
+          }
+        />
+        <GenreRail genres={discoveryGenres} dense />
+      </section>
 
+      <section className="mt-12">
+        <SectionIntro
+          eyebrow="Review Route"
+          title="レビュー付きの入口"
+          description="代表的な切り口をレビュー経由で確かめてから商品ページへ進めます。"
+        />
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {reviews.map((review) => (
             <ReviewCard key={review.slug} review={review} />
@@ -119,38 +116,37 @@ export default async function SearchPage() {
         </div>
       </section>
 
-      <section className="mt-12 rounded-3xl border border-white/10 bg-white/5 p-6">
-        <div className="mb-4 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-extrabold">ジャンルから探す</h2>
-            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              よく使う導線をまとめて置いているので、検索フォームなしでも回遊できます。
-            </p>
-          </div>
-          <a
-            href={getGenreRoute("new-release")}
-            className="text-sm font-bold text-[var(--color-primary)] hover:underline"
-          >
-            新作を見る
-          </a>
-        </div>
+      <ProductGridSection
+        eyebrow="Featured Titles"
+        title="入口ページからそのまま見られる作品"
+        description="人気、新作、セールを横断して、まず見ておきたい作品を拾えるようにしています。"
+        products={featuredProducts}
+      />
 
-        <div className="grid gap-3 md:grid-cols-4">
-          {discoveryGenres.map((genre) => (
-            <a
-              key={genre.slug}
-              href={getGenreRoute(genre.slug)}
-              className="rounded-2xl border border-white/10 bg-black/10 p-4 transition-colors hover:border-[var(--color-primary)]/30 hover:bg-white/10"
-            >
-              <div className="mb-2 text-2xl">{genre.icon}</div>
-              <h3 className="mb-1 font-bold">{genre.name}</h3>
-              <p className="text-sm text-[var(--color-text-secondary)]">{genre.headline}</p>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      <ProductGridSection title="入口ページからそのまま見られる作品" products={featuredProducts} />
+      <RelatedNavigation
+        title="次の比較先"
+        description="検索入口から、さらに深く見たいページへそのまま移動できます。"
+        items={[
+          {
+            href: ROUTES.ranking,
+            title: "月間ランキングへ",
+            description: "今月動いている王道を先に見て基準を作れます。",
+            eyebrow: "Ranking",
+          },
+          {
+            href: ROUTES.sale,
+            title: "セール一覧へ",
+            description: "値引き作品だけで比較したいときの入口です。",
+            eyebrow: "Sale",
+          },
+          {
+            href: ROUTES.reviews,
+            title: "レビュー一覧へ",
+            description: "作風や向いている人を先に読みたいときに向いています。",
+            eyebrow: "Review",
+          },
+        ]}
+      />
 
       <Footer />
     </main>

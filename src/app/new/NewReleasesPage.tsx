@@ -1,11 +1,15 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Footer from "@/components/Footer";
+import GenreRail from "@/components/GenreRail";
+import PrimaryCta from "@/components/PrimaryCta";
 import ProductGridSection from "@/components/ProductGridSection";
+import RelatedNavigation from "@/components/RelatedNavigation";
 import ReviewCard from "@/components/ReviewCard";
+import SectionIntro from "@/components/SectionIntro";
 import { genrePages } from "@/data/genres";
 import { getReviewBySlug } from "@/data/reviews";
 import { loadNewProducts } from "@/lib/catalog";
-import { getGenreRoute } from "@/lib/site";
+import { ROUTES, getGenreRoute } from "@/lib/site";
 
 const featuredGenres = genrePages.filter((genre) =>
   ["new-release", "vr", "popular"].includes(genre.slug)
@@ -20,33 +24,37 @@ export default async function NewReleasesPage() {
   const products = await loadNewProducts({ limit: 8 });
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <main className="content-shell px-4 py-8">
       <Breadcrumb items={[{ label: "新作" }]} />
 
-      <section className="glass-card border border-white/10 p-8">
-        <p className="mb-2 text-sm font-bold text-[var(--color-primary)]">New Arrival Guide</p>
-        <h1 className="text-3xl font-extrabold md:text-4xl">新着リリース</h1>
-        <p className="mt-4 max-w-3xl text-[15px] leading-7 text-[var(--color-text-secondary)]">
-          配信直後の作品をまとめて追える新着導線です。配信直後の温度感をつかみやすい新着導線として、
-          初回の反応が見えやすい作品を中心に並べています。
-        </p>
+      <section className="editorial-surface p-6 md:p-8">
+        <SectionIntro
+          eyebrow="New Arrival Guide"
+          title="新着リリース"
+          description="配信直後の作品をまとめて追える新着導線です。初回の反応が見えやすい作品を中心に並べています。"
+          action={
+            <PrimaryCta href={getGenreRoute("new-release")} size="sm" variant="outline">
+              新作ジャンルへ
+            </PrimaryCta>
+          }
+        />
 
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <h2 className="font-bold">配信直後を確認</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
-              新作フラグ付きの作品から今週の動きを素早く追えます。
+        <div className="grid gap-4 md:grid-cols-3">
+          <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <p className="eyebrow">Watch</p>
+            <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
+              新作フラグ付きの作品から、今週の動きを素早く追えます。
             </p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <h2 className="font-bold">レビューへ分岐</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
-              まだ件数が少ないときは既存レビューで好みの軸を補えます。
+          <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <p className="eyebrow">Compare</p>
+            <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
+              まだレビュー件数が少ないときは、既存レビューで判断軸を補えます。
             </p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <h2 className="font-bold">関連ジャンルへ移動</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
+          <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <p className="eyebrow">Expand</p>
+            <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               新作からVRや人気作品ページへ横断して比較できます。
             </p>
           </div>
@@ -54,21 +62,11 @@ export default async function NewReleasesPage() {
       </section>
 
       <section className="mt-12">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-extrabold">新作選びの補助になるレビュー</h2>
-            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              初見で選びにくいときは、人気作やVRのレビューから判断軸を補えます。
-            </p>
-          </div>
-          <a
-            href={getGenreRoute("new-release")}
-            className="text-sm font-bold text-[var(--color-primary)] hover:underline"
-          >
-            新作ジャンルを見る
-          </a>
-        </div>
-
+        <SectionIntro
+          eyebrow="Related Reviews"
+          title="新作選びの補助になるレビュー"
+          description="初見で選びにくいときは、人気作やVRのレビューから判断軸を補えます。"
+        />
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {featuredReviews.map((review) => (
             <ReviewCard key={review.slug} review={review} />
@@ -76,38 +74,46 @@ export default async function NewReleasesPage() {
         </div>
       </section>
 
-      <section className="mt-12 rounded-3xl border border-white/10 bg-white/5 p-6">
-        <div className="mb-4 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-extrabold">新着から広げる導線</h2>
-            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              発売直後の勢いだけで決めず、近いジャンルへ比較範囲を広げられます。
-            </p>
-          </div>
-          <a
-            href={getGenreRoute("vr")}
-            className="text-sm font-bold text-[var(--color-primary)] hover:underline"
-          >
-            VRページへ
-          </a>
-        </div>
+      <ProductGridSection
+        eyebrow="New Titles"
+        title="新着で見られている作品"
+        description="配信直後の作品を、そのまま比較しやすい密度で並べています。"
+        products={products}
+      />
 
-        <div className="grid gap-3 md:grid-cols-3">
-          {featuredGenres.map((genre) => (
-            <a
-              key={genre.slug}
-              href={getGenreRoute(genre.slug)}
-              className="rounded-2xl border border-white/10 bg-black/10 p-4 transition-colors hover:border-[var(--color-primary)]/30 hover:bg-white/10"
-            >
-              <div className="mb-2 text-2xl">{genre.icon}</div>
-              <h3 className="mb-1 font-bold">{genre.name}</h3>
-              <p className="text-sm text-[var(--color-text-secondary)]">{genre.headline}</p>
-            </a>
-          ))}
-        </div>
+      <section className="mt-12">
+        <SectionIntro
+          eyebrow="Neighbor Genres"
+          title="新着から広げる導線"
+          description="発売直後の勢いだけで決めず、近いジャンルへ比較範囲を広げられます。"
+        />
+        <GenreRail genres={featuredGenres} />
       </section>
 
-      <ProductGridSection title="新着で見られている作品" products={products} />
+      <RelatedNavigation
+        title="新作のあとに見ておくページ"
+        description="新作だけでは判断しきれないときに、比較の軸を増やしやすいページです。"
+        items={[
+          {
+            href: ROUTES.ranking,
+            title: "月間ランキングへ",
+            description: "定番側の強さを見て、新作との違いを確認できます。",
+            eyebrow: "Ranking",
+          },
+          {
+            href: ROUTES.reviews,
+            title: "レビュー一覧へ",
+            description: "先に作風や向いている人を読みたいときの入口です。",
+            eyebrow: "Review",
+          },
+          {
+            href: getGenreRoute("vr"),
+            title: "VRジャンルへ",
+            description: "没入感重視の作品を別軸で見たいときに使えます。",
+            eyebrow: "Genre",
+          },
+        ]}
+      />
 
       <Footer />
     </main>

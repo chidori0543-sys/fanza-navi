@@ -2,84 +2,155 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaBars, FaTimes, FaFire, FaStar, FaBolt, FaTags, FaSearch, FaBookOpen } from "react-icons/fa";
-import { ROUTES } from "@/lib/site";
+import {
+  FaBars,
+  FaBookOpen,
+  FaChartLine,
+  FaCompass,
+  FaFire,
+  FaSearch,
+  FaTags,
+  FaTimes,
+} from "react-icons/fa";
+import { ROUTES, getGenreRoute } from "@/lib/site";
 
-const navLinks = [
-  { href: ROUTES.home, label: "ホーム", icon: <FaFire size={14} /> },
-  { href: ROUTES.ranking, label: "ランキング", icon: <FaStar size={14} /> },
-  { href: ROUTES.newReleases, label: "新作", icon: <FaBolt size={14} /> },
-  { href: ROUTES.sale, label: "セール", icon: <FaTags size={14} /> },
-  { href: ROUTES.articles, label: "記事", icon: <FaBookOpen size={14} /> },
+const primaryLinks = [
+  { href: ROUTES.ranking, label: "ランキング", icon: <FaChartLine size={12} /> },
+  { href: ROUTES.sale, label: "セール", icon: <FaTags size={12} /> },
+  { href: getGenreRoute("popular"), label: "ジャンル別", icon: <FaCompass size={12} /> },
+  { href: ROUTES.reviews, label: "レビュー", icon: <FaBookOpen size={12} /> },
+];
+
+const utilityLinks = [
+  { href: ROUTES.newReleases, label: "新作" },
+  { href: ROUTES.guide, label: "ガイド" },
+  { href: ROUTES.search, label: "検索入口" },
 ];
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-[var(--color-bg-dark)]/90 backdrop-blur-lg border-b border-[var(--color-border)]">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <a href={ROUTES.home} className="flex items-center gap-2">
-          <span className="text-2xl">🎬</span>
-          <span className="text-lg font-extrabold gradient-text hidden sm:inline">
-            FANZAナビ
-          </span>
-        </a>
-
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:text-white hover:bg-white/5 transition-all"
-            >
-              {link.icon}
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        {/* Search + Mobile toggle */}
-        <div className="flex items-center gap-3">
-          <a
-            href={ROUTES.search}
-            className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-[var(--color-text-secondary)] hover:text-white hover:bg-white/10 transition-all"
-          >
-            <FaSearch size={14} />
+    <header className="border-b border-[var(--color-border)] bg-[rgba(17,18,21,0.82)] backdrop-blur-xl">
+      <div className="content-shell">
+        <div className="flex min-h-[72px] items-center justify-between gap-4 py-4">
+          <a href={ROUTES.home} className="min-w-0">
+            <div className="flex items-center gap-3">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface-highlight)] text-[var(--color-accent)]">
+                <FaFire size={16} />
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-[11px] font-medium tracking-[0.12em] text-[var(--color-text-muted)] uppercase">
+                  FANZA Review Guide
+                </p>
+                <p className="truncate text-lg font-semibold text-[var(--color-text-primary)]">
+                  FANZAナビ
+                </p>
+              </div>
+            </div>
           </a>
+
+          <nav className="hidden items-center gap-2 lg:flex">
+            {primaryLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]"
+              >
+                {link.icon}
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex">
+            <div className="hidden items-center gap-2 lg:flex">
+              {utilityLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="muted-link text-sm"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            <a
+              href={ROUTES.search}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]"
+              aria-label="検索入口"
+            >
+              <FaSearch size={13} />
+            </a>
+          </div>
+
           <button
-            className="md:hidden w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-[var(--color-text-secondary)]"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "メニューを閉じる" : "メニューを開く"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
           >
             {mobileOpen ? <FaTimes size={16} /> : <FaBars size={16} />}
           </button>
         </div>
+
+        <div className="hidden border-t border-[var(--color-border)] py-3 md:flex lg:hidden">
+          <div className="flex flex-wrap gap-2">
+            {[...primaryLinks, ...utilityLinks].map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="rounded-full border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.nav
+            id="mobile-navigation"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden border-t border-[var(--color-border)]"
+            className="overflow-hidden border-t border-[var(--color-border)] md:hidden"
           >
-            <div className="px-4 py-3 space-y-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:text-white hover:bg-white/5"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.icon}
-                  {link.label}
-                </a>
-              ))}
+            <div className="content-shell py-4">
+              <div className="editorial-panel p-4">
+                <p className="mb-3 text-xs font-medium tracking-[0.12em] text-[var(--color-text-muted)] uppercase">
+                  目的から探す
+                </p>
+                <div className="grid gap-2">
+                  {primaryLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      className="flex items-center gap-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm font-medium text-[var(--color-text-primary)]"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {link.icon}
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {utilityLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      className="rounded-full border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text-secondary)]"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
           </motion.nav>
         )}

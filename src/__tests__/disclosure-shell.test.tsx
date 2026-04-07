@@ -2,10 +2,6 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/components/Header", () => ({
-  default: () => <div>header</div>,
-}));
-
 vi.mock("@/components/JsonLd", () => ({
   default: () => null,
 }));
@@ -35,5 +31,14 @@ describe("RootLayout disclosure shell", () => {
     expect(markup).toContain(
       "当サイトはDMMアフィリエイトを利用しています。商品情報・価格は記事執筆時点のものです。最新の価格・配信状況はFANZA公式サイトでご確認ください。"
     );
+    expect(markup).toContain('aria-label="アフィリエイト開示"');
+    expect(markup).toContain('class="sticky top-0 z-50"');
+    expect(markup).toContain("ランキング");
+    expect(markup).toContain("セール");
+    expect(markup).toContain("ジャンル別");
+    expect(markup).toContain("レビュー");
+    expect(markup).toContain("新作");
+    expect(markup).toContain("ガイド");
+    expect(markup).toContain("検索入口");
   });
 });

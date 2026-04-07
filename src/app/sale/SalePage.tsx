@@ -1,11 +1,15 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Footer from "@/components/Footer";
+import GenreRail from "@/components/GenreRail";
+import PrimaryCta from "@/components/PrimaryCta";
 import ProductGridSection from "@/components/ProductGridSection";
+import RelatedNavigation from "@/components/RelatedNavigation";
 import ReviewCard from "@/components/ReviewCard";
+import SectionIntro from "@/components/SectionIntro";
 import { genrePages } from "@/data/genres";
-import { getReviewBySlug, reviews } from "@/data/reviews";
+import { getReviewBySlug } from "@/data/reviews";
 import { loadSaleProducts } from "@/lib/catalog";
-import { getGenreRoute, getReviewRoute } from "@/lib/site";
+import { ROUTES, getGenreRoute, getReviewRoute } from "@/lib/site";
 
 const featuredGenres = genrePages.filter((genre) =>
   ["sale", "popular", "high-rated"].includes(genre.slug)
@@ -20,55 +24,54 @@ export default async function SalePage() {
   const products = await loadSaleProducts({ limit: 8 });
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <main className="content-shell px-4 py-8">
       <Breadcrumb items={[{ label: "セール" }]} />
 
-      <section className="glass-card border border-white/10 p-8">
-        <p className="mb-2 text-sm font-bold text-[var(--color-primary)]">Sale Discovery</p>
-        <h1 className="text-3xl font-extrabold md:text-4xl">セール作品</h1>
-        <p className="mt-4 max-w-3xl text-[15px] leading-7 text-[var(--color-text-secondary)]">
-          値下げ中の作品をまとめて比較しやすい導線です。割引率だけでなくレビューと収録内容も比較しながら、
-          買い切り向きかまとめ買い向きかを見分けやすくしています。
-        </p>
+      <section className="editorial-surface p-6 md:p-8">
+        <SectionIntro
+          eyebrow="Sale Discovery"
+          title="セール作品"
+          description="値下げ中の作品をまとめて比較しやすい導線です。割引率だけでなくレビューと収録内容も見ながら、買い切り向きかまとめ買い向きかを見分けやすくしています。"
+          action={
+            <PrimaryCta href={ROUTES.articleSaveMoney} size="sm" variant="outline">
+              節約ガイドへ
+            </PrimaryCta>
+          }
+        />
 
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <h2 className="font-bold">まず見るポイント</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
+        <div className="grid gap-4 md:grid-cols-3">
+          <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <p className="eyebrow">Point 1</p>
+            <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               通常価格との差とレビュー件数をセットで見ると失敗が減ります。
             </p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <h2 className="font-bold">レビュー導線</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
-              実際に選ぶときの基準をレビュー記事で先に確認できます。
+          <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <p className="eyebrow">Point 2</p>
+            <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
+              まとめ買いの前にレビューを読むと、買い方の順番が整理しやすいです。
             </p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <h2 className="font-bold">関連ジャンル</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-text-secondary)]">
-              値引き作品から人気作や高評価作品へ横移動しやすくしています。
+          <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <p className="eyebrow">Point 3</p>
+            <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
+              セールから人気作品や高評価作品へ横移動すると比較しやすくなります。
             </p>
           </div>
         </div>
       </section>
 
       <section className="mt-12">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-extrabold">セール前に読むレビュー</h2>
-            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              セット作品や大幅値引きを比較するときの見方を先に整理できます。
-            </p>
-          </div>
-          <a
-            href={getReviewRoute("sale-selection-buying-guide")}
-            className="text-sm font-bold text-[var(--color-primary)] hover:underline"
-          >
-            セールレビューを見る
-          </a>
-        </div>
-
+        <SectionIntro
+          eyebrow="Sale Reviews"
+          title="セール前に読むレビュー"
+          description="セット作品や大幅値引きを比較するときの見方を先に整理できます。"
+          action={
+            <PrimaryCta href={getReviewRoute("sale-selection-buying-guide")} size="sm" variant="outline">
+              セールレビューへ
+            </PrimaryCta>
+          }
+        />
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {featuredReviews.map((review) => (
             <ReviewCard key={review.slug} review={review} />
@@ -76,38 +79,46 @@ export default async function SalePage() {
         </div>
       </section>
 
-      <section className="mt-12 rounded-3xl border border-white/10 bg-white/5 p-6">
-        <div className="mb-4 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-extrabold">関連ジャンルへ広げる</h2>
-            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              セールで見つけた条件に近い作品を、別の切り口でも比較できます。
-            </p>
-          </div>
-          <a
-            href={getGenreRoute("sale")}
-            className="text-sm font-bold text-[var(--color-primary)] hover:underline"
-          >
-            セールジャンルを見る
-          </a>
-        </div>
+      <ProductGridSection
+        eyebrow="Sale Picks"
+        title="割引中の注目作品"
+        description="レビューと価格差を見ながら、そのまま作品詳細やレビューへ移動できます。"
+        products={products}
+      />
 
-        <div className="grid gap-3 md:grid-cols-3">
-          {featuredGenres.map((genre) => (
-            <a
-              key={genre.slug}
-              href={getGenreRoute(genre.slug)}
-              className="rounded-2xl border border-white/10 bg-black/10 p-4 transition-colors hover:border-[var(--color-primary)]/30 hover:bg-white/10"
-            >
-              <div className="mb-2 text-2xl">{genre.icon}</div>
-              <h3 className="mb-1 font-bold">{genre.name}</h3>
-              <p className="text-sm text-[var(--color-text-secondary)]">{genre.headline}</p>
-            </a>
-          ))}
-        </div>
+      <section className="mt-12">
+        <SectionIntro
+          eyebrow="Related Genres"
+          title="関連ジャンルへ広げる"
+          description="セールで見つけた条件に近い作品を、別の切り口でも比較できます。"
+        />
+        <GenreRail genres={featuredGenres} />
       </section>
 
-      <ProductGridSection title="割引中の注目作品" products={products} />
+      <RelatedNavigation
+        title="比較の軸を変える"
+        description="セールだけで決めきれないときに、次の候補として使いやすいページをまとめています。"
+        items={[
+          {
+            href: ROUTES.ranking,
+            title: "月間ランキングへ",
+            description: "いま動いている王道から見直したいときに向いています。",
+            eyebrow: "Ranking",
+          },
+          {
+            href: getGenreRoute("sale"),
+            title: "セールジャンルへ",
+            description: "近い温度感の値下げ作品をジャンル単位で確認できます。",
+            eyebrow: "Genre",
+          },
+          {
+            href: ROUTES.articleSaveMoney,
+            title: "節約ガイドへ",
+            description: "クーポンやポイントの使い方も含めて整理できます。",
+            eyebrow: "Guide",
+          },
+        ]}
+      />
 
       <Footer />
     </main>
