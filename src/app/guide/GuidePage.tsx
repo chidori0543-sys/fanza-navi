@@ -10,6 +10,12 @@ import {
   FaShieldAlt,
   FaQuestionCircle,
   FaGift,
+  FaBookOpen,
+  FaCoins,
+  FaChartBar,
+  FaLightbulb,
+  FaCalendarAlt,
+  FaWallet,
 } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ROUTES } from "@/lib/site";
@@ -17,8 +23,6 @@ import { ROUTES } from "@/lib/site";
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
-
-const AFFILIATE_URL = "https://www.dmm.co.jp/";
 
 const CTA_CLASS =
   "inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] hover:opacity-90 transition-all text-lg pulse-glow hover:scale-[1.02] shadow-lg shadow-[var(--color-primary)]/20";
@@ -51,12 +55,12 @@ const registrationSteps = [
 ];
 
 const paymentMethods = [
-  { method: "クレジットカード", fee: "無料", statement: "DMM.com", privacy: "★★★", rating: "⭐⭐⭐⭐⭐" },
-  { method: "DMMポイント", fee: "無料", statement: "DMM.com", privacy: "★★★★★", rating: "⭐⭐⭐⭐⭐" },
-  { method: "PayPay", fee: "無料", statement: "DMM決済", privacy: "★★★★", rating: "⭐⭐⭐⭐" },
-  { method: "コンビニ払い", fee: "無料", statement: "DMM.com", privacy: "★★★★★", rating: "⭐⭐⭐" },
-  { method: "キャリア決済", fee: "無料", statement: "DMM利用料", privacy: "★★★", rating: "⭐⭐⭐" },
-  { method: "BitCash", fee: "無料", statement: "なし", privacy: "★★★★★", rating: "⭐⭐⭐⭐" },
+  { method: "クレジットカード", fee: "無料", statement: "DMM.com", privacy: "★★★", stars: 5 },
+  { method: "DMMポイント", fee: "無料", statement: "DMM.com", privacy: "★★★★★", stars: 5 },
+  { method: "PayPay", fee: "無料", statement: "DMM決済", privacy: "★★★★", stars: 4 },
+  { method: "コンビニ払い", fee: "無料", statement: "DMM.com", privacy: "★★★★★", stars: 3 },
+  { method: "キャリア決済", fee: "無料", statement: "DMM利用料", privacy: "★★★", stars: 3 },
+  { method: "BitCash", fee: "無料", statement: "なし", privacy: "★★★★★", stars: 4 },
 ];
 
 const savingTips = [
@@ -137,23 +141,23 @@ const fadeInView = {
   viewport: { once: true },
 };
 
-function SectionHeading({ icon, children }: { icon: string; children: React.ReactNode }) {
+function SectionHeading({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return (
     <motion.h2
       {...fadeInView}
       className="text-2xl md:text-3xl font-extrabold mb-8 text-center"
     >
-      {icon}{" "}
+      <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[var(--color-primary)]/15 text-[var(--color-primary)] mr-2 align-middle">{icon}</span>
       <span className="gradient-text">{children}</span>
     </motion.h2>
   );
 }
 
-function CtaButton({ label = "今すぐFANZAに無料登録する" }: { label?: string }) {
+function CtaButton({ label = "今すぐFANZAに無料登録する", affiliateUrl }: { label?: string; affiliateUrl: string }) {
   return (
     <div className="text-center">
       <a
-        href={AFFILIATE_URL}
+        href={affiliateUrl}
         target="_blank"
         rel="noopener noreferrer"
         className={CTA_CLASS}
@@ -171,7 +175,7 @@ function CtaButton({ label = "今すぐFANZAに無料登録する" }: { label?: 
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function GuidePage() {
+export default function GuidePage({ affiliateUrl }: { affiliateUrl: string }) {
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
       <Breadcrumb items={[{ label: "初心者ガイド" }]} />
@@ -197,12 +201,12 @@ export default function GuidePage() {
           登録するだけでお得なクーポンがもらえることも。
           このガイドでは登録方法から支払い方法、お得な買い方まですべて解説します。
         </p>
-        <CtaButton />
+        <CtaButton affiliateUrl={affiliateUrl} />
       </motion.section>
 
       {/* ===== 2. FANZAとは？ ===== */}
       <section className="mb-10">
-        <SectionHeading icon="📖">FANZAとは？</SectionHeading>
+        <SectionHeading icon={<FaBookOpen />}>FANZAとは？</SectionHeading>
         <motion.div
           {...fadeInView}
           className="glass-card p-6 md:p-8"
@@ -243,7 +247,7 @@ export default function GuidePage() {
 
       {/* ===== 3. 登録方法 ===== */}
       <section className="mb-10">
-        <SectionHeading icon="🚀">登録方法（4ステップ）</SectionHeading>
+        <SectionHeading icon={<FaArrowRight />}>登録方法（4ステップ）</SectionHeading>
         <div className="space-y-6">
           {registrationSteps.map((step, i) => (
             <motion.div
@@ -270,13 +274,13 @@ export default function GuidePage() {
           ))}
         </div>
         <div className="mt-10">
-          <CtaButton label="FANZAに無料登録する" />
+          <CtaButton label="FANZAに無料登録する" affiliateUrl={affiliateUrl} />
         </div>
       </section>
 
       {/* ===== 4. 支払い方法の比較 ===== */}
       <section className="mb-10">
-        <SectionHeading icon="💳">支払い方法の比較</SectionHeading>
+        <SectionHeading icon={<FaWallet />}>支払い方法の比較</SectionHeading>
         <motion.div {...fadeInView}>
           <div className="overflow-x-auto rounded-2xl border border-[var(--color-border)]">
             <table className="w-full text-sm">
@@ -304,7 +308,7 @@ export default function GuidePage() {
                     <td className="p-4 text-green-400">{pm.fee}</td>
                     <td className="p-4 text-[var(--color-text-secondary)]">{pm.statement}</td>
                     <td className="p-4">{pm.privacy}</td>
-                    <td className="p-4">{pm.rating}</td>
+                    <td className="p-4"><span className="inline-flex gap-0.5">{Array.from({ length: pm.stars }, (_, i) => <FaCoins key={i} className="text-[var(--color-accent)]" size={14} />)}</span></td>
                   </tr>
                 ))}
               </tbody>
@@ -323,7 +327,7 @@ export default function GuidePage() {
 
       {/* ===== 5. お得な買い方ガイド ===== */}
       <section className="mb-10">
-        <SectionHeading icon="💰">お得な買い方ガイド</SectionHeading>
+        <SectionHeading icon={<FaCoins />}>お得な買い方ガイド</SectionHeading>
 
         <div className="space-y-4 mb-6">
           {savingTips.map((tip, i) => (
@@ -349,7 +353,7 @@ export default function GuidePage() {
         {/* 月額見放題 vs 単品購入 */}
         <motion.div {...fadeInView}>
           <h3 className="text-xl font-bold text-center mb-6">
-            📊 月額見放題 vs 単品購入
+            <FaChartBar className="inline text-[var(--color-accent)]" /> 月額見放題 vs 単品購入
           </h3>
           <div className="overflow-x-auto rounded-2xl border border-[var(--color-border)]">
             <table className="w-full text-sm">
@@ -377,7 +381,7 @@ export default function GuidePage() {
             </table>
           </div>
           <p className="text-sm text-[var(--color-text-secondary)] mt-4 text-center leading-relaxed">
-            💡 <strong className="text-white">結論：</strong>
+            <FaLightbulb className="inline text-[var(--color-accent)]" /> <strong className="text-white">結論：</strong>
             月に3本以上見る方は月額見放題がお得。こだわりの作品を高画質で楽しみたい方は単品購入がおすすめです。
             まずは単品購入で始めて、視聴頻度が上がったら見放題を検討するのが安全なステップです。
           </p>
@@ -386,7 +390,7 @@ export default function GuidePage() {
 
       {/* ===== 6. VR視聴ガイド ===== */}
       <section className="mb-10">
-        <SectionHeading icon="🥽">VR視聴ガイド（簡易版）</SectionHeading>
+        <SectionHeading icon={<FaVrCardboard />}>VR視聴ガイド（簡易版）</SectionHeading>
         <motion.div
           {...fadeInView}
           className="glass-card p-6 md:p-8"
@@ -431,7 +435,7 @@ export default function GuidePage() {
 
       {/* ===== 7. FAQ ===== */}
       <section className="mb-10">
-        <SectionHeading icon="❓">よくある質問</SectionHeading>
+        <SectionHeading icon={<FaQuestionCircle />}>よくある質問</SectionHeading>
         <div className="space-y-4">
           {faqs.map((faq, i) => (
             <motion.details
@@ -468,7 +472,7 @@ export default function GuidePage() {
             className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
           >
             <h3 className="font-bold text-sm mb-1">
-              💰 FANZAで安く買う7つの方法
+              <FaCoins className="inline text-[var(--color-accent)]" /> FANZAで安く買う7つの方法
             </h3>
             <p className="text-xs text-[var(--color-text-secondary)]">
               初回クーポン、週末セール、ポイント還元など節約テクニックを徹底解説
@@ -479,7 +483,7 @@ export default function GuidePage() {
             className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
           >
             <h3 className="font-bold text-sm mb-1">
-              📅 年間セールカレンダー
+              <FaCalendarAlt className="inline text-[var(--color-accent)]" /> 年間セールカレンダー
             </h3>
             <p className="text-xs text-[var(--color-text-secondary)]">
               毎週・毎月・季節ごとのセール傾向とベストタイミングを一覧で確認
@@ -501,7 +505,7 @@ export default function GuidePage() {
           登録は無料、1分で完了します。
           お得なクーポンが届いていることもあるので、まずは登録してみましょう。
         </p>
-        <CtaButton label="今すぐ無料登録する" />
+        <CtaButton label="今すぐ無料登録する" affiliateUrl={affiliateUrl} />
         <p className="text-xs text-[var(--color-text-secondary)] mt-6">
           <a
             href={ROUTES.articleSaveMoney}

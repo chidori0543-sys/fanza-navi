@@ -1,24 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  FaCalendarAlt,
-  FaFire,
-  FaStar,
-  FaBolt,
-  FaClock,
-  FaGift,
-  FaCheckCircle,
-  FaRegLightbulb,
-  FaBookmark,
-  FaCoins,
-  FaEnvelope,
-  FaBell,
-  FaQuestionCircle,
-  FaPercentage,
-  FaShoppingCart,
-  FaHeart,
-} from "react-icons/fa";
+import { FaBell, FaBolt, FaBookOpen, FaBookmark, FaCalendarAlt, FaCheckCircle, FaClock, FaCoins, FaEnvelope, FaFire, FaGift, FaHeart, FaPercentage, FaQuestionCircle, FaRegLightbulb, FaShoppingCart, FaStar, FaTags } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import PrimaryCta from "@/components/PrimaryCta";
 import { ROUTES } from "@/lib/site";
@@ -254,7 +237,7 @@ export default function SaleCalendarPage() {
         className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
-          📅{" "}
+          <FaCalendarAlt className="inline text-[var(--color-accent)]" />{" "}
           <span className="gradient-text">
             FANZAセールはいつ？年間セールカレンダー【2026年版】
           </span>
@@ -271,7 +254,7 @@ export default function SaleCalendarPage() {
         {/* ───── セール種類の解説 ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-8 text-center">
-            🏷️ FANZAセールの種類と開催パターン
+            <FaTags className="inline text-[var(--color-accent)]" /> FANZAセールの種類と開催パターン
           </h2>
           <div className="space-y-6">
             {saleTypes.map((sale, i) => (
@@ -291,7 +274,7 @@ export default function SaleCalendarPage() {
                     <h3 className="font-bold text-lg">{sale.name}</h3>
                     <div className="flex items-center gap-3 flex-wrap">
                       <span className="text-xs text-[var(--color-text-secondary)]">
-                        📅 {sale.timing}
+                        <FaCalendarAlt className="inline text-[var(--color-accent)]" /> {sale.timing}
                       </span>
                       <span className="text-xs font-bold text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-2 py-0.5 rounded-full">
                         {sale.discount}
@@ -378,7 +361,7 @@ export default function SaleCalendarPage() {
         {/* ───── 年間セールカレンダー ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            📅 年間セールカレンダー（月別傾向）
+            <FaCalendarAlt className="inline text-[var(--color-accent)]" /> 年間セールカレンダー（月別傾向）
           </h2>
           <p className="text-sm text-[var(--color-text-secondary)] text-center mb-6">
             月ごとのセール傾向を一覧で把握して、お得な購入タイミングを逃さないようにしましょう。
@@ -481,7 +464,7 @@ export default function SaleCalendarPage() {
         {/* ───── FAQ ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            ❓ よくある質問
+            <FaQuestionCircle className="inline text-[var(--color-accent)]" /> よくある質問
           </h2>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
@@ -547,7 +530,7 @@ export default function SaleCalendarPage() {
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
               <h3 className="font-bold text-sm mb-1">
-                💰 FANZAで安く買う7つの方法
+                <FaCoins className="inline text-[var(--color-accent)]" /> FANZAで安く買う7つの方法
               </h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 初回クーポン、週末セール、ポイント還元など節約テクニックを徹底解説
@@ -557,7 +540,7 @@ export default function SaleCalendarPage() {
               href={ROUTES.guide}
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
-              <h3 className="font-bold text-sm mb-1">📖 FANZA完全ガイド</h3>
+              <h3 className="font-bold text-sm mb-1"><FaBookOpen className="inline text-[var(--color-accent)]" /> FANZA完全ガイド</h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 会員登録から購入までの流れを初心者向けに徹底解説
               </p>

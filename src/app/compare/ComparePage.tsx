@@ -3,7 +3,7 @@
 import { useState } from "react";
 import React from "react";
 import { motion } from "framer-motion";
-import { FaCheck, FaTimes, FaArrowRight, FaChevronDown } from "react-icons/fa";
+import { FaArrowRight, FaChartBar, FaCheck, FaChevronDown, FaCoins, FaCreditCard, FaFileAlt, FaQuestionCircle, FaTags, FaTimes, FaTrophy, FaVrCardboard } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import PrimaryCta from "@/components/PrimaryCta";
 import { ROUTES } from "@/lib/site";
@@ -29,31 +29,31 @@ const serviceComparison = [
 
 const reasons = [
   {
-    icon: "🎬",
+    icon: <FaTrophy className="inline text-[var(--color-accent)]" />,
     title: "圧倒的な作品数（30万本以上）",
     description:
       "業界最大級のラインナップ。マニアックなジャンルから人気シリーズまで網羅。",
   },
   {
-    icon: "🥽",
+    icon: <FaVrCardboard className="inline text-purple-400" />,
     title: "VR作品の充実度No.1",
     description:
       "8K高画質VR作品数は業界トップ。専用プレイヤーで最高の没入体験。",
   },
   {
-    icon: "💰",
+    icon: <FaCoins className="inline text-[var(--color-accent)]" />,
     title: "DMMポイントの汎用性",
     description:
       "購入で貯まるポイントは他のDMMサービスでも使える。ゲーム・電子書籍にも。",
   },
   {
-    icon: "💳",
+    icon: <FaCreditCard className="inline text-[var(--color-accent)]" />,
     title: "豊富な支払い方法",
     description:
       "クレジットカード、コンビニ払い、電子マネーなど8種類以上に対応。",
   },
   {
-    icon: "🏷️",
+    icon: <FaTags className="inline text-[var(--color-accent)]" />,
     title: "頻繁なセール・キャンペーン",
     description:
       "毎月の定期セールに加え、突発的な大幅割引も。最大70%OFFも珍しくない。",
@@ -104,7 +104,7 @@ function FAQSection() {
         transition={{ delay: 0.15 }}
         className="text-2xl font-bold mb-6 text-center"
       >
-        ❓ <span className="gradient-text">よくある質問</span>
+        <FaQuestionCircle className="inline text-[var(--color-accent)]" /> <span className="gradient-text">よくある質問</span>
       </motion.h2>
       <div className="space-y-3">
         {faqItems.map((item, i) => (
@@ -180,7 +180,7 @@ export default function ComparePage() {
       {/* VR vs Normal */}
       <section className="mb-10">
         <h2 className="text-2xl font-bold mb-6 text-center">
-          🥽 VR作品 vs 通常作品
+          <FaVrCardboard className="inline text-purple-400" /> VR作品 vs 通常作品
         </h2>
         <div className="glass-card overflow-hidden">
           <div className="grid grid-cols-3 gap-0 text-sm">
@@ -188,7 +188,7 @@ export default function ComparePage() {
               比較項目
             </div>
             <div className="p-4 font-bold bg-purple-500/10 text-center text-purple-400 border-b border-[var(--color-border)]">
-              🥽 VR作品
+              <FaVrCardboard className="inline text-purple-400" /> VR作品
             </div>
             <div className="p-4 font-bold bg-blue-500/10 text-center text-blue-400 border-b border-[var(--color-border)]">
               🎬 通常作品
@@ -230,7 +230,7 @@ export default function ComparePage() {
       {/* Subscription vs Single */}
       <section className="mb-10">
         <h2 className="text-2xl font-bold mb-6 text-center">
-          💳 月額見放題 vs 単品購入
+          <FaCreditCard className="inline text-[var(--color-accent)]" /> 月額見放題 vs 単品購入
         </h2>
         <div className="glass-card overflow-hidden">
           <div className="grid grid-cols-3 gap-0 text-sm">
@@ -271,7 +271,7 @@ export default function ComparePage() {
 
       {/* Verdict */}
       <section className="glass-card p-8 text-center mb-8 border-[var(--color-primary)]/20">
-        <h2 className="text-xl font-extrabold mb-4">📝 結論</h2>
+        <h2 className="text-xl font-extrabold mb-4"><FaFileAlt className="inline text-[var(--color-accent)]" /> 結論</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-left text-sm">
           <div className="bg-purple-500/5 border border-purple-500/20 rounded-xl p-4">
             <p className="font-bold text-purple-400 mb-2">
@@ -309,7 +309,7 @@ export default function ComparePage() {
           transition={{ delay: 0.15 }}
           className="text-2xl font-bold mb-6 text-center"
         >
-          📊 FANZAと他サービス比較
+          <FaChartBar className="inline text-[var(--color-accent)]" /> FANZAと他サービス比較
         </motion.h2>
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -322,7 +322,7 @@ export default function ComparePage() {
               比較項目
             </div>
             <div className="p-4 font-bold bg-[var(--color-primary)]/10 text-center text-[var(--color-primary)] border-b border-[var(--color-border)]">
-              🏆 FANZA
+              <FaTrophy className="inline text-[var(--color-accent)]" /> FANZA
             </div>
             <div className="p-4 font-bold bg-white/5 text-center text-[var(--color-text-secondary)] border-b border-[var(--color-border)]">
               サービスA

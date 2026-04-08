@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCoins, FaGem, FaFireAlt, FaStar, FaTrophy, FaChartBar } from "react-icons/fa";
+import { FaChartBar, FaCoins, FaFireAlt, FaGem, FaGift, FaStar, FaTrophy } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import PrimaryCta from "@/components/PrimaryCta";
 import ProductCard from "@/components/ProductCard";
@@ -215,7 +215,7 @@ export default function CustomRankingPage({
         className="mt-8 rounded-2xl border border-[var(--color-primary)]/20 bg-gradient-to-r from-[var(--color-primary)]/8 to-[var(--color-accent)]/5 p-6 md:p-8 text-center"
       >
         <h2 className="text-xl font-bold text-[var(--color-text-primary)]">
-          🎁 FANZA未登録なら初回クーポンでさらにお得！
+          <FaGift className="inline text-[var(--color-primary)]" /> FANZA未登録なら初回クーポンでさらにお得！
         </h2>
         <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
           無料会員登録で使えるクーポンと、セール割引を併用すれば最大80%OFF以上も。

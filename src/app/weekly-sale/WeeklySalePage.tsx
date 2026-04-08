@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { FaFire, FaSortAmountDown, FaTag, FaCalendarAlt } from "react-icons/fa";
+import { FaCalendarAlt, FaFire, FaFireAlt, FaGift, FaSortAmountDown, FaTag } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import PrimaryCta from "@/components/PrimaryCta";
 import ProductCard from "@/components/ProductCard";
@@ -113,7 +113,7 @@ export default function WeeklySalePage({
           週間セールまとめ
         </p>
         <h1 className="section-title gradient-text text-2xl md:text-3xl">
-          🔥 今週のFANZAセール完全まとめ
+          <FaFireAlt className="inline text-[var(--color-primary)]" /> 今週のFANZAセール完全まとめ
         </h1>
         <p className="mt-2 text-sm text-[var(--color-text-muted)]">
           対象期間：{week.label}
@@ -238,7 +238,7 @@ export default function WeeklySalePage({
         className="mt-8 rounded-2xl border border-[var(--color-primary)]/20 bg-gradient-to-r from-[var(--color-primary)]/8 to-[var(--color-accent)]/5 p-6 md:p-8 text-center"
       >
         <h2 className="text-xl font-bold text-[var(--color-text-primary)]">
-          🎁 まだFANZA未登録？
+          <FaGift className="inline text-[var(--color-primary)]" /> まだFANZA未登録？
         </h2>
         <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
           無料会員登録で初回限定クーポンがもらえます。セール割引と併用すれば、さらにお得に購入できます。

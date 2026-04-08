@@ -12,7 +12,7 @@ export default function SectionIntro({
   align = "left",
 }: {
   eyebrow?: string;
-  title: string;
+  title: ReactNode;
   description?: string;
   action?: ReactNode;
   align?: "left" | "center";

@@ -8,19 +8,7 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import {
-  FaCalculator,
-  FaCheck,
-  FaTimes,
-  FaInfoCircle,
-  FaRegLightbulb,
-  FaChartBar,
-  FaChartLine,
-  FaFilm,
-  FaMobileAlt,
-  FaCoins,
-  FaThumbsUp,
-} from "react-icons/fa";
+import { FaCalculator, FaChartBar, FaChartLine, FaCheck, FaCoins, FaFilm, FaInfoCircle, FaMobileAlt, FaRegLightbulb, FaRocket, FaThumbsUp, FaTimes, FaVrCardboard } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import PrimaryCta from "@/components/PrimaryCta";
 import { ROUTES } from "@/lib/site";
@@ -256,7 +244,7 @@ export default function SimulatorPage() {
             onClick={() => setVrEnabled((v) => !v)}
             className="flex items-center gap-3"
           >
-            <span className="text-sm font-semibold">🥽 VR作品見る？</span>
+            <span className="text-sm font-semibold"><FaVrCardboard className="inline text-purple-400" /> VR作品見る？</span>
             <span
               className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors ${
                 vrEnabled
@@ -504,7 +492,7 @@ export default function SimulatorPage() {
         className="glass-card mb-8 border-[var(--color-primary)]/20 p-8 text-center"
       >
         <h2 className="mb-2 text-xl font-extrabold">
-          🚀 さっそく始めてみよう
+          <FaRocket className="inline text-[var(--color-primary)]" /> さっそく始めてみよう
         </h2>
         <p className="mb-6 text-sm text-[var(--color-text-secondary)]">
           まずは無料サンプルで雰囲気をチェック！

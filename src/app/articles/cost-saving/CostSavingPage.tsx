@@ -1,20 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  FaGift,
-  FaCalendarAlt,
-  FaCoins,
-  FaFire,
-  FaBoxes,
-  FaHeart,
-  FaPlayCircle,
-  FaCheckCircle,
-  FaRegLightbulb,
-  FaQuestionCircle,
-  FaCalculator,
-  FaArrowDown,
-} from "react-icons/fa";
+import { FaArrowDown, FaBookOpen, FaBoxes, FaCalculator, FaCalendarAlt, FaCheckCircle, FaCoins, FaFire, FaGift, FaHeart, FaPlayCircle, FaQuestionCircle, FaRegLightbulb, FaRocket, FaTags } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import PrimaryCta from "@/components/PrimaryCta";
 import { ROUTES } from "@/lib/site";
@@ -149,7 +136,7 @@ export default function CostSavingPage() {
         className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
-          💰{" "}
+          <FaCoins className="inline text-[var(--color-accent)]" />{" "}
           <span className="gradient-text">
             FANZAで安く買う7つの方法【2026年版】
           </span>
@@ -171,7 +158,7 @@ export default function CostSavingPage() {
         {/* ───── 7つの方法 ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-8 text-center">
-            🏷️ FANZAで安く買う7つの具体的な方法
+            <FaTags className="inline text-[var(--color-accent)]" /> FANZAで安く買う7つの具体的な方法
           </h2>
           <div className="space-y-6">
             {methods.map((method, i) => (
@@ -251,7 +238,7 @@ export default function CostSavingPage() {
                     href={method.link.href}
                     className="inline-flex items-center gap-1 mt-3 text-xs font-medium text-[var(--color-accent)] hover:underline"
                   >
-                    📅 {method.link.label} →
+                    <FaCalendarAlt className="inline text-[var(--color-accent)]" /> {method.link.label} →
                   </a>
                 )}
 
@@ -359,7 +346,7 @@ export default function CostSavingPage() {
         {/* ───── FAQ ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            ❓ よくある質問
+            <FaQuestionCircle className="inline text-[var(--color-accent)]" /> よくある質問
           </h2>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
@@ -399,7 +386,7 @@ export default function CostSavingPage() {
             className="glass-card p-8 border-[var(--color-primary)]/20"
           >
             <h2 className="text-2xl font-extrabold mb-4 text-center">
-              🚀 今すぐ始めよう
+              <FaRocket className="inline text-[var(--color-primary)]" /> 今すぐ始めよう
             </h2>
             <p className="text-sm text-[var(--color-text-secondary)] text-center mb-6 leading-relaxed">
               7つの節約方法が分かったら、あとは実践するだけ。
@@ -425,7 +412,7 @@ export default function CostSavingPage() {
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
               <h3 className="font-bold text-sm mb-1">
-                📅 年間セールカレンダー
+                <FaCalendarAlt className="inline text-[var(--color-accent)]" /> 年間セールカレンダー
               </h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 毎週・毎月・季節ごとのセール傾向とベストタイミングを一覧で確認
@@ -435,7 +422,7 @@ export default function CostSavingPage() {
               href={ROUTES.guide}
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
-              <h3 className="font-bold text-sm mb-1">📖 FANZA完全ガイド</h3>
+              <h3 className="font-bold text-sm mb-1"><FaBookOpen className="inline text-[var(--color-accent)]" /> FANZA完全ガイド</h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 会員登録から購入までの流れを初心者向けに徹底解説
               </p>

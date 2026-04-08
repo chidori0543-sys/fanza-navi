@@ -8,6 +8,7 @@ import RankingPodium from "@/components/RankingPodium";
 import RankingTabs from "./RankingTabs";
 import RelatedNavigation from "@/components/RelatedNavigation";
 import SectionIntro from "@/components/SectionIntro";
+import { FaTrophy, FaFireAlt, FaStar, FaCoins, FaGift } from "react-icons/fa";
 import { genrePages } from "@/data/genres";
 import { buildActressRanking } from "@/lib/actress-ranking";
 import { loadRankingProducts } from "@/lib/catalog";
@@ -30,7 +31,7 @@ export default async function RankingPage() {
       <section>
         <SectionIntro
           eyebrow="売上ランキング"
-          title="🏆 FANZA人気ランキング TOP50"
+          title={<><FaTrophy className="inline text-[var(--color-accent)]" /> FANZA人気ランキング TOP50</>}
           description="DMM APIから取得した最新の売上ランキング。評価・レビュー件数・価格を見比べて、今最も売れている作品をチェック。"
           action={
             <PrimaryCta href={ROUTES.sale} size="sm" variant="outline">
@@ -39,9 +40,9 @@ export default async function RankingPage() {
           }
         />
         <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-[var(--color-text-secondary)]">
-          <span className="chip">🔥 上位3作で人気傾向を把握</span>
-          <span className="chip">⭐ 評価とレビュー数で確認</span>
-          <span className="chip">💰 セール中の作品もチェック</span>
+          <span className="chip"><FaFireAlt className="inline text-[var(--color-primary)]" /> 上位3作で人気傾向を把握</span>
+          <span className="chip"><FaStar className="inline text-[var(--color-accent)]" /> 評価とレビュー数で確認</span>
+          <span className="chip"><FaCoins className="inline text-[var(--color-accent)]" /> セール中の作品もチェック</span>
         </div>
       </section>
 
@@ -49,7 +50,7 @@ export default async function RankingPage() {
       <section className="mt-4 rounded-2xl border border-[var(--color-primary)]/20 bg-gradient-to-r from-[var(--color-primary)]/8 to-[var(--color-accent)]/5 p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-[var(--color-text-secondary)]">
-            <span className="font-bold text-[var(--color-text-primary)]">🎁 初めてFANZAを使う方</span> — 無料登録で初回限定クーポンがもらえます
+            <span className="font-bold text-[var(--color-text-primary)]"><FaGift className="inline text-[var(--color-primary)]" /> 初めてFANZAを使う方</span> — 無料登録で初回限定クーポンがもらえます
           </p>
           <PrimaryCta href={ROUTES.guide} size="sm">
             無料登録ガイド

@@ -5,6 +5,7 @@ import ProductGridSection from "@/components/ProductGridSection";
 import RelatedNavigation from "@/components/RelatedNavigation";
 import SaleProductGrid from "./SaleProductGrid";
 import SectionIntro from "@/components/SectionIntro";
+import { FaFireAlt, FaCoins, FaStar, FaChartBar, FaGift } from "react-icons/fa";
 import { genrePages } from "@/data/genres";
 import { loadSaleProducts, loadRankingProducts } from "@/lib/catalog";
 import { ROUTES, getGenreRoute } from "@/lib/site";
@@ -31,7 +32,7 @@ export default async function SalePage() {
       <section className="editorial-surface p-6 md:p-8">
         <SectionIntro
           eyebrow="セール速報"
-          title="🔥 現在開催中のセール情報"
+          title={<><FaFireAlt className="inline text-[var(--color-primary)]" /> 現在開催中のセール情報</>}
           description="DMM APIから取得した最新のセール・割引作品です。並べ替えで自分に合った作品を見つけましょう。"
           action={
             <PrimaryCta href={ROUTES.articleSaveMoney} size="sm" variant="outline">
@@ -41,9 +42,9 @@ export default async function SalePage() {
         />
 
         <div className="mt-4 flex flex-wrap gap-2 text-xs text-[var(--color-text-secondary)]">
-          <span className="chip">💰 割引率で比較</span>
-          <span className="chip">⭐ レビュー数で選ぶ</span>
-          <span className="chip">📊 価格が安い順で探す</span>
+          <span className="chip"><FaCoins className="inline text-[var(--color-accent)]" /> 割引率で比較</span>
+          <span className="chip"><FaStar className="inline text-[var(--color-accent)]" /> レビュー数で選ぶ</span>
+          <span className="chip"><FaChartBar className="inline text-[var(--color-accent)]" /> 価格が安い順で探す</span>
         </div>
       </section>
 
@@ -52,7 +53,7 @@ export default async function SalePage() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-sm font-bold text-[var(--color-text-primary)]">
-              🎁 FANZA未登録なら初回限定クーポンでさらにお得！
+              <FaGift className="inline text-[var(--color-primary)]" /> FANZA未登録なら初回限定クーポンでさらにお得！
             </p>
             <p className="mt-1 text-xs text-[var(--color-text-secondary)]">
               無料会員登録で使えるクーポンと、セール割引を併用すれば最大80%OFF以上も。

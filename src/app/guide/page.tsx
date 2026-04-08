@@ -3,6 +3,7 @@ import GuidePage from "./GuidePage";
 import { buildPageMetadata } from "@/lib/metadata";
 import { ROUTES } from "@/lib/site";
 import { JsonLd } from "@/components/JsonLd";
+import { buildAffiliateUrl } from "@/lib/affiliate";
 
 export const metadata: Metadata = buildPageMetadata({
   title:
@@ -13,9 +14,10 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function Page() {
+  const affiliateUrl = buildAffiliateUrl("https://www.dmm.co.jp/digital/videoa/");
   return (
     <>
-      <GuidePage />
+      <GuidePage affiliateUrl={affiliateUrl} />
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "Article",

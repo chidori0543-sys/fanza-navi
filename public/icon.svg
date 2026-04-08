@@ -11,13 +11,8 @@
   </defs>
   <rect width="512" height="512" rx="96" fill="url(#bg)"/>
   <rect x="16" y="16" width="480" height="480" rx="80" fill="none" stroke="url(#accent)" stroke-width="6" stroke-opacity="0.3"/>
-  <!-- Magnifying glass + chart = search & discover -->
-  <circle cx="210" cy="210" r="80" fill="none" stroke="url(#accent)" stroke-width="24" stroke-linecap="round"/>
-  <line x1="268" y1="268" x2="338" y2="338" stroke="url(#accent)" stroke-width="24" stroke-linecap="round"/>
-  <!-- Rising bars in lens -->
-  <rect x="170" y="230" width="22" height="38" rx="6" fill="#e34a6e" opacity="0.9"/>
-  <rect x="200" y="198" width="22" height="70" rx="6" fill="#d3af6f" opacity="0.9"/>
-  <rect x="230" y="166" width="22" height="102" rx="6" fill="#e34a6e" opacity="0.9"/>
-  <!-- "N" for Navi -->
-  <text x="375" y="440" font-family="'Helvetica Neue',Arial,sans-serif" font-size="130" font-weight="800" fill="url(#accent)">F</text>
+  <!-- Magnifying glass with bold F inside -->
+  <circle cx="216" cy="216" r="128" fill="none" stroke="url(#accent)" stroke-width="28" stroke-linecap="round"/>
+  <line x1="304" y1="304" x2="416" y2="416" stroke="url(#accent)" stroke-width="32" stroke-linecap="round"/>
+  <text x="216" y="216" font-family="'Arial Black','Helvetica Neue',sans-serif" font-size="176" font-weight="900" fill="url(#accent)" text-anchor="middle" dominant-baseline="central" letter-spacing="-8">F</text>
 </svg>

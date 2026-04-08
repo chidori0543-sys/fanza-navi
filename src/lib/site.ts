@@ -36,6 +36,18 @@ export const ROUTES = {
   actressRanking: "/actress-ranking",
   makerRanking: "/maker-ranking",
   simulator: "/simulator",
+  watchlist: "/watchlist",
+  dailyPick: "/daily-pick",
+  gacha: "/gacha",
+  cospaCalc: "/cospa-calc",
+  buyTiming: "/buy-timing",
+  rankingBattle: "/ranking-battle",
+  seriesGuide: "/series-guide",
+  salePredict: "/sale-predict",
+  savingsTips: "/savings-tips",
+  priceHistory: "/price-history",
+  snsCards: "/sns-cards",
+  personalized: "/personalized",
 } as const;
 
 export function toAbsoluteUrl(path = "") {

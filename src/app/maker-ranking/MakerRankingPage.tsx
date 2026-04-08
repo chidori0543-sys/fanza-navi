@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaStar, FaCommentDots, FaYenSign, FaFilm, FaTrophy, FaArrowRight } from "react-icons/fa";
+import { FaStar, FaCommentDots, FaYenSign, FaFilm, FaTrophy, FaArrowRight, FaGem } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import PrimaryCta from "@/components/PrimaryCta";
 import SectionIntro from "@/components/SectionIntro";
@@ -21,13 +21,13 @@ function formatPrice(price: number): string {
 
 function ComparisonCard({
   title,
-  emoji,
+  icon,
   makers,
   metric,
   formatValue,
 }: {
   title: string;
-  emoji: string;
+  icon: React.ReactNode;
   makers: MakerRankingData[];
   metric: (m: MakerRankingData) => number;
   formatValue: (m: MakerRankingData) => string;
@@ -40,8 +40,8 @@ function ComparisonCard({
       transition={{ duration: 0.5 }}
       className="glass-card p-5"
     >
-      <h3 className="mb-4 text-base font-semibold text-[var(--color-text-primary)]">
-        <span className="mr-2">{emoji}</span>
+      <h3 className="mb-4 text-base font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
+        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--color-primary)]/15 text-[var(--color-primary)]">{icon}</span>
         {title}
       </h3>
       <div className="space-y-3">
@@ -199,21 +199,21 @@ export default function MakerRankingPage({
         <div className="grid gap-4 md:grid-cols-3">
           <ComparisonCard
             title="高評価メーカー TOP3"
-            emoji="⭐"
+            icon={<FaStar size={14} />}
             makers={topByRating}
             metric={(m) => m.averageRating}
             formatValue={(m) => `★${m.averageRating.toFixed(1)}`}
           />
           <ComparisonCard
             title="コスパ最強メーカー TOP3"
-            emoji="💎"
+            icon={<FaGem size={14} />}
             makers={topByCospa}
             metric={(m) => m.averagePrice}
             formatValue={(m) => formatPrice(m.averagePrice)}
           />
           <ComparisonCard
             title="レビュー人気メーカー TOP3"
-            emoji="💬"
+            icon={<FaCommentDots size={14} />}
             makers={topByReview}
             metric={(m) => m.averageReviewCount}
             formatValue={(m) => `${m.averageReviewCount.toFixed(1)}件`}

@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import {
   FaArrowUp, FaCoins, FaGift, FaPercentage, FaTicketAlt, FaTags,
   FaTheaterMasks, FaChartLine, FaCalculator, FaThumbsUp, FaCalendarAlt,
-  FaUserFriends, FaIndustry, FaArrowRight,
+  FaUserFriends, FaIndustry, FaArrowRight, FaBookmark, FaStar, FaDice,
+  FaClock, FaShoppingCart, FaTrophy, FaListOl, FaChartBar, FaPiggyBank,
+  FaHistory, FaShareAlt, FaUser, FaVoteYea, FaRandom,
 } from "react-icons/fa";
 import ActressRankingSection from "@/components/ActressRankingSection";
 import GenreRail from "@/components/GenreRail";
@@ -69,6 +72,102 @@ const uniqueTools = [
     accent: false,
     badge: null,
   },
+  {
+    href: ROUTES.watchlist,
+    title: "お気に入り＆ウォッチリスト",
+    description: "気になる作品をブックマーク。値下げを見逃さない。",
+    icon: <FaBookmark size={20} />,
+    accent: true,
+    badge: "NEW",
+  },
+  {
+    href: ROUTES.dailyPick,
+    title: "今日のおすすめ",
+    description: "毎日1作品を厳選ピック。過去のおすすめもアーカイブ。",
+    icon: <FaStar size={20} />,
+    accent: false,
+    badge: "毎日更新",
+  },
+  {
+    href: ROUTES.buyTiming,
+    title: "買い時判定ツール",
+    description: "今買うべき？待つべき？セール傾向から最適タイミングを判定。",
+    icon: <FaShoppingCart size={20} />,
+    accent: true,
+    badge: "NEW",
+  },
+  {
+    href: ROUTES.cospaCalc,
+    title: "コスパ計算機",
+    description: "収録時間÷価格で1分あたりの金額を算出。お得な作品がわかる。",
+    icon: <FaClock size={20} />,
+    accent: false,
+    badge: "NEW",
+  },
+  {
+    href: ROUTES.rankingBattle,
+    title: "ランキングバトル",
+    description: "2作品を比べて投票するトーナメント。あなたの推しが決まる。",
+    icon: <FaVoteYea size={20} />,
+    accent: false,
+    badge: "参加型",
+  },
+  {
+    href: ROUTES.gacha,
+    title: "ガチャレコメンド",
+    description: "条件を設定してガチャを回す！意外な名作に出会える。",
+    icon: <FaDice size={20} />,
+    accent: false,
+    badge: "NEW",
+  },
+  {
+    href: ROUTES.salePredict,
+    title: "セール予測カレンダー",
+    description: "過去の傾向から次のセール時期を予測。買い物計画に。",
+    icon: <FaChartBar size={20} />,
+    accent: false,
+    badge: "予測",
+  },
+  {
+    href: ROUTES.priceHistory,
+    title: "価格履歴チャート",
+    description: "Keepa型の価格推移グラフ。過去最安値がわかる。",
+    icon: <FaHistory size={20} />,
+    accent: false,
+    badge: "NEW",
+  },
+  {
+    href: ROUTES.seriesGuide,
+    title: "シリーズ完走ガイド",
+    description: "人気シリーズの全作品を一覧。コンプ率を追跡。",
+    icon: <FaListOl size={20} />,
+    accent: false,
+    badge: null,
+  },
+  {
+    href: ROUTES.savingsTips,
+    title: "みんなの節約術",
+    description: "ユーザー投稿の節約テクニック集。いいね機能付き。",
+    icon: <FaPiggyBank size={20} />,
+    accent: false,
+    badge: "投稿型",
+  },
+  {
+    href: ROUTES.snsCards,
+    title: "SNS共有カード生成",
+    description: "作品情報を見やすいカードに。ワンクリックでSNSシェア。",
+    icon: <FaShareAlt size={20} />,
+    accent: false,
+    badge: null,
+  },
+  {
+    href: ROUTES.personalized,
+    title: "パーソナライズフィード",
+    description: "あなたの好みを学習して、ぴったりの作品をおすすめ。",
+    icon: <FaUser size={20} />,
+    accent: false,
+    badge: "AI",
+  },
 ];
 
 const supportingGuides = [
@@ -122,6 +221,8 @@ export default function HomePageView({
   featuredGenres: GenreLandingPage[];
 }) {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const [showAllTools, setShowAllTools] = useState(false);
+  const visibleTools = showAllTools ? uniqueTools : uniqueTools.slice(0, 6);
   const rankingSpotlight = rankingPreview.slice(0, 3);
   const rankingMore = rankingPreview.slice(3, 6);
   const saleCompact = salePreview.slice(0, 4);
@@ -142,7 +243,7 @@ export default function HomePageView({
           description="シチュエーション検索・独自ランキング・コスト比較など、公式サイトではできない探し方・使い方ができます。"
         />
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {uniqueTools.map((tool) => (
+          {visibleTools.map((tool) => (
             <a
               key={tool.href}
               href={tool.href}
@@ -184,6 +285,16 @@ export default function HomePageView({
             </a>
           ))}
         </div>
+        {!showAllTools && uniqueTools.length > 6 && (
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => setShowAllTools(true)}
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] transition-all hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]"
+            >
+              全{uniqueTools.length}ツールを表示 <FaArrowRight size={10} />
+            </button>
+          </div>
+        )}
       </section>
 
       <section className="content-shell px-4 pb-8">

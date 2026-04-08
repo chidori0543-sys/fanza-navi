@@ -50,12 +50,9 @@ export default function Header() {
                       <stop offset="1" stopColor="#d3af6f"/>
                     </linearGradient>
                   </defs>
-                  <circle cx="26" cy="26" r="10" fill="none" stroke="url(#hdr-accent)" strokeWidth="3" strokeLinecap="round"/>
-                  <line x1="33" y1="33" x2="42" y2="42" stroke="url(#hdr-accent)" strokeWidth="3" strokeLinecap="round"/>
-                  <rect x="21" y="28" width="3" height="5" rx="1" fill="#e34a6e" opacity="0.9"/>
-                  <rect x="25" y="24" width="3" height="9" rx="1" fill="#d3af6f" opacity="0.9"/>
-                  <rect x="29" y="20" width="3" height="13" rx="1" fill="#e34a6e" opacity="0.9"/>
-                  <text x="47" y="56" fontFamily="sans-serif" fontSize="16" fontWeight="800" fill="url(#hdr-accent)">F</text>
+                  <circle cx="27" cy="27" r="16" fill="none" stroke="url(#hdr-accent)" strokeWidth="3.5" strokeLinecap="round"/>
+                  <line x1="38" y1="38" x2="52" y2="52" stroke="url(#hdr-accent)" strokeWidth="4" strokeLinecap="round"/>
+                  <text x="27" y="34" fontFamily="'Arial Black', 'Helvetica Neue', sans-serif" fontSize="22" fontWeight="900" fill="url(#hdr-accent)" textAnchor="middle" dominantBaseline="central" letterSpacing="-1">F</text>
                 </svg>
               </span>
               <div className="min-w-0">
@@ -74,7 +71,7 @@ export default function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                   link.accent
                     ? "border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/8 text-[var(--color-accent)] hover:bg-[var(--color-accent)]/15"
                     : "border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]"
@@ -92,7 +89,7 @@ export default function Header() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-white/5 hover:text-[var(--color-text-primary)]"
+                  className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm whitespace-nowrap text-[var(--color-text-secondary)] transition-colors hover:bg-white/5 hover:text-[var(--color-text-primary)]"
                 >
                   {link.icon}
                   {link.label}
@@ -125,7 +122,7 @@ export default function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-sm whitespace-nowrap text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]"
               >
                 {link.icon}
                 {link.label}

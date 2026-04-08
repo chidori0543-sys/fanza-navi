@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FaCalendarAlt, FaChartBar, FaStar, FaTags } from "react-icons/fa";
 import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import GenreRail from "@/components/GenreRail";
@@ -138,14 +139,14 @@ export default async function ActressPage({
 
         {products.length > 0 && (
           <div className="mb-5 flex flex-wrap gap-2">
-            <span className="chip">📊 作品数: {productCount}本</span>
-            <span className="chip">⭐ 平均評価: {avgRating}</span>
+            <span className="chip"><FaChartBar className="inline text-[var(--color-accent)]" /> 作品数: {productCount}本</span>
+            <span className="chip"><FaStar className="inline text-[var(--color-accent)]" /> 平均評価: {avgRating}</span>
             <span className="chip">💬 総レビュー数: {totalReviewCount}件</span>
             {topGenres.length > 0 && (
-              <span className="chip">🏷️ 得意ジャンル: {topGenres.join("・")}</span>
+              <span className="chip"><FaTags className="inline text-[var(--color-accent)]" /> 得意ジャンル: {topGenres.join("・")}</span>
             )}
             {latestDateFormatted && (
-              <span className="chip">📅 最新作: {latestDateFormatted}</span>
+              <span className="chip"><FaCalendarAlt className="inline text-[var(--color-accent)]" /> 最新作: {latestDateFormatted}</span>
             )}
           </div>
         )}

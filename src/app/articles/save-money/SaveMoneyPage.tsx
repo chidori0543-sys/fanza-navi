@@ -1,26 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  FaCalendarAlt,
-  FaTicketAlt,
-  FaCoins,
-  FaChartLine,
-  FaCheckCircle,
-  FaQuestionCircle,
-  FaPercentage,
-  FaEnvelope,
-  FaMobileAlt,
-  FaBirthdayCake,
-  FaBookmark,
-  FaCalculator,
-  FaRegLightbulb,
-  FaFire,
-  FaClock,
-  FaStar,
-  FaBolt,
-  FaGift,
-} from "react-icons/fa";
+import { FaBirthdayCake, FaBolt, FaBookmark, FaCalculator, FaCalendarAlt, FaChartBar, FaChartLine, FaCheckCircle, FaClock, FaCoins, FaEnvelope, FaFileAlt, FaFire, FaFireAlt, FaGem, FaGift, FaLightbulb, FaMobileAlt, FaPercentage, FaQuestionCircle, FaRegLightbulb, FaStar, FaTags, FaTicketAlt } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ROUTES } from "@/lib/site";
 
@@ -325,7 +306,7 @@ export default function SaveMoneyPage() {
         className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
-          💰{" "}
+          <FaCoins className="inline text-[var(--color-accent)]" />{" "}
           <span className="gradient-text">
             FANZAで損しない！セール・クーポン・ポイント活用術
           </span>
@@ -383,7 +364,7 @@ export default function SaveMoneyPage() {
         {/* ───── Sale Types ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-8 text-center">
-            🏷️ セールの種類と開催パターン
+            <FaTags className="inline text-[var(--color-accent)]" /> セールの種類と開催パターン
           </h2>
           <div className="space-y-6">
             {saleTypes.map((sale, i) => (
@@ -403,7 +384,7 @@ export default function SaveMoneyPage() {
                     <h3 className="font-bold text-lg">{sale.name}</h3>
                     <div className="flex items-center gap-3 flex-wrap">
                       <span className="text-xs text-[var(--color-text-secondary)]">
-                        📅 {sale.timing}
+                        <FaCalendarAlt className="inline text-[var(--color-accent)]" /> {sale.timing}
                       </span>
                       <span className="text-xs font-bold text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-2 py-0.5 rounded-full">
                         {sale.discount}
@@ -467,7 +448,7 @@ export default function SaveMoneyPage() {
                 </p>
 
                 <div className="mb-3">
-                  <h4 className="text-xs font-bold mb-2">📝 入手手順</h4>
+                  <h4 className="text-xs font-bold mb-2"><FaFileAlt className="inline text-[var(--color-accent)]" /> 入手手順</h4>
                   <ol className="space-y-1">
                     {coupon.howToGet.map((step, j) => (
                       <li
@@ -496,7 +477,7 @@ export default function SaveMoneyPage() {
         {/* ───── DMMポイント活用法 ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            💎 DMMポイント活用法
+            <FaGem className="inline text-[var(--color-accent)]" /> DMMポイント活用法
           </h2>
 
           {/* Point discount table */}
@@ -530,7 +511,7 @@ export default function SaveMoneyPage() {
                       className={`p-3 ${row.highlight ? "font-bold text-[var(--color-primary)]" : "text-[var(--color-text-secondary)]"}`}
                     >
                       {row.amount}
-                      {row.highlight && " ⭐"}
+                      {row.highlight && " ★"}
                     </td>
                     <td
                       className={`p-3 ${row.highlight ? "font-bold text-[var(--color-primary)]" : "text-[var(--color-text-secondary)]"}`}
@@ -615,7 +596,7 @@ export default function SaveMoneyPage() {
             </div>
             <div className="mt-4 bg-white/5 rounded-lg p-3">
               <p className="text-xs text-[var(--color-text-secondary)]">
-                💡{" "}
+                <FaLightbulb className="inline text-[var(--color-accent)]" />{" "}
                 <strong>プロのテクニック：</strong>
                 大型セール前に気になる作品を一気にウィッシュリストに追加しておきましょう。セール開始時にウィッシュリストをチェックするだけで、お得な作品をすぐに見つけられます。
               </p>
@@ -626,7 +607,7 @@ export default function SaveMoneyPage() {
         {/* ───── 月額見放題 損益分岐点 ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            📊 月額見放題の損益分岐点
+            <FaChartBar className="inline text-[var(--color-accent)]" /> 月額見放題の損益分岐点
           </h2>
           <p className="text-sm text-[var(--color-text-secondary)] text-center mb-6">
             月に何本見るなら見放題プランがお得？プラン別に損益分岐点を解説します。
@@ -665,7 +646,7 @@ export default function SaveMoneyPage() {
           <div className="glass-card p-5 mt-4 border-l-4 border-[var(--color-primary)]">
             <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
               <strong className="text-[var(--color-primary)]">
-                💡 おすすめの使い分け：
+                <FaLightbulb className="inline text-[var(--color-accent)]" /> おすすめの使い分け：
               </strong>
               月に1〜2本程度なら単品購入（セール活用）、月3本以上コンスタントに視聴するなら見放題プランがお得です。見放題で気に入った作品を見つけ、それをセール時に単品購入して永久保有するのが最もコスパの良い運用方法です。
             </p>
@@ -728,7 +709,7 @@ export default function SaveMoneyPage() {
         {/* ───── セールカレンダー ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            📅 セールカレンダー（月別傾向）
+            <FaCalendarAlt className="inline text-[var(--color-accent)]" /> セールカレンダー（月別傾向）
           </h2>
           <motion.div
             initial={{ opacity: 0 }}
@@ -762,7 +743,7 @@ export default function SaveMoneyPage() {
                     </td>
                     <td className="p-3">
                       <span className="text-yellow-400">
-                        {"🔥".repeat(month.intensity)}
+                        {Array.from({length: month.intensity}, (_, i) => <FaFireAlt key={i} className="inline text-[var(--color-primary)]" size={12} />)}
                       </span>
                     </td>
                   </tr>
@@ -779,7 +760,7 @@ export default function SaveMoneyPage() {
         {/* ───── FAQ ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            ❓ よくある質問
+            <FaQuestionCircle className="inline text-[var(--color-accent)]" /> よくある質問
           </h2>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
@@ -819,7 +800,7 @@ export default function SaveMoneyPage() {
             className="glass-card p-8 border-[var(--color-primary)]/20"
           >
             <h2 className="text-2xl font-extrabold mb-4 text-center">
-              📝 最終まとめ：FANZAで賢く節約する5つの鉄則
+              <FaFileAlt className="inline text-[var(--color-accent)]" /> 最終まとめ：FANZAで賢く節約する5つの鉄則
             </h2>
             <div className="space-y-4 text-sm text-[var(--color-text-secondary)] leading-relaxed">
               <ol className="space-y-3">
@@ -885,7 +866,7 @@ export default function SaveMoneyPage() {
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
               <h3 className="font-bold text-sm mb-1">
-                💰 FANZAで安く買う7つの方法
+                <FaCoins className="inline text-[var(--color-accent)]" /> FANZAで安く買う7つの方法
               </h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 初回クーポン、週末セール、ポイント還元など節約テクニックを徹底解説
@@ -896,7 +877,7 @@ export default function SaveMoneyPage() {
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
               <h3 className="font-bold text-sm mb-1">
-                📅 年間セールカレンダー
+                <FaCalendarAlt className="inline text-[var(--color-accent)]" /> 年間セールカレンダー
               </h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 毎週・毎月・季節ごとのセール傾向とベストタイミングを一覧で確認

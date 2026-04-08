@@ -1,21 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  FaCreditCard,
-  FaPaypal,
-  FaMobileAlt,
-  FaStore,
-  FaShieldAlt,
-  FaCheckCircle,
-  FaExclamationTriangle,
-  FaCoins,
-  FaQuestionCircle,
-  FaArrowRight,
-  FaMoneyBillWave,
-  FaUserSecret,
-  FaRegLightbulb,
-} from "react-icons/fa";
+import { FaArrowRight, FaChartBar, FaCheckCircle, FaCoins, FaCreditCard, FaExclamationTriangle, FaFileAlt, FaGem, FaLightbulb, FaMobileAlt, FaMoneyBillWave, FaPaypal, FaQuestionCircle, FaRegLightbulb, FaShieldAlt, FaStore, FaUserSecret, FaVrCardboard } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 
 /* ───────────────────────── data ───────────────────────── */
@@ -351,7 +337,7 @@ export default function PaymentGuidePage() {
         className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
-          💳{" "}
+          <FaCreditCard className="inline text-[var(--color-accent)]" />{" "}
           <span className="gradient-text">
             FANZA（DMM）の支払い方法を完全解説
           </span>
@@ -504,7 +490,7 @@ export default function PaymentGuidePage() {
 
                 {/* Steps */}
                 <div>
-                  <h4 className="text-sm font-bold mb-3">📝 設定・利用手順</h4>
+                  <h4 className="text-sm font-bold mb-3"><FaFileAlt className="inline text-[var(--color-accent)]" /> 設定・利用手順</h4>
                   <ol className="space-y-2">
                     {pm.steps.map((step, j) => (
                       <li
@@ -527,7 +513,7 @@ export default function PaymentGuidePage() {
         {/* ───── Comparison Table ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            📊 支払い方法 比較表
+            <FaChartBar className="inline text-[var(--color-accent)]" /> 支払い方法 比較表
           </h2>
           <motion.div
             initial={{ opacity: 0 }}
@@ -621,7 +607,7 @@ export default function PaymentGuidePage() {
           <div className="glass-card p-5 mt-6 border-l-4 border-[var(--color-primary)]">
             <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
               <strong className="text-[var(--color-primary)]">
-                💡 ポイント：
+                <FaLightbulb className="inline text-[var(--color-accent)]" /> ポイント：
               </strong>
               どの支払い方法でも、クレジットカード明細やキャリア請求書には「FANZA」という名前は表示されません。表記はすべて「DMM.com」です。DMMは英会話、ゲーム、FX、通販など多様なサービスを展開しているため、「DMM.com」という記載だけで利用内容を推測されることはまずありません。さらに匿名性を高めたい場合は、プリペイド型の支払い方法を選びましょう。
             </p>
@@ -661,7 +647,7 @@ export default function PaymentGuidePage() {
         {/* ───── DMMポイントまとめ買い詳細 ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            💎 DMMポイントまとめ買い割引テーブル
+            <FaGem className="inline text-[var(--color-accent)]" /> DMMポイントまとめ買い割引テーブル
           </h2>
           <motion.div
             initial={{ opacity: 0 }}
@@ -736,7 +722,7 @@ export default function PaymentGuidePage() {
         {/* ───── FAQ ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            ❓ よくある質問
+            <FaQuestionCircle className="inline text-[var(--color-accent)]" /> よくある質問
           </h2>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
@@ -776,7 +762,7 @@ export default function PaymentGuidePage() {
             className="glass-card p-8 border-[var(--color-primary)]/20"
           >
             <h2 className="text-2xl font-extrabold mb-4 text-center">
-              📝 最終まとめ
+              <FaFileAlt className="inline text-[var(--color-accent)]" /> 最終まとめ
             </h2>
             <div className="space-y-4 text-sm text-[var(--color-text-secondary)] leading-relaxed">
               <p>
@@ -843,7 +829,7 @@ export default function PaymentGuidePage() {
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
               <h3 className="font-bold text-sm mb-1">
-                💰 セール・クーポン活用術
+                <FaCoins className="inline text-[var(--color-accent)]" /> セール・クーポン活用術
               </h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 DMMポイントをさらにお得に使うためのセール攻略法を紹介
@@ -854,7 +840,7 @@ export default function PaymentGuidePage() {
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
               <h3 className="font-bold text-sm mb-1">
-                🥽 VR視聴ガイド
+                <FaVrCardboard className="inline text-purple-400" /> VR視聴ガイド
               </h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 スマホ・Meta Quest・PCでFANZA VRを楽しむ方法を解説

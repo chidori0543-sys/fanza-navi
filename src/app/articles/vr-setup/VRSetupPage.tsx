@@ -1,24 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  FaMobileAlt,
-  FaDesktop,
-  FaVrCardboard,
-  FaWifi,
-  FaDownload,
-  FaCheckCircle,
-  FaExclamationTriangle,
-  FaQuestionCircle,
-  FaPlayCircle,
-  FaTv,
-  FaCog,
-  FaLightbulb,
-  FaHeadset,
-  FaGamepad,
-  FaSearch,
-  FaStar,
-} from "react-icons/fa";
+import { FaCheckCircle, FaCog, FaCoins, FaCreditCard, FaDesktop, FaDownload, FaExclamationTriangle, FaFileAlt, FaGamepad, FaHeadset, FaLightbulb, FaMobileAlt, FaPlayCircle, FaQuestionCircle, FaSearch, FaStar, FaTv, FaVrCardboard, FaWifi } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 
 /* ───────────────────────── data ───────────────────────── */
@@ -409,7 +392,7 @@ export default function VRSetupPage() {
         className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
-          🥽{" "}
+          <FaVrCardboard className="inline text-purple-400" />{" "}
           <span className="gradient-text">
             FANZA VR動画 デバイス別セットアップ完全ガイド
           </span>
@@ -430,7 +413,7 @@ export default function VRSetupPage() {
             className="glass-card p-6"
           >
             <h2 className="text-2xl font-bold mb-4">
-              🌟 VRコンテンツの魅力と現状
+              <FaStar className="inline text-yellow-400" /> VRコンテンツの魅力と現状
             </h2>
             <div className="space-y-4 text-sm text-[var(--color-text-secondary)] leading-relaxed">
               <p>
@@ -490,7 +473,7 @@ export default function VRSetupPage() {
                   ))}
                 </ul>
                 <p className="text-xs text-[var(--color-text-secondary)] bg-white/5 rounded-lg p-2">
-                  💡 {req.quality}
+                  <FaLightbulb className="inline text-[var(--color-accent)]" /> {req.quality}
                 </p>
               </motion.div>
             ))}
@@ -608,7 +591,7 @@ export default function VRSetupPage() {
           <div className="glass-card p-4 mt-4 border-l-4 border-[var(--color-primary)]">
             <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
               <strong className="text-[var(--color-primary)]">
-                💡 60fps対応について：
+                <FaLightbulb className="inline text-[var(--color-accent)]" /> 60fps対応について：
               </strong>
               通常のVR作品は30fps撮影ですが、最近は60fps対応の作品も増えています。60fpsでは動きがよりスムーズになり、VR酔いの軽減にも効果があります。60fps作品はFANZAの作品ページに「60fps」のタグが表示されます。Meta
               Quest 3やPC VRなら60fps作品を最大限に楽しめます。
@@ -740,7 +723,7 @@ export default function VRSetupPage() {
         {/* ───── FAQ ───── */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            ❓ よくある質問
+            <FaQuestionCircle className="inline text-[var(--color-accent)]" /> よくある質問
           </h2>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
@@ -780,7 +763,7 @@ export default function VRSetupPage() {
             className="glass-card p-8 border-[var(--color-primary)]/20"
           >
             <h2 className="text-2xl font-extrabold mb-4 text-center">
-              📝 まとめ：あなたに最適なVR環境は？
+              <FaFileAlt className="inline text-[var(--color-accent)]" /> まとめ：あなたに最適なVR環境は？
             </h2>
             <div className="space-y-4 text-sm text-[var(--color-text-secondary)] leading-relaxed">
               <p>
@@ -849,7 +832,7 @@ export default function VRSetupPage() {
               href="/articles/fanza-payment"
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
-              <h3 className="font-bold text-sm mb-1">💳 支払い方法ガイド</h3>
+              <h3 className="font-bold text-sm mb-1"><FaCreditCard className="inline text-[var(--color-accent)]" /> 支払い方法ガイド</h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 VR作品の購入に最適な支払い方法を解説
               </p>
@@ -859,7 +842,7 @@ export default function VRSetupPage() {
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
               <h3 className="font-bold text-sm mb-1">
-                💰 セール・クーポン活用術
+                <FaCoins className="inline text-[var(--color-accent)]" /> セール・クーポン活用術
               </h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 VR作品をお得に購入するためのセール攻略法

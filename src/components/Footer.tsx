@@ -76,11 +76,9 @@ export default function Footer() {
                       <stop offset="1" stopColor="#d3af6f"/>
                     </linearGradient>
                   </defs>
-                  <circle cx="26" cy="26" r="10" fill="none" stroke="url(#ftr-accent)" strokeWidth="3" strokeLinecap="round"/>
-                  <line x1="33" y1="33" x2="42" y2="42" stroke="url(#ftr-accent)" strokeWidth="3" strokeLinecap="round"/>
-                  <rect x="21" y="28" width="3" height="5" rx="1" fill="#e34a6e" opacity="0.9"/>
-                  <rect x="25" y="24" width="3" height="9" rx="1" fill="#d3af6f" opacity="0.9"/>
-                  <rect x="29" y="20" width="3" height="13" rx="1" fill="#e34a6e" opacity="0.9"/>
+                  <circle cx="27" cy="27" r="16" fill="none" stroke="url(#ftr-accent)" strokeWidth="3.5" strokeLinecap="round"/>
+                  <line x1="38" y1="38" x2="52" y2="52" stroke="url(#ftr-accent)" strokeWidth="4" strokeLinecap="round"/>
+                  <text x="27" y="27" fontFamily="'Arial Black','Helvetica Neue',sans-serif" fontSize="22" fontWeight="900" fill="url(#ftr-accent)" textAnchor="middle" dominantBaseline="central" letterSpacing="-1">F</text>
                 </svg>
               </span>
               <span className="text-lg font-bold tracking-tight">

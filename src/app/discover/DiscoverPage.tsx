@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaHeart, FaBolt, FaGem, FaFire, FaCrown, FaVrCardboard, FaTags, FaRegStar, FaRocket } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import ProductGridSection from "@/components/ProductGridSection";
 import PrimaryCta from "@/components/PrimaryCta";
@@ -11,7 +11,8 @@ import type { Product } from "@/data/products";
 
 interface Situation {
   id: string;
-  emoji: string;
+  icon: React.ReactNode;
+  iconColor: string;
   label: string;
   description: string;
   filter: (products: Product[]) => Product[];
@@ -20,7 +21,8 @@ interface Situation {
 const situations: Situation[] = [
   {
     id: "first-time",
-    emoji: "🌟",
+    icon: <FaRegStar size={20} />,
+    iconColor: "text-yellow-400",
     label: "初めてのFANZA",
     description: "高評価・レビュー多めの安心ピック",
     filter: (products) =>
@@ -31,7 +33,8 @@ const situations: Situation[] = [
   },
   {
     id: "quick",
-    emoji: "⚡",
+    icon: <FaBolt size={20} />,
+    iconColor: "text-amber-400",
     label: "サクッと短時間",
     description: "お手頃価格でサクッと楽しめる",
     filter: (products) =>
@@ -42,7 +45,8 @@ const situations: Situation[] = [
   },
   {
     id: "sweet",
-    emoji: "💕",
+    icon: <FaHeart size={20} />,
+    iconColor: "text-pink-400",
     label: "甘い雰囲気",
     description: "恋愛系・ドラマティックな作品",
     filter: (products) =>
@@ -57,7 +61,8 @@ const situations: Situation[] = [
   },
   {
     id: "intense",
-    emoji: "🔥",
+    icon: <FaFire size={20} />,
+    iconColor: "text-red-400",
     label: "刺激的な作品",
     description: "ハード系・高評価の刺激的な作品",
     filter: (products) =>
@@ -73,7 +78,8 @@ const situations: Situation[] = [
   },
   {
     id: "cospa",
-    emoji: "💎",
+    icon: <FaGem size={20} />,
+    iconColor: "text-cyan-400",
     label: "コスパ重視",
     description: "安くて高評価のお得な作品",
     filter: (products) =>
@@ -84,7 +90,8 @@ const situations: Situation[] = [
   },
   {
     id: "trending",
-    emoji: "🆕",
+    icon: <FaRocket size={20} />,
+    iconColor: "text-blue-400",
     label: "最新トレンド",
     description: "新着＆レビューが伸びている作品",
     filter: (products) =>
@@ -95,7 +102,8 @@ const situations: Situation[] = [
   },
   {
     id: "classic",
-    emoji: "👑",
+    icon: <FaCrown size={20} />,
+    iconColor: "text-yellow-500",
     label: "殿堂入り名作",
     description: "レビュー30件超・評価4.0以上の名作",
     filter: (products) =>
@@ -106,7 +114,8 @@ const situations: Situation[] = [
   },
   {
     id: "vr",
-    emoji: "🎮",
+    icon: <FaVrCardboard size={20} />,
+    iconColor: "text-purple-400",
     label: "VR体験",
     description: "VR対応の没入感ある作品",
     filter: (products) =>
@@ -121,7 +130,8 @@ const situations: Situation[] = [
   },
   {
     id: "sale",
-    emoji: "🏷️",
+    icon: <FaTags size={20} />,
+    iconColor: "text-green-400",
     label: "セール品から選ぶ",
     description: "いまお得に買えるセール中の作品",
     filter: (products) =>
@@ -178,7 +188,7 @@ export default function DiscoverPage({
                   : "hover:shadow-[0_0_20px_rgba(158,68,90,0.12)]"
               }`}
             >
-              <span className="text-3xl">{situation.emoji}</span>
+              <span className={`flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 ${situation.iconColor}`}>{situation.icon}</span>
               <h3 className="mt-3 text-base font-semibold text-[var(--color-text-primary)]">
                 {situation.label}
               </h3>
@@ -204,7 +214,7 @@ export default function DiscoverPage({
           transition={{ duration: 0.4 }}
         >
           <ProductGridSection
-            eyebrow={`${active.emoji} ${active.label}`}
+            eyebrow={active.label}
             title={`${active.label}の作品`}
             description={active.description}
             products={filteredProducts}
