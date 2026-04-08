@@ -148,7 +148,7 @@ export default async function SeriesPage({
 
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-            <p className="eyebrow">Representative Work</p>
+            <p className="eyebrow">代表作</p>
             <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               {leadProduct
                 ? `まずは「${leadProduct.title}」から入ると、このシリーズの傾向が掴みやすいです。`
@@ -156,13 +156,13 @@ export default async function SeriesPage({
             </p>
           </div>
           <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-            <p className="eyebrow">Review Count</p>
+            <p className="eyebrow">レビュー数</p>
             <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               合計レビュー {totalReviewCount}件 / 平均 {averageRating(products)}。件数が動いている順で見比べやすくしています。
             </p>
           </div>
           <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-            <p className="eyebrow">Recent Releases</p>
+            <p className="eyebrow">最新リリース</p>
             <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               新着 {newCount}件。シリーズで追うときは、最新作から入るか、件数の多い定番作から入るかで見え方が変わります。
             </p>

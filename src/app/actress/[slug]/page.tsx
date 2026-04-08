@@ -94,7 +94,7 @@ export default async function ActressPage({
 
       <section className="editorial-surface p-6 md:p-8">
         <SectionIntro
-          eyebrow="Actress Focus"
+          eyebrow="女優ピックアップ"
           title={actressName}
           description={`${actressName}が気になるときに、そのまま代表作と近いジャンルへ進める入口です。ランキングでよく見られている作品を中心に並べています。`}
           action={
@@ -107,13 +107,13 @@ export default async function ActressPage({
         {actressEntry ? (
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-              <p className="eyebrow">Representative Work</p>
+              <p className="eyebrow">代表作</p>
               <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
                 まずは {actressEntry.topProductTitle} から入ると、いまの雰囲気を掴みやすいです。
               </p>
             </div>
             <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-              <p className="eyebrow">Review Count</p>
+              <p className="eyebrow">レビュー数</p>
               <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
                 合計レビュー {actressEntry.totalReviewCount}件。件数が多い作品から見ると外しにくくなります。
               </p>
@@ -131,7 +131,7 @@ export default async function ActressPage({
       </section>
 
       <ProductGridSection
-        eyebrow="Featured Titles"
+        eyebrow="注目作品"
         title={`${actressName}で見られている作品`}
         description="まずはレビュー件数が動いている作品から見て、そのあと近いジャンルへ広げると比較しやすいです。"
         products={products}
@@ -140,7 +140,7 @@ export default async function ActressPage({
       {relatedGenres.length > 0 ? (
         <section className="mt-10">
           <SectionIntro
-            eyebrow="Related Genres"
+            eyebrow="関連ジャンル"
             title="近いジャンルへ広げる"
             description="出演作の傾向が近いジャンルもそのまま比較できます。"
           />
@@ -156,13 +156,13 @@ export default async function ActressPage({
             href: ROUTES.ranking,
             title: "月間ランキングへ",
             description: "全体の温度感を見直したいときの入口です。",
-            eyebrow: "Ranking",
+            eyebrow: "ランキング",
           },
           {
             href: ROUTES.sale,
             title: "セール一覧へ",
             description: "値引き中の出演作から見たいときに向いています。",
-            eyebrow: "Sale",
+            eyebrow: "セール",
           },
           {
             href: relatedGenres[0] ? getGenreRoute(relatedGenres[0].slug) : ROUTES.search,
@@ -170,7 +170,7 @@ export default async function ActressPage({
             description: relatedGenres[0]
               ? "作風が近い作品をそのまま比較できます。"
               : "別の切り口から探したいときの入口です。",
-            eyebrow: "Genre",
+            eyebrow: "ジャンル",
           },
         ]}
       />

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTags, FaTimes } from "react-icons/fa";
+import { FaGift, FaTimes } from "react-icons/fa";
 
 export default function StickyCTA() {
   const [visible, setVisible] = useState(false);
@@ -31,29 +31,29 @@ export default function StickyCTA() {
           <div className="max-w-4xl mx-auto flex items-center justify-between gap-3 px-4 py-3">
             <div className="flex items-center gap-3 min-w-0">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent-strong)] text-white">
-                <FaTags size={14} />
+                <FaGift size={14} />
               </span>
               <div className="min-w-0">
                 <p className="font-bold text-sm text-[var(--color-text-primary)] truncate">
-                  今回はセール対象を先に見たい人向け
+                  🎁 初回限定クーポンで今すぐお得に
                 </p>
                 <p className="text-xs text-[var(--color-text-muted)] hidden sm:block">
-                  初めての方向けガイドも公開中
+                  FANZA未登録なら無料登録で特別クーポンGET
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
                 <a
-                  href="/sale"
-                  className="px-4 py-2 rounded-full text-sm font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-strong)] hover:opacity-90 transition-opacity whitespace-nowrap shadow-lg shadow-[rgba(143,29,70,0.2)]"
+                  href="/guide"
+                  className="px-4 py-2 rounded-full text-sm font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-strong)] hover:opacity-90 transition-all hover:scale-[1.02] whitespace-nowrap shadow-lg shadow-[rgba(143,29,70,0.2)]"
                 >
-                  セール一覧を見る
+                  無料登録ガイド
                 </a>
               <a
-                href="/guide"
+                href="/sale"
                 className="hidden sm:inline-flex px-3.5 py-2 rounded-full text-sm font-medium text-[var(--color-text-secondary)] border border-[var(--color-border)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)] transition-colors whitespace-nowrap"
               >
-                ガイド
+                セール一覧
               </a>
               <button
                 onClick={() => setDismissed(true)}

@@ -78,7 +78,7 @@ export default async function GenrePage({
             {genre.icon}
           </span>
           <div>
-            <p className="eyebrow">Genre Landing</p>
+            <p className="eyebrow">ジャンル詳細</p>
             <h1 className="mt-3 text-3xl font-semibold md:text-4xl">{genre.name}</h1>
           </div>
         </div>
@@ -93,7 +93,7 @@ export default async function GenrePage({
       </section>
 
       <ProductGridSection
-        eyebrow="Genre Picks"
+        eyebrow="ジャンル作品"
         title={`${genre.name}のおすすめ作品`}
         description="このジャンルでよく見られている作品を、比較しやすい密度で並べています。"
         products={products}
@@ -101,7 +101,7 @@ export default async function GenrePage({
 
       <section className="mt-12">
         <SectionIntro
-          eyebrow="Neighbor Genres"
+          eyebrow="関連ジャンル"
           title="近いジャンルにも広げる"
           description="作風が近いページへ横移動すると、比較の視野が広がります。"
         />
@@ -116,19 +116,19 @@ export default async function GenrePage({
             href: getGenreRoute("popular"),
             title: "人気作品ジャンルへ",
             description: "定番側の強さも合わせて見たいときに向いています。",
-            eyebrow: "Genre",
+            eyebrow: "ジャンル",
           },
           {
             href: ROUTES.sale,
             title: "セール一覧へ",
             description: "価格差を基準に比較したいときの入口です。",
-            eyebrow: "Sale",
+            eyebrow: "セール",
           },
           {
             href: ROUTES.ranking,
             title: "月間ランキングへ",
             description: "今月全体の温度感を見直したいときに使えます。",
-            eyebrow: "Ranking",
+            eyebrow: "ランキング",
           },
         ]}
       />

@@ -9,7 +9,11 @@ export function getProductSupportLine(product: Product): string {
 }
 
 export function getPrimaryFanzaCtaLabel(product: Product): string {
-  return product.reviewCount > 0 ? "FANZAのレビューを見る" : "FANZAで詳細を見る";
+  if (product.isSale) {
+    const discount = getDiscountPercent(product);
+    return discount ? `🔥 ${discount}%OFF → FANZAで見る` : "🔥 セール中 → FANZAで見る";
+  }
+  return product.reviewCount > 0 ? "FANZAで詳細を見る" : "今すぐFANZAで見る";
 }
 
 export function formatPriceYen(price: number): string {

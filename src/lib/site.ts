@@ -27,6 +27,8 @@ export const ROUTES = {
   articleFanzaPayment: "/articles/fanza-payment",
   articleVrSetup: "/articles/vr-setup",
   articleSaveMoney: "/articles/save-money",
+  articleSaleCalendar: "/articles/sale-calendar",
+  articleCostSaving: "/articles/cost-saving",
 } as const;
 
 export function toAbsoluteUrl(path = "") {

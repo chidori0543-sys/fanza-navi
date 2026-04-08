@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/components/JsonLd", () => ({
   default: () => null,
+  JsonLd: () => null,
 }));
 
 vi.mock("@/components/Analytics", () => ({

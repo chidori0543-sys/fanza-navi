@@ -43,7 +43,7 @@ describe("HomePage", () => {
     expect(container.querySelector(`a[href="${getGenreRoute("popular")}"]`)).not.toBeNull();
     expect(container.querySelector(`a[href="${ROUTES.articles}"]`)).not.toBeNull();
     expect(
-      screen.getAllByRole("link", { name: /FANZAのレビューを見る|FANZAで詳細を見る|FANZAで見る/ }).length
+      screen.getAllByRole("link", { name: /FANZAで見る|FANZAで詳細を見る|FANZAで見る/ }).length
     ).toBeGreaterThan(0);
   });
 
@@ -57,8 +57,8 @@ describe("HomePage", () => {
     render(await HomePage());
     fireEvent.scroll(window);
 
-    expect(screen.getByText(/今回はセール対象を先に見たい人向け/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /セール一覧を見る/ })).toHaveAttribute(
+    expect(screen.getByText(/初回限定クーポンで今すぐお得に/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /^セール一覧$/ })).toHaveAttribute(
       "href",
       ROUTES.sale
     );

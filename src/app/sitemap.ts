@@ -20,6 +20,8 @@ const staticEntries: Array<{
   { path: ROUTES.articleFanzaPayment, changeFrequency: "monthly", priority: 0.58 },
   { path: ROUTES.articleVrSetup, changeFrequency: "monthly", priority: 0.58 },
   { path: ROUTES.articleSaveMoney, changeFrequency: "monthly", priority: 0.58 },
+  { path: ROUTES.articleSaleCalendar, changeFrequency: "monthly", priority: 0.58 },
+  { path: ROUTES.articleCostSaving, changeFrequency: "monthly", priority: 0.58 },
   { path: ROUTES.about, changeFrequency: "monthly", priority: 0.42 },
   { path: ROUTES.contact, changeFrequency: "monthly", priority: 0.4 },
   { path: ROUTES.privacy, changeFrequency: "yearly", priority: 0.22 },

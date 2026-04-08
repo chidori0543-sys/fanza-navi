@@ -68,7 +68,7 @@ describe("ProductCard Component", () => {
   it("shows FANZA CTA label when affiliateUrl is set", () => {
     const withUrl = { ...baseProduct, affiliateUrl: "https://example.com" };
     render(<ProductCard product={withUrl} index={0} />);
-    expect(screen.getByText("FANZAのレビューを見る")).toBeInTheDocument();
+    expect(screen.getByText("FANZAで詳細を見る")).toBeInTheDocument();
   });
 
   it("renders rank badge for top 3", () => {

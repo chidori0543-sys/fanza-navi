@@ -18,7 +18,7 @@ export default function ActressRankingSection({
   return (
     <section className={compact ? "editorial-surface p-5 md:p-6" : ""}>
       <SectionIntro
-        eyebrow="Actress Focus"
+        eyebrow="女優ピックアップ"
         title="人気女優ランキング"
         description="いま上位に出ている作品から、よく名前を見る出演者をまとめています。代表作から入ると、ランキングの空気感が掴みやすいです。"
       />

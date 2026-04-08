@@ -4,7 +4,7 @@ import AgeGate from "@/components/AgeGate";
 import DisclosureBar from "@/components/DisclosureBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import JsonLd from "@/components/JsonLd";
+import { JsonLd } from "@/components/JsonLd";
 import Analytics from "@/components/Analytics";
 import ErrorTracker from "@/components/ErrorTracker";
 import { SITE_URL } from "@/lib/site";
@@ -113,7 +113,13 @@ export default function RootLayout({
       <body className="antialiased min-h-screen">
         <Analytics />
         <ErrorTracker />
-        <JsonLd />
+        <JsonLd data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "FANZAオトナビ",
+          "url": "https://fanza-navi.pages.dev",
+          "description": "FANZAのセール・ランキング・お得情報を毎日更新",
+        }} />
         <DisclosureBar />
         <div id="app-shell" inert aria-hidden="true">
           <Header />

@@ -141,18 +141,18 @@ describe("site routes", () => {
 
     expect(screen.getByRole("heading", { level: 1, name: /^VR$/ })).toBeInTheDocument();
     expect(screen.getAllByText(/視聴環境を整えてから選ぶと満足度が上がりやすい/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole("link", { name: /FANZAのレビューを見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /FANZAで見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
   });
 
   it("renders a monthly ranking page with product cards and related discovery links", async () => {
     const { container } = render(await RankingPage());
 
-    expect(screen.getByRole("heading", { name: "月間ランキング" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /FANZA人気ランキング/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "人気女優ランキング" })).toBeInTheDocument();
     expect(screen.getByText(/女優・メーカー・レーベルで絞る/i)).toBeInTheDocument();
     expect(screen.queryByText(/準備中/i)).toBeNull();
     expect(container.querySelector(`a[href="${getGenreRoute("popular")}"]`)).not.toBeNull();
-    expect(screen.getAllByRole("link", { name: /FANZAのレビューを見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /FANZAで見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
   });
 
   it("renders a static actress page with product cards and ranking links", async () => {
@@ -165,7 +165,7 @@ describe("site routes", () => {
     const actressName = decodeActressSlug(actressParams[0].slug);
 
     expect(screen.getAllByRole("heading", { name: actressName }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole("link", { name: /代表作を見る|FANZAのレビューを見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /代表作を見る|FANZAで見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
     expect(container.querySelector(`a[href="${ROUTES.ranking}"]`)).not.toBeNull();
     expect(container.querySelector(`a[href="${ROUTES.sale}"]`)).not.toBeNull();
   });
@@ -203,10 +203,10 @@ describe("site routes", () => {
   it("renders a real sale page with monetized product cards", async () => {
     const { container } = render(await SalePage());
 
-    expect(screen.getByRole("heading", { name: /セール作品/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /現在開催中のセール情報/i })).toBeInTheDocument();
     expect(screen.queryByText(/API連携/i)).toBeNull();
     expect(container.querySelector(`a[href="${getGenreRoute("sale")}"]`)).not.toBeNull();
-    expect(screen.getAllByRole("link", { name: /FANZAのレビューを見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /FANZAで見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
   });
 
   it("renders a new releases page with product cards and genre paths", async () => {
@@ -216,7 +216,7 @@ describe("site routes", () => {
     expect(screen.getByText(/配信直後の作品を、反応の早さと件数で追いやすく並べています/i)).toBeInTheDocument();
     expect(container.querySelector(`a[href="${getGenreRoute("new-release")}"]`)).not.toBeNull();
     expect(container.querySelector(`a[href="${getGenreRoute("vr")}"]`)).not.toBeNull();
-    expect(screen.getAllByRole("link", { name: /FANZAのレビューを見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /FANZAで見る|FANZAで詳細を見る/i }).length).toBeGreaterThan(0);
   });
 
   it("renders a static search-entry page with curated routes and monetized products", async () => {
