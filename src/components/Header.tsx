@@ -9,6 +9,7 @@ import {
   FaBolt,
   FaCalculator,
   FaChartLine,
+  FaEnvelope,
   FaSearch,
   FaTags,
   FaTimes,
@@ -30,6 +31,7 @@ const utilityLinks = [
   { href: ROUTES.simulator, label: "コスト比較", icon: <FaCalculator size={11} /> },
   { href: ROUTES.watchlist, label: "ウォッチリスト", icon: <FaBookmark size={11} /> },
   { href: ROUTES.guide, label: "初心者ガイド", icon: <FaBookOpen size={11} /> },
+  { href: ROUTES.contact, label: "お問い合わせ", icon: <FaEnvelope size={11} /> },
 ];
 
 export default function Header() {

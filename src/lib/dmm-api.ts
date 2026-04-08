@@ -84,6 +84,20 @@ export interface DmmProduct {
   };
 }
 
+function normalizeImageUrl(url?: string): string {
+  const value = url?.trim();
+
+  if (!value) {
+    return "";
+  }
+
+  if (value.startsWith("//")) {
+    return `https:${value}`;
+  }
+
+  return value.replace(/^http:\/\//i, "https://");
+}
+
 export interface DmmApiResponse {
   result: {
     status: number;
@@ -266,7 +280,9 @@ export function toProduct(item: DmmProduct, rank?: number, options?: { isSale?: 
     id: item.content_id,
     title: item.title,
     description: genres.join(" / ") || "FANZA作品",
-    imageUrl: item.imageURL?.large || item.imageURL?.small || "",
+    imageUrl: normalizeImageUrl(
+      item.imageURL?.large || item.imageURL?.small || item.imageURL?.list || ""
+    ),
     affiliateUrl: item.affiliateURL || (item.URL ? buildAffiliateUrl(item.URL) : ""),
     price,
     salePrice,

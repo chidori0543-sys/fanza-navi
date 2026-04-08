@@ -112,7 +112,7 @@ export default function CustomRankingPage({
           <span className="chip inline-flex items-center gap-1"><FaCoins size={10} /> コスパで選ぶ</span>
           <span className="chip inline-flex items-center gap-1"><FaGem size={10} /> 埋もれた名作を発掘</span>
           <span className="chip inline-flex items-center gap-1"><FaFireAlt size={10} /> セールの目玉</span>
-          <span className="chip inline-flex items-center gap-1"><FaStar size={10} /> 新作チェック</span>
+          <span className="chip inline-flex items-center gap-1"><FaStar size={10} /> 新人発掘</span>
         </div>
       </motion.section>
 

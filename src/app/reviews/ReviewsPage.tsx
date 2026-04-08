@@ -206,13 +206,13 @@ export default function ReviewsPage({ allProducts }: { allProducts: Product[] })
 
   return (
     <main className="content-shell px-4 py-8">
-      <Breadcrumb items={[{ label: "みんなのレビュー" }]} />
+      <Breadcrumb items={[{ label: "みんなのおすすめ作品レビュー" }]} />
 
       <section className="editorial-surface p-6 md:p-8">
         <SectionIntro
           eyebrow="ユーザー投稿"
-          title="みんなのレビュー"
-          description="このサイトのユーザーによる作品レビュー。公式の★だけでは分からない、リアルな感想を参考にできます。投稿したレビューはこのブラウザに保存されます。"
+          title="みんなのおすすめ作品レビュー"
+          description="このサイトのユーザーによるおすすめ作品レビューです。公式の★だけでは分からない、リアルな感想を参考にできます。投稿したレビューはこのブラウザに保存されます。"
         />
         <div className="mt-4">
           <button

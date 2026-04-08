@@ -124,7 +124,7 @@ export default function HeroSection({
 
             <div className="mt-5 flex flex-wrap gap-6 text-sm">
               {[
-                { num: "22+", label: "独自機能" },
+                { num: "21+", label: "独自機能" },
                 { num: "4種", label: "独自ランキング" },
                 { num: "毎日", label: "セール自動解析" },
               ].map((s) => (

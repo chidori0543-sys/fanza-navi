@@ -61,7 +61,7 @@ export default function ContactPage() {
               <FaRegClock size={16} />
             </div>
             <p className="mt-4 text-xs font-medium tracking-[0.14em] text-[var(--color-text-muted)] uppercase">
-              Response
+              返信目安
             </p>
             <h2 className="mt-2 text-xl font-semibold text-[var(--color-text-primary)]">
               通常3営業日以内
@@ -76,7 +76,7 @@ export default function ContactPage() {
               <FaExclamationTriangle size={16} />
             </div>
             <p className="mt-4 text-xs font-medium tracking-[0.14em] text-[var(--color-text-muted)] uppercase">
-              Official Support
+              公式サポート
             </p>
             <h2 className="mt-2 text-xl font-semibold text-[var(--color-text-primary)]">
               公式窓口が必要な相談もあります

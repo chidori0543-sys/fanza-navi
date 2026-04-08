@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import CustomRankingPage from "./CustomRankingPage";
 import { ROUTES } from "@/lib/site";
 import { buildPageMetadata } from "@/lib/metadata";
-import { loadRankingProducts, loadSaleProducts } from "@/lib/catalog";
+import {
+  FEATURE_PRODUCT_POOL_LIMIT,
+  loadFeatureProducts,
+  loadSaleProducts,
+} from "@/lib/catalog";
 import type { Product } from "@/data/products";
 import { getDiscountPercent } from "@/lib/product-presenter";
 
@@ -69,16 +73,10 @@ function buildNewcomerRanking(products: Product[], allProducts: Product[]): Prod
 }
 
 export default async function Page() {
-  const [rankingProducts, saleProducts] = await Promise.all([
-    loadRankingProducts({ limit: 200 }),
-    loadSaleProducts({ limit: 200 }),
+  const [allProducts, saleProducts] = await Promise.all([
+    loadFeatureProducts({ limit: FEATURE_PRODUCT_POOL_LIMIT }),
+    loadSaleProducts({ limit: Math.ceil(FEATURE_PRODUCT_POOL_LIMIT * 0.5) }),
   ]);
-
-  const allProducts = [...rankingProducts];
-  const saleIds = new Set(allProducts.map((p) => p.id));
-  saleProducts.forEach((p) => {
-    if (!saleIds.has(p.id)) allProducts.push(p);
-  });
 
   const cospaRanking = buildCospaRanking(allProducts);
   const hiddenGemRanking = buildHiddenGemRanking(allProducts);

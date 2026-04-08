@@ -5,7 +5,7 @@ import {
   FaArrowUp, FaCoins, FaGift, FaPercentage, FaTicketAlt, FaTags,
   FaTheaterMasks, FaChartLine, FaCalculator, FaThumbsUp, FaCalendarAlt,
   FaUserFriends, FaIndustry, FaArrowRight, FaBookmark, FaStar, FaDice,
-  FaClock, FaShoppingCart, FaTrophy, FaListOl, FaChartBar, FaPiggyBank,
+  FaClock, FaShoppingCart, FaTrophy, FaListOl, FaChartBar,
   FaHistory, FaShareAlt, FaUser, FaVoteYea, FaRandom, FaPen, FaProjectDiagram,
 } from "react-icons/fa";
 import ActressRankingSection from "@/components/ActressRankingSection";
@@ -106,7 +106,7 @@ const uniqueTools = [
   },
   {
     href: ROUTES.reviews,
-    title: "みんなのレビュー",
+    title: "みんなのおすすめ作品レビュー",
     description: "ユーザー投稿レビューで、公式の★だけでは分からないリアルな感想を参考に。",
     icon: <FaPen size={20} />,
     accent: false,
@@ -183,14 +183,6 @@ const uniqueTools = [
     icon: <FaListOl size={20} />,
     accent: false,
     badge: null,
-  },
-  {
-    href: ROUTES.savingsTips,
-    title: "みんなの節約術",
-    description: "クーポン、ポイント、買い回しなど節約目線の見方を集約しています。",
-    icon: <FaPiggyBank size={20} />,
-    accent: false,
-    badge: "投稿型",
   },
   {
     href: ROUTES.snsCards,
@@ -272,7 +264,7 @@ export default function HomePageView({
         <SectionIntro
           eyebrow="トクナビ独自機能"
           title="公式FANZAにない、ここだけのツール"
-          description="シチュ検索・ガチャ・深掘り・レビューなど、公式FANZAにない独自機能を22種以上取り揃えています。"
+          description={`シチュ検索・ガチャ・深掘り・レビューなど、公式FANZAにない独自機能を${uniqueTools.length}種そろえています。`}
         />
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {visibleTools.map((tool) => (

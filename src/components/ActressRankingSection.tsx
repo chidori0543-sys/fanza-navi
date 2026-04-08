@@ -52,7 +52,7 @@ export default function ActressRankingSection({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <p className="section-eyebrow">Rank #{index + 1}</p>
+                      <p className="section-eyebrow">{index + 1}位ピックアップ</p>
                       <h3 className="mt-1.5 line-clamp-2 text-base font-semibold leading-tight text-[var(--color-text-primary)]">
                         <a href={getActressRoute(entry.name)} className="editorial-link">
                           {entry.name}

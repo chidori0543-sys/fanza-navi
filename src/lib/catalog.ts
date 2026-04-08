@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { sampleProducts, type Product } from "@/data/products";
 import { getGenreBySlug } from "@/data/genres";
 import { normalizeEntityName } from "@/lib/entity-ranking";
@@ -19,6 +20,9 @@ export interface CatalogLoadOptions {
   offset?: number;
   articleId?: string;
 }
+
+const API_BATCH_SIZE = 100;
+export const FEATURE_PRODUCT_POOL_LIMIT = 1200;
 
 export interface RelatedCatalogLoadOptions extends CatalogLoadOptions {
   currentId?: string;
@@ -476,32 +480,51 @@ export async function loadMakerProducts(
   return mergeProducts(primary, fallback, limit, excludedIds);
 }
 
+const loadSearchProductsCached = cache(async (limit: number): Promise<Product[]> => {
+  const batchSize = Math.min(API_BATCH_SIZE, Math.max(50, Math.ceil(limit / 12)));
+  const rankingPages = Math.max(Math.ceil((limit * 0.55) / batchSize), 1);
+  const salePages = Math.max(Math.ceil((limit * 0.35) / batchSize), 1);
+  const newPages = Math.max(Math.ceil((limit * 0.3) / batchSize), 1);
+
+  const rankingRequests = Array.from({ length: rankingPages }, (_, index) =>
+    loadRankingProducts({
+      limit: batchSize,
+      offset: index * batchSize + 1,
+    })
+  );
+  const saleRequests = Array.from({ length: salePages }, (_, index) =>
+    loadSaleProducts({
+      limit: batchSize,
+      offset: index * batchSize + 1,
+    })
+  );
+  const newRequests = Array.from({ length: newPages }, (_, index) =>
+    loadNewProducts({
+      limit: batchSize,
+      offset: index * batchSize + 1,
+    })
+  );
+
+  const batches = await Promise.all([
+    ...rankingRequests,
+    ...saleRequests,
+    ...newRequests,
+  ]);
+
+  return dedupeProducts(batches.flat(), limit);
+});
+
 export async function loadSearchProducts(
   options: CatalogLoadOptions = {}
 ): Promise<Product[]> {
-  const limit = normalizeLimit(options);
-  const rankBatch1 = Math.max(Math.ceil(limit * 0.35), 48);
-  const rankBatch2 = Math.max(Math.ceil(limit * 0.2), 24);
-  const rankBatch3 = Math.max(Math.ceil(limit * 0.12), 18);
-  const saleBatch1 = Math.max(Math.ceil(limit * 0.25), 36);
-  const saleBatch2 = Math.max(Math.ceil(limit * 0.15), 18);
-  const newBatch1 = Math.max(Math.ceil(limit * 0.22), 30);
-  const newBatch2 = Math.max(Math.ceil(limit * 0.12), 18);
+  const requestedLimit = normalizeLimit(options);
 
-  const [ranking, rankingExt1, rankingExt2, sale, saleExt, newReleases, newExt] = await Promise.all([
-    loadRankingProducts({ limit: rankBatch1 }),
-    loadRankingProducts({ limit: rankBatch2, offset: rankBatch1 + 1 }),
-    loadRankingProducts({ limit: rankBatch3, offset: rankBatch1 + rankBatch2 + 1 }),
-    loadSaleProducts({ limit: saleBatch1 }),
-    loadSaleProducts({ limit: saleBatch2, offset: saleBatch1 + 1 }),
-    loadNewProducts({ limit: newBatch1 }),
-    loadNewProducts({ limit: newBatch2, offset: newBatch1 + 1 }),
-  ]);
+  if (requestedLimit === 0) {
+    return [];
+  }
 
-  return dedupeProducts(
-    [...ranking, ...sale, ...newReleases, ...rankingExt1, ...saleExt, ...newExt, ...rankingExt2],
-    limit
-  );
+  const limit = Math.max(requestedLimit, FEATURE_PRODUCT_POOL_LIMIT);
+  return loadSearchProductsCached(limit);
 }
 
 export async function loadFeatureProducts(

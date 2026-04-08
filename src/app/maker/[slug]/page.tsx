@@ -8,9 +8,10 @@ import ProductGridSection from "@/components/ProductGridSection";
 import RelatedNavigation from "@/components/RelatedNavigation";
 import SectionIntro from "@/components/SectionIntro";
 import { genrePages } from "@/data/genres";
-import { loadEntityDiscoveryCatalog, loadMakerProducts } from "@/lib/catalog";
+import { loadMakerProducts, loadRankingProducts } from "@/lib/catalog";
 import {
   buildActressCandidates,
+  buildMakerCandidates,
   buildSeriesCandidates,
   decodeEntitySlug,
   getEntitySlug,
@@ -55,10 +56,10 @@ function averageRating(products: Product[]): number {
 }
 
 const loadMakerContext = cache(async () => {
-  const catalog = await loadEntityDiscoveryCatalog({ limit: 24 });
+  const rankingProducts = await loadRankingProducts({ limit: 100 });
 
   return {
-    makers: catalog.makers,
+    makers: buildMakerCandidates(rankingProducts, 20),
   };
 });
 

@@ -114,7 +114,7 @@ export default function SearchPage({
         <SectionIntro
           eyebrow="作品検索"
           title="気になる作品を見つけよう"
-          description="キーワード・ジャンル・価格帯で絞り込めます。"
+          description="人気・新作・セールを横断した大きめの母数から、キーワード・ジャンル・価格帯で絞り込めます。"
         />
 
         {/* Search bar */}

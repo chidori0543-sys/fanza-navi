@@ -44,7 +44,6 @@ export const ROUTES = {
   rankingBattle: "/ranking-battle",
   seriesGuide: "/series-guide",
   salePredict: "/sale-predict",
-  savingsTips: "/savings-tips",
   priceHistory: "/price-history",
   snsCards: "/sns-cards",
   personalized: "/personalized",

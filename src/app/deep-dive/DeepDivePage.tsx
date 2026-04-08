@@ -108,7 +108,9 @@ function buildClusters(
 }
 
 function ProductMiniCard({ product }: { product: Product }) {
+  const [imgError, setImgError] = useState(false);
   const currentPrice = getPresentedCurrentPrice(product);
+  const hasImage = product.imageUrl && !imgError;
   return (
     <a
       href={product.affiliateUrl}
@@ -117,10 +119,16 @@ function ProductMiniCard({ product }: { product: Product }) {
       className="group relative flex gap-3 rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-all hover:border-[var(--color-border-strong)] hover:shadow-lg"
     >
       <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-2xl bg-[var(--color-surface-highlight)]">
-        {product.imageUrl ? (
-          <img src={product.imageUrl} alt={product.title} className="h-full w-full object-cover" loading="lazy" />
+        {hasImage ? (
+          <img
+            src={product.imageUrl}
+            alt={product.title}
+            className="h-full w-full object-cover"
+            loading="lazy"
+            onError={() => setImgError(true)}
+          />
         ) : (
-          <div className="flex h-full items-center justify-center text-xs text-[var(--color-text-muted)]">No Image</div>
+          <div className="flex h-full items-center justify-center text-[10px] text-[var(--color-text-muted)]">画像なし</div>
         )}
         {product.isSale && (
           <span className="absolute bottom-1 left-1 rounded-full bg-[var(--color-accent)] px-1.5 py-0.5 text-[9px] font-bold text-white">
