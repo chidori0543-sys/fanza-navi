@@ -13,8 +13,8 @@ import InstallBanner from "@/components/InstallBanner";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "FANZAオトナビ — セール解析・シチュ検索・独自ランキング",
-    template: "%s | FANZAオトナビ",
+    default: "FANZAトクナビ — セール解析・シチュ検索・独自ランキング",
+    template: "%s | FANZAトクナビ",
   },
   description:
     "公式FANZAにない切り口で作品を探せる。シチュエーション検索・独自ランキング・週間セール解析・コスト比較シミュレーターなど、もっとお得に楽しむための無料ツール集。",
@@ -23,22 +23,22 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
   },
   openGraph: {
-    title: "FANZAオトナビ — セール解析・シチュ検索・独自ランキング",
+    title: "FANZAトクナビ — セール解析・シチュ検索・独自ランキング",
     description: "公式FANZAにない切り口で作品を探せる無料ツール集。シチュエーション検索・独自ランキング・週間セール解析・コスト比較。",
     type: "website",
-    siteName: "FANZAオトナビ",
+    siteName: "FANZAトクナビ",
     images: [
       {
         url: `${SITE_URL}/images/ogp.svg`,
         width: 1200,
         height: 630,
-        alt: "FANZAオトナビ — セール解析・シチュ検索・独自ランキング",
+        alt: "FANZAトクナビ — セール解析・シチュ検索・独自ランキング",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "FANZAオトナビ — セール解析・シチュ検索・独自ランキング",
+    title: "FANZAトクナビ — セール解析・シチュ検索・独自ランキング",
     description: "公式FANZAにない切り口で作品を探せる無料ツール集。シチュエーション検索・独自ランキング・週間セール解析・コスト比較。",
     images: [`${SITE_URL}/images/ogp.svg`],
   },
@@ -118,7 +118,7 @@ export default function RootLayout({
         <JsonLd data={{
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": "FANZAオトナビ",
+          "name": "FANZAトクナビ",
           "url": "https://fanza-navi.pages.dev",
           "description": "FANZAのセール・ランキング・お得情報を毎日更新",
         }} />

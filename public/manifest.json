@@ -1,6 +1,6 @@
 {
-  "name": "FANZAオトナビ",
-  "short_name": "オトナビ",
+  "name": "FANZAトクナビ",
+  "short_name": "トクナビ",
   "description": "セール解析・シチュ検索・独自ランキング — 公式FANZAにない探し方",
   "start_url": "/",
   "display": "standalone",

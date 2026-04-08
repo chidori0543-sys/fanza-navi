@@ -1,4 +1,4 @@
-# FANZAオトナビ 運用・自動化ガイド
+# FANZAトクナビ 運用・自動化ガイド
 
 > **最終更新:** Phase 4 完了 — ロゴ修正(N→F)、重複Footer除去、英語eyebrow全翻訳、Playwright 92テスト+Vitest 100テスト全パス
 
@@ -155,7 +155,7 @@ NEXT_PUBLIC_WORKERS_API=https://fanza-navi-worker.your-subdomain.workers.dev
 ### X (Twitter) アカウント運用
 
 #### プロフィール設定
-- **名前**: FANZAオトナビ｜セール速報＆お得情報
+- **名前**: FANZAトクナビ｜セール速報＆お得情報
 - **bio**: FANZAのセール・キャンペーン情報を毎日自動配信🔥 お得な買い方・隠れた名作を紹介中。公式にない切り口でFANZAを100倍楽しむ情報サイト
 - **リンク**: https://fanza-navi.pages.dev
 - **固定ツイート**: 「初めてFANZAを使う方へ → /guide」の誘導
@@ -190,7 +190,7 @@ NEXT_PUBLIC_WORKERS_API=https://fanza-navi-worker.your-subdomain.workers.dev
 #### エンゲージメント施策
 - **投票機能の告知**: 「あなたの推し作品に投票 → /community-ranking」
 - **リプライ対応**: セール情報への質問に回答（サイトへ誘導）
-- **ハッシュタグ**: #FANZA #FANZAセール #FANZA割引 #FANZAオトナビ
+- **ハッシュタグ**: #FANZA #FANZAセール #FANZA割引 #FANZAトクナビ
 
 ### SNS自動化ツール
 
@@ -406,7 +406,7 @@ curl https://your-worker.workers.dev/api/cron-test
 5. Twitter/Xアカウント作成（@fanza_otonavi など）
 
 **SNS投稿（2件）：**
-- 投稿1:「🎉 FANZAオトナビ、オープンしました！シチュエーション検索・独自ランキング・セール解析など、公式にはないツールが使えます → [URL]」
+- 投稿1:「🎉 FANZAトクナビ、オープンしました！シチュエーション検索・独自ランキング・セール解析など、公式にはないツールが使えます → [URL]」
 - 投稿2:「💰 今週のFANZAセール、最大○○%OFFの作品をまとめました。週間セールまとめページで一覧チェック → [URL]/weekly-sale」
 
 ### Day 2

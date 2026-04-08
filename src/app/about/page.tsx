@@ -6,7 +6,7 @@ import { buildPageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = buildPageMetadata({
   title: "運営者情報",
   description:
-    "FANZAオトナビの運営者情報・特定商取引法に基づく表記。サイト概要、運営形態、お問い合わせ先をご確認いただけます。",
+    "FANZAトクナビの運営者情報・特定商取引法に基づく表記。サイト概要、運営形態、お問い合わせ先をご確認いただけます。",
   path: ROUTES.about,
 });
 
@@ -21,7 +21,7 @@ export default function AboutPage() {
             <tr>
               <td className="py-4 pr-4 font-bold text-white w-1/3">サイト名</td>
               <td className="py-4 text-[var(--color-text-secondary)]">
-                FANZAオトナビ
+                FANZAトクナビ
               </td>
             </tr>
             <tr>

@@ -31,7 +31,7 @@ export function buildPageMetadata({
       description,
       url: path,
       type: "website",
-      siteName: "FANZAオトナビ",
+      siteName: "FANZAトクナビ",
       locale: "ja_JP",
       images: [
         {
@@ -67,7 +67,7 @@ export function buildArticleMetadata({
       description,
       url: path,
       type: "article",
-      siteName: "FANZAオトナビ",
+      siteName: "FANZAトクナビ",
       locale: "ja_JP",
       publishedTime,
       modifiedTime,

@@ -123,7 +123,8 @@ export default function HomePageView({
 }) {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
   const rankingSpotlight = rankingPreview.slice(0, 3);
-  const rankingMore = rankingPreview.slice(3);
+  const rankingMore = rankingPreview.slice(3, 6);
+  const saleCompact = salePreview.slice(0, 4);
 
   return (
     <main className="pb-12">
@@ -136,7 +137,7 @@ export default function HomePageView({
       {/* ★ UNIQUE TOOLS — Main Feature of This Site */}
       <section className="content-shell px-4 pb-10">
         <SectionIntro
-          eyebrow="オトナビ独自機能"
+          eyebrow="トクナビ独自機能"
           title="公式FANZAにない、ここだけのツール"
           description="シチュエーション検索・独自ランキング・コスト比較など、公式サイトではできない探し方・使い方ができます。"
         />
@@ -206,6 +207,13 @@ export default function HomePageView({
                 ))}
               </div>
             ) : null}
+            {rankingPreview.length > 6 && (
+              <div className="mt-4 text-center">
+                <PrimaryCta href={ROUTES.ranking} size="sm" variant="outline">
+                  ランキング全体を見る →
+                </PrimaryCta>
+              </div>
+            )}
           </div>
           <ActressRankingSection entries={topActresses} compact />
         </div>
@@ -222,7 +230,7 @@ export default function HomePageView({
                 セール一覧へ
               </PrimaryCta>
             }
-            products={salePreview}
+            products={saleCompact}
             columns="grid-cols-1 sm:grid-cols-2"
             compact
           />

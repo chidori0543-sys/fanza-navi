@@ -7,7 +7,7 @@ import { ROUTES } from "@/lib/site";
 import type { Product } from "@/data/products";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "人気女優ランキング｜FANZAオトナビ",
+  title: "人気女優ランキング｜FANZAトクナビ",
   description:
     "ランキング上位作品の出演回数・平均評価・レビュー数をもとに集計した人気女優ランキング。気になる女優の作品一覧へそのまま進めます。",
   path: ROUTES.actressRanking,

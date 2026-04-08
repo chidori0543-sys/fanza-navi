@@ -14,6 +14,12 @@ import {
   FaTimes,
   FaInfoCircle,
   FaRegLightbulb,
+  FaChartBar,
+  FaChartLine,
+  FaFilm,
+  FaMobileAlt,
+  FaCoins,
+  FaThumbsUp,
 } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import PrimaryCta from "@/components/PrimaryCta";
@@ -157,12 +163,12 @@ export default function SimulatorPage() {
         transition={{ delay: 0.1 }}
         className="glass-card mb-8 p-6 md:p-8"
       >
-        <h2 className="mb-6 text-xl font-bold">📊 シミュレーション条件</h2>
+        <h2 className="mb-6 text-xl font-bold">シミュレーション条件</h2>
 
         {/* Count slider */}
         <div className="mb-6">
           <label className="mb-2 flex items-center justify-between text-sm font-semibold">
-            <span>🎬 月に何本見る？</span>
+            <span>月に何本見る？</span>
             <span className="rounded-full bg-[var(--color-primary)]/20 px-3 py-1 text-lg font-extrabold text-[var(--color-primary)]">
               {count}本
             </span>
@@ -280,14 +286,14 @@ export default function SimulatorPage() {
         transition={{ delay: 0.2 }}
         className="glass-card mb-8 p-6 md:p-8"
       >
-        <h2 className="mb-6 text-xl font-bold">📈 シミュレーション結果</h2>
+        <h2 className="mb-6 text-xl font-bold">シミュレーション結果</h2>
 
         {/* Summary cards */}
         <div className="mb-6 grid gap-4 sm:grid-cols-3">
           {/* Monthly plan */}
           <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-4 text-center">
             <p className="mb-1 text-xs text-[var(--color-text-secondary)]">
-              📱 月額見放題
+              月額見放題
             </p>
             <p className="text-2xl font-extrabold text-green-400">
               <AnimatedYen value={MONTHLY_PRICE} />
@@ -321,7 +327,7 @@ export default function SimulatorPage() {
             }`}
           >
             <p className="mb-1 text-xs text-[var(--color-text-secondary)]">
-              💰 差額
+              差額
             </p>
             <p
               className={`text-2xl font-extrabold ${
@@ -341,7 +347,7 @@ export default function SimulatorPage() {
         {/* Visual bar chart */}
         <div className="mb-6 space-y-4">
           <ComparisonBar
-            label="📱 月額見放題"
+            label="月額見放題"
             amount={MONTHLY_PRICE}
             maxAmount={maxBar}
             color="linear-gradient(90deg, #22c55e 0%, #16a34a 100%)"
@@ -395,7 +401,7 @@ export default function SimulatorPage() {
             ) : (
               <>
                 <p className="mb-1 text-2xl font-extrabold text-yellow-400">
-                  👍 単品購入がお得！
+                  単品購入がお得！
                 </p>
                 <p className="text-sm text-[var(--color-text-secondary)]">
                   月{count}本なら単品がベスト
@@ -431,7 +437,7 @@ export default function SimulatorPage() {
           {/* Monthly plan card */}
           <div className="glass-card overflow-hidden">
             <div className="border-b border-green-500/20 bg-green-500/10 px-5 py-3 text-center">
-              <p className="font-bold text-green-400">📱 月額見放題</p>
+              <p className="font-bold text-green-400">月額見放題</p>
             </div>
             <div className="p-5 space-y-4">
               <div>

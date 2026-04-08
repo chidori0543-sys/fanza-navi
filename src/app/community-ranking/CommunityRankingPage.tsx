@@ -92,13 +92,13 @@ export default function CommunityRankingPage() {
       >
         <SectionIntro
           eyebrow="コミュニティ投票"
-          title="👍 みんなの推し作品ランキング"
+          title="みんなの推し作品ランキング"
           description="ユーザーの投票で決まるランキングです。あなたの推し作品に投票して、みんなのおすすめを共有しましょう。"
         />
         <div className="mt-3 flex flex-wrap gap-2 text-xs text-[var(--color-text-secondary)]">
-          <span className="chip">👍 1人1票</span>
-          <span className="chip">📊 リアルタイム集計</span>
-          <span className="chip">🏆 期間別ランキング</span>
+          <span className="chip">1人1票</span>
+          <span className="chip">リアルタイム集計</span>
+          <span className="chip">期間別ランキング</span>
         </div>
       </motion.section>
 
@@ -124,7 +124,7 @@ export default function CommunityRankingPage() {
         {error && (
           <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center">
             <p className="text-lg font-semibold text-[var(--color-text-primary)]">
-              🚧 投票機能は準備中です
+              投票機能は準備中です
             </p>
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
               Workers APIのデプロイ後にご利用いただけます。
@@ -144,7 +144,7 @@ export default function CommunityRankingPage() {
               まだ投票がありません
             </p>
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              最初の投票者になりましょう！作品ページから「👍 推す」ボタンで投票できます。
+              最初の投票者になりましょう！作品ページから「推す」ボタンで投票できます。
             </p>
           </div>
         )}

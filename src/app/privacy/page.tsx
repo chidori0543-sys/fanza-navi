@@ -5,7 +5,7 @@ import { ROUTES } from "@/lib/site";
 export const metadata: Metadata = buildPageMetadata({
   title: "プライバシーポリシー",
   description:
-    "FANZAオトナビのプライバシーポリシー。アクセス解析、Cookie、アフィリエイト計測、個人情報の取り扱い方針を記載しています。",
+    "FANZAトクナビのプライバシーポリシー。アクセス解析、Cookie、アフィリエイト計測、個人情報の取り扱い方針を記載しています。",
   path: ROUTES.privacy,
 });
 
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
             1. はじめに
           </h2>
           <p>
-            FANZAオトナビ（以下「本サイト」）は、利用者のプライバシーを尊重し、個人情報の保護に努めます。本ポリシーでは、本サイトにおける情報の取り扱いについて説明します。
+            FANZAトクナビ（以下「本サイト」）は、利用者のプライバシーを尊重し、個人情報の保護に努めます。本ポリシーでは、本サイトにおける情報の取り扱いについて説明します。
           </p>
         </section>
 

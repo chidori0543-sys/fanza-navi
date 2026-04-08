@@ -96,9 +96,9 @@ export default function HeroSection({
               まずはここから
             </div>
 
-            <h1 className="mt-4 text-[2.55rem] font-semibold leading-[1.03] tracking-[-0.04em] text-[var(--color-text-primary)] md:text-[3.35rem] xl:text-[3.7rem]">
-              <span className="block">公式にない探し方で</span>
-              <span className="mt-1 block">もっとお得に。</span>
+            <h1 className="mt-4 text-[2.2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--color-text-primary)] sm:text-[2.8rem] md:text-[3.2rem] lg:text-[3.5rem]">
+              <span className="block whitespace-nowrap">公式にない探し方で、</span>
+              <span className="mt-1 block whitespace-nowrap">もっとお得に。</span>
             </h1>
 
             <p className="mt-3 text-base font-semibold text-[var(--color-accent)] md:text-lg">
@@ -154,7 +154,7 @@ export default function HeroSection({
                     人気作品
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,8,11,0.96)] via-[rgba(8,8,11,0.28)] to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,8,11,0.98)] via-[rgba(8,8,11,0.5)] to-[rgba(8,8,11,0.15)]" />
 
                 <div className="absolute left-4 top-4 flex flex-wrap gap-2 md:left-5 md:top-5">
                   <span className="inline-flex items-center gap-2 rounded-full bg-[rgba(227,74,110,0.92)] px-3 py-1.5 text-xs font-bold text-white shadow-lg shadow-[rgba(227,74,110,0.25)]">
@@ -176,7 +176,7 @@ export default function HeroSection({
                   <p className="text-xs font-semibold tracking-[0.08em] text-white/70">
                     今週の注目作品
                   </p>
-                  <h2 className="mt-2 max-w-3xl text-2xl font-semibold leading-tight text-white md:text-[2rem]">
+                  <h2 className="mt-2 line-clamp-2 max-w-3xl text-xl font-semibold leading-snug text-white md:text-2xl">
                     {leadProduct?.title ?? "まず見ておきたい人気作品"}
                   </h2>
                   <p className="mt-3 max-w-2xl text-sm leading-7 text-white/78">

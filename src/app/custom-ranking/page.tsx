@@ -7,9 +7,9 @@ import type { Product } from "@/data/products";
 import { getDiscountPercent } from "@/lib/product-presenter";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "独自ランキング｜コスパ・隠れた名作・新人注目作｜FANZAオトナビ",
+  title: "独自ランキング｜コスパ・隠れた名作・新人注目作｜FANZAトクナビ",
   description:
-    "FANZAオトナビ独自のランキング。コスパ最強・隠れた名作・大幅値下げ・新人注目作の4カテゴリで、公式ランキングでは見つからない作品を発見できます。",
+    "FANZAトクナビ独自のランキング。コスパ最強・隠れた名作・大幅値下げ・新人注目作の4カテゴリで、公式ランキングでは見つからない作品を発見できます。",
   path: ROUTES.customRanking,
 });
 

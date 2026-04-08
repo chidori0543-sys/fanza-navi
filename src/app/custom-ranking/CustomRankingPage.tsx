@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FaCoins, FaGem, FaFireAlt, FaStar, FaTrophy, FaChartBar } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumb";
 import PrimaryCta from "@/components/PrimaryCta";
 import ProductCard from "@/components/ProductCard";
@@ -13,7 +14,7 @@ type TabKey = "cospa" | "hidden-gem" | "big-discount" | "newcomer";
 
 interface TabDef {
   key: TabKey;
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   description: string;
 }
@@ -21,28 +22,28 @@ interface TabDef {
 const tabs: TabDef[] = [
   {
     key: "cospa",
-    icon: "💰",
+    icon: <FaCoins size={14} />,
     label: "コスパランキング",
     description:
       "レビュー付き作品のうち、価格あたりの評価スコアが高い順にランキング。安くて評価が良い作品が見つかります。",
   },
   {
     key: "hidden-gem",
-    icon: "💎",
+    icon: <FaGem size={14} />,
     label: "隠れた名作",
     description:
       "評価4.0以上かつレビュー数1〜19件の作品をピックアップ。まだ多くの人に知られていない高評価作品です。",
   },
   {
     key: "big-discount",
-    icon: "🔥",
+    icon: <FaFireAlt size={14} />,
     label: "大幅値下げBEST",
     description:
       "現在セール中の作品から、割引率が高い順にランキング。最大限お得に購入できる作品をチェック。",
   },
   {
     key: "newcomer",
-    icon: "⭐",
+    icon: <FaStar size={14} />,
     label: "新人注目作",
     description:
       "直近1週間以内にリリースされた新作の中から、評価・レビュー数が高い順にランキング。注目の新人作品を発見。",
@@ -103,15 +104,15 @@ export default function CustomRankingPage({
         className="editorial-surface p-6 md:p-8"
       >
         <SectionIntro
-          eyebrow="FANZAオトナビ独自"
-          title="🏅 独自ランキング"
+          eyebrow="FANZAトクナビ独自"
+          title="独自ランキング"
           description="公式の売上ランキングとは異なる独自視点で、コスパ・隠れた名作・大幅値下げ・新人注目作の4カテゴリをお届けします。"
         />
         <div className="mt-3 flex flex-wrap gap-2 text-xs text-[var(--color-text-secondary)]">
-          <span className="chip">💰 コスパで選ぶ</span>
-          <span className="chip">💎 埋もれた名作を発掘</span>
-          <span className="chip">🔥 セールの目玉</span>
-          <span className="chip">⭐ 新作チェック</span>
+          <span className="chip inline-flex items-center gap-1"><FaCoins size={10} /> コスパで選ぶ</span>
+          <span className="chip inline-flex items-center gap-1"><FaGem size={10} /> 埋もれた名作を発掘</span>
+          <span className="chip inline-flex items-center gap-1"><FaFireAlt size={10} /> セールの目玉</span>
+          <span className="chip inline-flex items-center gap-1"><FaStar size={10} /> 新作チェック</span>
         </div>
       </motion.section>
 
@@ -121,7 +122,7 @@ export default function CustomRankingPage({
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all ${
               activeTab === tab.key
                 ? "bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white shadow-lg shadow-[var(--color-primary)]/20"
                 : "border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)]"
@@ -142,7 +143,7 @@ export default function CustomRankingPage({
           transition={{ duration: 0.3 }}
           className="mt-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
         >
-          <p className="text-sm font-bold text-[var(--color-text-primary)]">
+          <p className="flex items-center gap-2 text-sm font-bold text-[var(--color-text-primary)]">
             {currentTab.icon} {currentTab.label}
           </p>
           <p className="mt-1 text-xs leading-relaxed text-[var(--color-text-muted)]">
@@ -192,15 +193,15 @@ export default function CustomRankingPage({
       >
         <SectionIntro
           eyebrow="自動更新"
-          title="📊 このランキングは毎日自動更新されます"
+          title="このランキングは毎日自動更新されます"
           description="DMM APIから取得した最新データに基づき、毎日ランキングを再計算しています。ブックマークして定期的にチェックしてみてください。"
         />
         <div className="mt-4 flex flex-wrap gap-3">
           <PrimaryCta href={ROUTES.ranking} size="sm" variant="outline">
-            🏆 公式売上ランキング
+            <span className="inline-flex items-center gap-1.5"><FaTrophy size={12} /> 公式売上ランキング</span>
           </PrimaryCta>
           <PrimaryCta href={ROUTES.sale} size="sm" variant="outline">
-            🔥 セール一覧
+            <span className="inline-flex items-center gap-1.5"><FaFireAlt size={12} /> セール一覧</span>
           </PrimaryCta>
         </div>
       </motion.section>

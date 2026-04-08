@@ -6,7 +6,7 @@ import { ROUTES } from "@/lib/site";
 import type { Product } from "@/data/products";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "シチュエーション別作品ガイド｜気分で探すFANZA｜FANZAオトナビ",
+  title: "シチュエーション別作品ガイド｜気分で探すFANZA｜FANZAトクナビ",
   description:
     "ジャンルや女優名ではなく、今の気分やシチュエーションからFANZA作品を探せるガイドです。初めての方からVR体験まで9つの切り口で最適な作品が見つかります。",
   path: ROUTES.discover,

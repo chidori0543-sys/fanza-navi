@@ -24,7 +24,7 @@
   <rect x="607" y="124" width="8" height="40" rx="2" fill="#e34a6e" opacity="0.9"/>
   <line x1="628" y1="168" x2="650" y2="190" stroke="url(#brand)" stroke-width="6" stroke-linecap="round"/>
   <!-- Site name -->
-  <text x="600" y="260" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="72" font-weight="800" fill="url(#brand)">FANZAオトナビ</text>
+  <text x="600" y="260" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="72" font-weight="800" fill="url(#brand)">FANZAトクナビ</text>
   <!-- Tagline -->
   <text x="600" y="320" text-anchor="middle" font-family="'Hiragino Sans','Noto Sans JP',sans-serif" font-size="28" font-weight="600" fill="#f7f3eb" opacity="0.85">セール解析 × シチュ検索 × 独自ランキング</text>
   <line x1="420" y1="355" x2="780" y2="355" stroke="url(#gold)" stroke-width="1" stroke-opacity="0.3"/>

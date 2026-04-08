@@ -60,7 +60,7 @@ export default function Header() {
               </span>
               <div className="min-w-0">
                 <p className="truncate text-lg font-bold tracking-tight">
-                  <span className="text-[var(--color-accent)]">FANZA</span><span className="gradient-text">オトナビ</span>
+                  <span className="text-[var(--color-accent)]">FANZA</span><span className="gradient-text">トクナビ</span>
                 </p>
                 <p className="truncate text-[10px] font-medium text-[var(--color-text-muted)]">
                   セール解析 × シチュ検索 × 独自ランキング

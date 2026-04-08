@@ -14,7 +14,7 @@ test.describe("ホームページ", () => {
   });
 
   test("ヘッダーのブランド名が表示される", async ({ page }) => {
-    const brand = page.locator("header").getByText("FANZAオトナビ");
+    const brand = page.locator("header").getByText("FANZAトクナビ");
     await expect(brand.first()).toBeVisible();
   });
 

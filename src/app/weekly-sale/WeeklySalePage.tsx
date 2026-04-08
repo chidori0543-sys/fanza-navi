@@ -219,13 +219,13 @@ export default function WeeklySalePage({
       >
         <SectionIntro
           eyebrow="アーカイブ"
-          title="📁 先週のまとめ"
+          title="先週のまとめ"
           description="過去のセール情報アーカイブ機能は準備中です。今後のアップデートで、週ごとのセール履歴を振り返れるようになります。セールの傾向分析にもご活用いただけるようになる予定です。"
         />
         <div className="mt-3 flex flex-wrap gap-2 text-xs text-[var(--color-text-secondary)]">
-          <span className="chip">📊 過去データの分析</span>
-          <span className="chip">📈 割引トレンド</span>
-          <span className="chip">🔔 セール通知（予定）</span>
+          <span className="chip inline-flex items-center gap-1"><FaCalendarAlt size={10} /> 過去データの分析</span>
+          <span className="chip inline-flex items-center gap-1"><FaSortAmountDown size={10} /> 割引トレンド</span>
+          <span className="chip inline-flex items-center gap-1"><FaFire size={10} /> セール通知（予定）</span>
         </div>
       </motion.section>
 

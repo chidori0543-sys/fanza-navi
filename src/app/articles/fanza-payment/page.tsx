@@ -21,8 +21,8 @@ export default function Page() {
         "@type": "Article",
         "headline": "FANZA（DMM）の支払い方法を完全解説！クレジットカード・PayPay・DMMポイントを比較",
         "description": "FANZAで使える全支払い方法をクレジットカード・DMMポイント・PayPay・キャリア決済・コンビニ払いなど徹底比較。バレない方法や手数料、おすすめの支払い手段を状況別に解説します。",
-        "author": { "@type": "Organization", "name": "FANZAオトナビ" },
-        "publisher": { "@type": "Organization", "name": "FANZAオトナビ" },
+        "author": { "@type": "Organization", "name": "FANZAトクナビ" },
+        "publisher": { "@type": "Organization", "name": "FANZAトクナビ" },
         "datePublished": "2026-04-08",
         "dateModified": "2026-04-08",
       }} />

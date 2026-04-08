@@ -46,7 +46,7 @@ test.describe("全ページ基本チェック", () => {
       // Header exists with logo text
       const header = p.locator("header");
       await expect(header).toBeVisible();
-      await expect(header.locator("text=FANZAオトナビ")).toBeVisible();
+      await expect(header.locator("text=FANZAトクナビ")).toBeVisible();
 
       // Footer exists
       const footer = p.locator("footer");

@@ -84,7 +84,7 @@ export default function Footer() {
                 </svg>
               </span>
               <span className="text-lg font-bold tracking-tight">
-                <span className="text-[var(--color-accent)]">FANZA</span><span className="gradient-text">オトナビ</span>
+                <span className="text-[var(--color-accent)]">FANZA</span><span className="gradient-text">トクナビ</span>
               </span>
             </a>
             <p className="mt-4 max-w-xs text-sm leading-7 text-[var(--color-text-secondary)]">
@@ -131,7 +131,7 @@ export default function Footer() {
 
         <div className="mt-8 flex flex-col items-center gap-3 border-t border-[var(--color-border)] pt-8 sm:flex-row sm:justify-between">
           <p className="text-xs text-[var(--color-text-muted)]">
-            © {new Date().getFullYear()} FANZAオトナビ
+            © {new Date().getFullYear()} FANZAトクナビ
           </p>
           <p className="text-[11px] text-[var(--color-text-muted)]">
             18歳以上向けコンテンツ

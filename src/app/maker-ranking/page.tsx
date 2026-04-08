@@ -7,7 +7,7 @@ import { ROUTES } from "@/lib/site";
 import type { Product } from "@/data/products";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "メーカー比較ガイド｜FANZAオトナビ",
+  title: "メーカー比較ガイド｜FANZAトクナビ",
   description:
     "ランキング上位作品からメーカーごとの作品数・平均価格・平均評価・レビュー数を集計。高評価・コスパ・レビュー人気のTOP3比較も。",
   path: ROUTES.makerRanking,

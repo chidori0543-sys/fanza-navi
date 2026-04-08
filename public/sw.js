@@ -34,7 +34,7 @@ self.addEventListener('fetch', e => {
 self.addEventListener('push', e => {
   const data = e.data ? e.data.json() : {};
   e.waitUntil(
-    self.registration.showNotification(data.title || 'FANZAオトナビ', {
+    self.registration.showNotification(data.title || 'FANZAトクナビ', {
       body: data.body || '新しいセール情報があります',
       icon: '/icon.svg',
       badge: '/icon.svg',
