@@ -23,7 +23,7 @@ function groupBySeries(products: Product[]): Record<string, Product[]> {
 }
 
 export default async function Page() {
-  const products: Product[] = await loadFeatureProducts({ limit: 180 });
+  const products: Product[] = await loadFeatureProducts({ limit: 300 });
   const grouped = groupBySeries(products);
 
   const seriesData = Object.entries(grouped)

@@ -31,6 +31,8 @@ const navSections = [
       { href: ROUTES.dailyPick, label: "今日のおすすめ", icon: null },
       { href: ROUTES.gacha, label: "ガチャレコメンド", icon: null },
       { href: ROUTES.personalized, label: "パーソナライズフィード", icon: <FaUser size={10} /> },
+      { href: ROUTES.deepDive, label: "同じ系統を深掘り", icon: null },
+      { href: ROUTES.reviews, label: "みんなのレビュー", icon: null },
       { href: ROUTES.priceHistory, label: "価格履歴チャート", icon: null },
       { href: ROUTES.salePredict, label: "セール予測カレンダー", icon: null },
       { href: ROUTES.seriesGuide, label: "シリーズ完走ガイド", icon: null },

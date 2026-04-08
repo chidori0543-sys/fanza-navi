@@ -11,6 +11,6 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function Page() {
-  const products = await loadFeatureProducts({ limit: 180 });
+  const products = await loadFeatureProducts({ limit: 300 });
   return <RankingBattlePage products={products} />;
 }

@@ -39,9 +39,9 @@ export default function Header() {
     <header className="border-b border-[var(--color-border)] bg-[rgba(17,18,21,0.88)] backdrop-blur-2xl">
       <div className="content-shell">
         <div className="flex min-h-[64px] items-center justify-between gap-4 py-3">
-          <a href={ROUTES.home} className="group min-w-0">
+          <a href={ROUTES.home} className="group shrink-0">
             <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-border-strong)] bg-[rgba(14,10,18,0.9)] shadow-lg shadow-[rgba(227,74,110,0.15)] transition-transform duration-200 group-hover:scale-105">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--color-border-strong)] bg-[rgba(14,10,18,0.9)] shadow-lg shadow-[rgba(227,74,110,0.15)] transition-transform duration-200 group-hover:scale-105">
                 <svg viewBox="0 0 64 64" fill="none" className="h-7 w-7">
                   <defs>
                     <linearGradient id="hdr-accent" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
@@ -54,11 +54,11 @@ export default function Header() {
                   <text x="27" y="30.4" fontFamily="'Arial Black', 'Helvetica Neue', sans-serif" fontSize="22" fontWeight="900" fill="url(#hdr-accent)" textAnchor="middle" dominantBaseline="middle" letterSpacing="-1">F</text>
                 </svg>
               </span>
-              <div className="min-w-0">
-                <p className="truncate text-lg font-bold tracking-tight">
+              <div>
+                <p className="whitespace-nowrap text-lg font-bold tracking-tight">
                   <span className="text-[var(--color-accent)]">FANZA</span><span className="gradient-text">トクナビ</span>
                 </p>
-                <p className="truncate text-[10px] font-medium text-[var(--color-text-muted)]">
+                <p className="whitespace-nowrap text-[10px] font-medium text-[var(--color-text-muted)]">
                   シチュ検索 × 今夜の1本 × 独自ランキング
                 </p>
               </div>

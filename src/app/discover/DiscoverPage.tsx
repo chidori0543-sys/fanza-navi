@@ -12,6 +12,7 @@ import {
   FaFire,
   FaRegStar,
   FaSearch,
+  FaShareAlt,
   FaShieldAlt,
   FaShoppingCart,
   FaTags,
@@ -616,6 +617,22 @@ export default function DiscoverPage({
                   <PrimaryCta href={ROUTES.dailyPick} size="md" variant="outline">
                     デイリーピック詳細へ
                   </PrimaryCta>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const text = `📅 今日のFANZAおすすめ\n\n「${todayPick.title}」\n${formatPriceYen(getPresentedCurrentPrice(todayPick))}~${todayPick.isSale ? " 🔥セール中" : ""}\n\n#FANZAトクナビ #今日の1本\n→ `;
+                      const url = typeof window !== "undefined" ? window.location.origin + "/daily-pick" : "";
+                      if (navigator.share) {
+                        navigator.share({ title: "今日のFANZAおすすめ", text, url });
+                      } else {
+                        window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text + url)}`, "_blank");
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-white"
+                  >
+                    <FaShareAlt size={12} />
+                    シェア
+                  </button>
                 </div>
               </div>
             </div>

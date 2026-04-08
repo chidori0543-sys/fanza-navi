@@ -21,7 +21,7 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const body = `【お名前】${name}\n【メールアドレス】${email}\n\n${message}`;
-    const mailtoUrl = `mailto:entrynavi.contact@gmail.com?subject=${encodeURIComponent(
+    const mailtoUrl = `mailto:chidori0543@gmail.com?subject=${encodeURIComponent(
       `[FANZAトクナビ] ${subject}`
     )}&body=${encodeURIComponent(body)}`;
 
@@ -162,6 +162,9 @@ export default function ContactPage() {
                   </option>
                   <option value="サイトの不具合" className="bg-[var(--color-bg-dark)]">
                     サイトの不具合報告
+                  </option>
+                  <option value="新機能リクエスト" className="bg-[var(--color-bg-dark)]">
+                    新機能リクエスト・要望
                   </option>
                   <option value="広告・メディア連携" className="bg-[var(--color-bg-dark)]">
                     広告掲載・メディア連携のご相談

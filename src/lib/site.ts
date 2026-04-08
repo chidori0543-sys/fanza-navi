@@ -48,6 +48,8 @@ export const ROUTES = {
   priceHistory: "/price-history",
   snsCards: "/sns-cards",
   personalized: "/personalized",
+  deepDive: "/deep-dive",
+  reviews: "/reviews",
 } as const;
 
 export function toAbsoluteUrl(path = "") {

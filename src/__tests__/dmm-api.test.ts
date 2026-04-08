@@ -111,7 +111,7 @@ describe("DMM API Client", () => {
       expect(product.price).toBe(1980);
       expect(product.rating).toBe(4.3);
       expect(product.reviewCount).toBe(42);
-      expect(product.genre).toBe("ドラマ");
+      expect(product.genre).toBe("drama");
       expect(product.tags).toEqual(["ドラマ", "恋愛"]);
       expect(product.maker).toBeUndefined();
       expect(product.label).toBeUndefined();
@@ -201,7 +201,7 @@ describe("DMM API Client", () => {
         },
       };
 
-      expect(toProduct(dramaProduct).genre).toBe("ドラマ");
+      expect(toProduct(dramaProduct).genre).toBe("drama");
       expect(toProduct(vrProduct).genre).toBe("vr");
     });
 

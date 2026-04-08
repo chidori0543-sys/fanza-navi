@@ -72,6 +72,48 @@ export const genres: Genre[] = [
     description: "没入感抜群のVR作品",
     color: "#a78bfa",
   },
+  {
+    id: "mature",
+    name: "熟女",
+    icon: "🌹",
+    description: "大人の魅力あふれる熟女作品",
+    color: "#f472b6",
+  },
+  {
+    id: "busty",
+    name: "巨乳",
+    icon: "💎",
+    description: "巨乳ジャンルの人気作品",
+    color: "#fb923c",
+  },
+  {
+    id: "planning",
+    name: "企画",
+    icon: "🎬",
+    description: "ユニークな企画系作品",
+    color: "#22d3ee",
+  },
+  {
+    id: "drama",
+    name: "ドラマ",
+    icon: "🎭",
+    description: "ストーリー重視のドラマ作品",
+    color: "#c084fc",
+  },
+  {
+    id: "cosplay",
+    name: "コスプレ",
+    icon: "👗",
+    description: "コスプレ衣装が魅力の作品",
+    color: "#f97316",
+  },
+  {
+    id: "idol",
+    name: "アイドル",
+    icon: "🎤",
+    description: "アイドル系女優の作品",
+    color: "#ec4899",
+  },
 ];
 
 /**

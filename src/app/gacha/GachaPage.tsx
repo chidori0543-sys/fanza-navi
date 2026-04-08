@@ -114,15 +114,17 @@ export default function GachaPage({
   }, [filteredProducts, isSpinning]);
 
   const handleShare = (product: Product) => {
-    const text = `FANZAガチャで当たった作品: ${product.title} ${formatPriceYen(getPresentedCurrentPrice(product))}~`;
+    const price = formatPriceYen(getPresentedCurrentPrice(product));
+    const rating = product.rating > 0 ? `★${product.rating.toFixed(1)}` : "";
+    const saleTag = product.isSale ? "🔥セール中 " : "";
+    const text = `🎰 FANZAガチャ結果\n\n${saleTag}「${product.title}」\n${price}~ ${rating}\n\n#FANZAトクナビ #FANZAガチャ\n→ `;
+    const shareUrl = typeof window !== "undefined" ? window.location.origin + "/gacha" : "";
+    
     if (navigator.share) {
-      navigator.share({
-        title: "FANZAガチャ結果",
-        text,
-        url: window.location.href,
-      });
+      navigator.share({ title: "FANZAガチャ結果", text, url: shareUrl });
     } else {
-      navigator.clipboard.writeText(text);
+      const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text + shareUrl)}`;
+      window.open(xUrl, "_blank");
     }
   };
 

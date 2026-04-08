@@ -19,6 +19,22 @@ const CANONICAL_GENRE_ALIASES: Record<string, string> = {
   "素人": "amateur",
   vr: "vr",
   "VR": "vr",
+  mature: "mature",
+  "熟女": "mature",
+  "熟女・人妻": "mature",
+  busty: "busty",
+  "巨乳": "busty",
+  "爆乳": "busty",
+  planning: "planning",
+  "企画": "planning",
+  "企画もの": "planning",
+  drama: "drama",
+  "ドラマ": "drama",
+  cosplay: "cosplay",
+  "コスプレ": "cosplay",
+  idol: "idol",
+  "アイドル": "idol",
+  "アイドル・芸能人": "idol",
 };
 
 export function mapGenreLabelToKey(label?: string): string {

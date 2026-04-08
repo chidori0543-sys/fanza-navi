@@ -12,7 +12,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function Page() {
-  const allProducts = await loadFeatureProducts({ limit: 180 });
+  const allProducts = await loadFeatureProducts({ limit: 300 });
 
   return <WatchlistPage allProducts={allProducts} />;
 }

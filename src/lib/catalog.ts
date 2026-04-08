@@ -480,26 +480,26 @@ export async function loadSearchProducts(
   options: CatalogLoadOptions = {}
 ): Promise<Product[]> {
   const limit = normalizeLimit(options);
-  const [ranking, rankingExtended, sale, saleExtended, newReleases, newExtended] = await Promise.all([
-    loadRankingProducts({ limit: Math.max(Math.ceil(limit * 0.5), 48) }),
-    loadRankingProducts({
-      limit: Math.max(Math.ceil(limit * 0.28), 24),
-      offset: Math.max(Math.ceil(limit * 0.5), 48) + 1,
-    }),
-    loadSaleProducts({ limit: Math.max(Math.ceil(limit * 0.36), 36) }),
-    loadSaleProducts({
-      limit: Math.max(Math.ceil(limit * 0.2), 18),
-      offset: Math.max(Math.ceil(limit * 0.36), 36) + 1,
-    }),
-    loadNewProducts({ limit: Math.max(Math.ceil(limit * 0.32), 30) }),
-    loadNewProducts({
-      limit: Math.max(Math.ceil(limit * 0.18), 18),
-      offset: Math.max(Math.ceil(limit * 0.32), 30) + 1,
-    }),
+  const rankBatch1 = Math.max(Math.ceil(limit * 0.35), 48);
+  const rankBatch2 = Math.max(Math.ceil(limit * 0.2), 24);
+  const rankBatch3 = Math.max(Math.ceil(limit * 0.12), 18);
+  const saleBatch1 = Math.max(Math.ceil(limit * 0.25), 36);
+  const saleBatch2 = Math.max(Math.ceil(limit * 0.15), 18);
+  const newBatch1 = Math.max(Math.ceil(limit * 0.22), 30);
+  const newBatch2 = Math.max(Math.ceil(limit * 0.12), 18);
+
+  const [ranking, rankingExt1, rankingExt2, sale, saleExt, newReleases, newExt] = await Promise.all([
+    loadRankingProducts({ limit: rankBatch1 }),
+    loadRankingProducts({ limit: rankBatch2, offset: rankBatch1 + 1 }),
+    loadRankingProducts({ limit: rankBatch3, offset: rankBatch1 + rankBatch2 + 1 }),
+    loadSaleProducts({ limit: saleBatch1 }),
+    loadSaleProducts({ limit: saleBatch2, offset: saleBatch1 + 1 }),
+    loadNewProducts({ limit: newBatch1 }),
+    loadNewProducts({ limit: newBatch2, offset: newBatch1 + 1 }),
   ]);
 
   return dedupeProducts(
-    [...ranking, ...sale, ...newReleases, ...rankingExtended, ...saleExtended, ...newExtended],
+    [...ranking, ...sale, ...newReleases, ...rankingExt1, ...saleExt, ...newExt, ...rankingExt2],
     limit
   );
 }

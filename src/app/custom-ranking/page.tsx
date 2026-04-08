@@ -45,17 +45,33 @@ function buildBigDiscountRanking(saleProducts: Product[]): Product[] {
     .slice(0, 20);
 }
 
-function buildNewcomerRanking(products: Product[]): Product[] {
+function buildNewcomerRanking(products: Product[], allProducts: Product[]): Product[] {
+  // Count how many products each actress appears in across the full catalog
+  const actressProductCount = new Map<string, number>();
+  allProducts.forEach((p) => {
+    p.actresses?.forEach((name) => {
+      const key = name.trim();
+      if (key) actressProductCount.set(key, (actressProductCount.get(key) ?? 0) + 1);
+    });
+  });
+
   return [...products]
-    .filter((p) => p.isNew)
+    .filter((p) => {
+      if (!p.actresses || p.actresses.length === 0) return false;
+      // A "newcomer" product: at least one actress with ≤3 works in our catalog
+      return p.actresses.some((name) => {
+        const count = actressProductCount.get(name.trim()) ?? 0;
+        return count > 0 && count <= 3;
+      });
+    })
     .sort((a, b) => b.rating - a.rating || b.reviewCount - a.reviewCount)
     .slice(0, 20);
 }
 
 export default async function Page() {
   const [rankingProducts, saleProducts] = await Promise.all([
-    loadRankingProducts({ limit: 100 }),
-    loadSaleProducts({ limit: 100 }),
+    loadRankingProducts({ limit: 200 }),
+    loadSaleProducts({ limit: 200 }),
   ]);
 
   const allProducts = [...rankingProducts];
@@ -67,7 +83,7 @@ export default async function Page() {
   const cospaRanking = buildCospaRanking(allProducts);
   const hiddenGemRanking = buildHiddenGemRanking(allProducts);
   const bigDiscountRanking = buildBigDiscountRanking(saleProducts);
-  const newcomerRanking = buildNewcomerRanking(allProducts);
+  const newcomerRanking = buildNewcomerRanking(allProducts, allProducts);
 
   return (
     <CustomRankingPage

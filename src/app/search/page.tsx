@@ -13,6 +13,6 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function Page() {
-  const allProducts = await loadSearchProducts({ limit: 180 });
+  const allProducts = await loadSearchProducts({ limit: 300 });
   return <SearchPage allProducts={allProducts} genres={genrePages} />;
 }
