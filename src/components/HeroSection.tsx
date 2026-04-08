@@ -81,7 +81,7 @@ export default function HeroSection({
   newSpotlight?: Product;
 }) {
   return (
-    <section className="relative overflow-hidden px-4 pb-12 pt-4 md:pt-8">
+    <section className="relative overflow-hidden px-4 pb-6 pt-4 md:pt-8">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute left-1/2 top-0 h-[380px] w-[780px] -translate-x-1/2 rounded-full bg-[rgba(163,55,88,0.16)] blur-[120px]" />
         <div className="absolute right-0 top-10 h-[220px] w-[320px] rounded-full bg-[rgba(123,163,210,0.08)] blur-[95px]" />

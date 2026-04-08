@@ -321,7 +321,7 @@ export default function SaveMoneyPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
+        className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
           💰{" "}
@@ -339,7 +339,7 @@ export default function SaveMoneyPage() {
 
       <article>
         {/* ───── Introduction ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -380,7 +380,7 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── Sale Types ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-8 text-center">
             🏷️ セールの種類と開催パターン
           </h2>
@@ -440,7 +440,7 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── Coupons ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-8 text-center">
             🎟️ クーポンの入手方法と使い方
           </h2>
@@ -493,7 +493,7 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── DMMポイント活用法 ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             💎 DMMポイント活用法
           </h2>
@@ -579,7 +579,7 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── ウィッシュリスト活用法 ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             📌 ウィッシュリスト活用法
           </h2>
@@ -623,7 +623,7 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── 月額見放題 損益分岐点 ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             📊 月額見放題の損益分岐点
           </h2>
@@ -672,7 +672,7 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── 年間節約試算 ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             💹 年間の節約額シミュレーション
           </h2>
@@ -725,7 +725,7 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── セールカレンダー ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             📅 セールカレンダー（月別傾向）
           </h2>
@@ -776,7 +776,7 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── FAQ ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             ❓ よくある質問
           </h2>
@@ -810,7 +810,7 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── まとめ ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -876,27 +876,29 @@ export default function SaveMoneyPage() {
         </section>
 
         {/* ───── 関連記事リンク ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-xl font-bold mb-4 text-center">📚 関連記事</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <a
-              href="/articles/fanza-payment"
-              className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
-            >
-              <h3 className="font-bold text-sm mb-1">💳 支払い方法ガイド</h3>
-              <p className="text-xs text-[var(--color-text-secondary)]">
-                DMMポイントの購入方法や各種支払い手段を徹底比較
-              </p>
-            </a>
-            <a
-              href="/articles/vr-setup"
+              href="/articles/cost-saving"
               className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
             >
               <h3 className="font-bold text-sm mb-1">
-                🥽 VR視聴ガイド
+                💰 FANZAで安く買う7つの方法
               </h3>
               <p className="text-xs text-[var(--color-text-secondary)]">
-                スマホ・Meta Quest・PCでFANZA VRを楽しむ方法を解説
+                初回クーポン、週末セール、ポイント還元など節約テクニックを徹底解説
+              </p>
+            </a>
+            <a
+              href="/articles/sale-calendar"
+              className="glass-card p-5 hover:border-[var(--color-primary)]/50 transition-colors block"
+            >
+              <h3 className="font-bold text-sm mb-1">
+                📅 年間セールカレンダー
+              </h3>
+              <p className="text-xs text-[var(--color-text-secondary)]">
+                毎週・毎月・季節ごとのセール傾向とベストタイミングを一覧で確認
               </p>
             </a>
           </div>

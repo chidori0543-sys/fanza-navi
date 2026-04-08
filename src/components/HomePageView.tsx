@@ -71,7 +71,7 @@ export default function HomePageView({
   const rankingMore = rankingPreview.slice(3);
 
   return (
-    <main className="pb-24">
+    <main className="pb-12">
       <HeroSection
         leadProduct={leadProduct}
         saleSpotlight={saleSpotlight ?? undefined}
@@ -215,7 +215,7 @@ export default function HomePageView({
         </div>
       </section>
 
-      <section id="genre-discovery" className="content-shell px-4 pb-14">
+      <section id="genre-discovery" className="content-shell px-4 pb-8">
         <SectionIntro
           eyebrow="ジャンル別"
           title="ジャンルから探す"
@@ -229,7 +229,7 @@ export default function HomePageView({
         <GenreRail genres={featuredGenres} />
       </section>
 
-      <section className="content-shell px-4 pb-12">
+      <section className="content-shell px-4 pb-8">
         <RelatedNavigation
           title="支払い方法や比較記事も見ておけます"
           description="作品を開く前に確認しておきたい情報だけをまとめています。"

@@ -406,7 +406,7 @@ export default function VRSetupPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
+        className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
           🥽{" "}
@@ -422,7 +422,7 @@ export default function VRSetupPage() {
 
       <article>
         {/* ───── Introduction ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -450,7 +450,7 @@ export default function VRSetupPage() {
         </section>
 
         {/* ───── Requirements ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             📦 必要なもの一覧（予算別）
           </h2>
@@ -498,7 +498,7 @@ export default function VRSetupPage() {
         </section>
 
         {/* ───── Device-specific Guides ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-8 text-center">
             📱 デバイス別セットアップガイド
           </h2>
@@ -563,7 +563,7 @@ export default function VRSetupPage() {
         </section>
 
         {/* ───── Quality Settings ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             🎬 画質設定ガイド
           </h2>
@@ -617,7 +617,7 @@ export default function VRSetupPage() {
         </section>
 
         {/* ───── Troubleshooting ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             🔧 よくあるトラブルと解決法
           </h2>
@@ -682,7 +682,7 @@ export default function VRSetupPage() {
         </section>
 
         {/* ───── VR作品の選び方 ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             🎯 VR作品の選び方のコツ
           </h2>
@@ -709,7 +709,7 @@ export default function VRSetupPage() {
         </section>
 
         {/* ───── おすすめジャンル ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             🎭 おすすめVR作品ジャンル
           </h2>
@@ -738,7 +738,7 @@ export default function VRSetupPage() {
         </section>
 
         {/* ───── FAQ ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             ❓ よくある質問
           </h2>
@@ -772,7 +772,7 @@ export default function VRSetupPage() {
         </section>
 
         {/* ───── まとめ ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -842,7 +842,7 @@ export default function VRSetupPage() {
         </section>
 
         {/* ───── 関連記事リンク ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-xl font-bold mb-4 text-center">📚 関連記事</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <a

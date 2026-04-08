@@ -204,6 +204,15 @@ export default function ProductCard({
             </span>
           )}
         </div>
+
+        {genre && (
+          <a
+            href={getGenreRoute(product.genre)}
+            className="mt-3 inline-flex items-center gap-1 text-xs text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-accent)]"
+          >
+            このジャンルをもっと見る →
+          </a>
+        )}
       </div>
     </motion.div>
   );

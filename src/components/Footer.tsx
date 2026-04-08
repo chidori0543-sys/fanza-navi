@@ -1,6 +1,6 @@
 "use client";
 
-import { FaChartLine, FaTags, FaCompass, FaBookOpen } from "react-icons/fa";
+import { FaChartLine, FaTags, FaCompass, FaBookOpen, FaArrowRight, FaGift } from "react-icons/fa";
 import { ROUTES, getGenreRoute } from "@/lib/site";
 
 const navSections = [
@@ -36,7 +36,30 @@ const navSections = [
 export default function Footer() {
   return (
     <footer className="border-t border-[var(--color-border)] bg-[rgba(9,10,13,0.6)]">
-      <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
+      <div className="max-w-6xl mx-auto px-4 py-8 md:py-12">
+        {/* Guide banner — highest revenue CTA (1,050円/signup) */}
+        <a
+          href={ROUTES.guide}
+          className="mb-6 flex items-center justify-between gap-4 rounded-2xl border border-[var(--color-primary)]/25 bg-gradient-to-r from-[var(--color-primary)]/10 to-[var(--color-accent)]/5 p-5 transition-all hover:border-[var(--color-primary)]/40 hover:from-[var(--color-primary)]/15 hover:to-[var(--color-accent)]/10 group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] text-white shadow-lg shadow-[var(--color-primary)]/20">
+              <FaGift size={18} />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-[var(--color-text-primary)] sm:text-base">
+                🎁 初めての方はこちら — FANZA完全ガイド
+              </p>
+              <p className="mt-1 text-xs text-[var(--color-text-secondary)] sm:text-sm">
+                無料登録の手順・支払い方法・お得な買い方まで徹底解説。初回限定クーポンあり！
+              </p>
+            </div>
+          </div>
+          <span className="hidden shrink-0 items-center gap-2 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-[var(--color-primary)]/20 transition-transform group-hover:scale-[1.03] sm:inline-flex">
+            ガイドを読む <FaArrowRight size={12} />
+          </span>
+        </a>
+
         <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr_1fr] md:gap-8">
           <div>
             <a href={ROUTES.home} className="inline-flex items-center gap-2.5 group">

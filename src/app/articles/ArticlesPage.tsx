@@ -1,6 +1,7 @@
 import {
   FaBalanceScale,
   FaBookOpen,
+  FaCalendarAlt,
   FaClock,
   FaCoins,
   FaCompass,
@@ -65,6 +66,26 @@ const articles = [
     date: "2026.04.01",
     readTime: "13分",
   },
+  {
+    href: ROUTES.articleSaleCalendar,
+    icon: <FaCalendarAlt size={18} />,
+    title: "FANZAセールはいつ？年間セールカレンダー【2026年最新版】",
+    description:
+      "FANZAのセール開催時期を年間カレンダーで徹底解説。毎週・毎月・季節の大型セールの傾向とベストタイミングを紹介。",
+    tag: "セール",
+    date: "2026.04.05",
+    readTime: "10分",
+  },
+  {
+    href: ROUTES.articleCostSaving,
+    icon: <FaCoins size={18} />,
+    title: "FANZAで安く買う7つの方法｜クーポン・セール・ポイント活用術【2026年版】",
+    description:
+      "初回クーポン、週末セール、DMMポイント還元、まとめ買い割引など、知るだけで年間数万円節約できる7つのテクニックを徹底解説。",
+    tag: "節約",
+    date: "2026.04.08",
+    readTime: "12分",
+  },
 ];
 
 const featuredGenres = genrePages.filter((genre) =>
@@ -90,19 +111,19 @@ export default function ArticlesPage() {
 
         <div className="grid gap-4 md:grid-cols-3">
           <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-            <p className="eyebrow">Before Purchase</p>
+            <p className="eyebrow">購入前チェック</p>
             <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               支払い方法やセール条件を先に整理しておくと、比較の精度が上がります。
             </p>
           </div>
           <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-            <p className="eyebrow">Viewing Setup</p>
+            <p className="eyebrow">視聴準備</p>
             <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               VRや視聴環境の準備が必要な人は、作品選びの前に相性を確認できます。
             </p>
           </div>
           <div className="rounded-[22px] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-            <p className="eyebrow">Route Back</p>
+            <p className="eyebrow">セール攻略</p>
             <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
               記事からレビューやジャンルへ戻りやすくして、読み物で終わらない導線にしています。
             </p>
@@ -110,7 +131,7 @@ export default function ArticlesPage() {
         </div>
       </section>
 
-      <section className="mt-12">
+      <section className="mt-8">
         <SectionIntro
           eyebrow="公開中ガイド"
           title="公開中のガイド記事"
@@ -156,7 +177,7 @@ export default function ArticlesPage() {
         </div>
       </section>
 
-      <section className="mt-12">
+      <section className="mt-8">
         <SectionIntro
           eyebrow="ジャンル"
           title="ジャンルから比較に戻る"

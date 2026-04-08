@@ -32,7 +32,7 @@ export default function ComparePage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
+        className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
           ⚖️ <span className="gradient-text">徹底比較</span>
@@ -47,7 +47,7 @@ export default function ComparePage() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="glass-card p-6 mb-10 border-purple-500/20"
+        className="glass-card p-6 mb-6 border-purple-500/20"
       >
         <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
           <span className="text-purple-400 font-bold">💬 筆者より：</span>
@@ -59,7 +59,7 @@ export default function ComparePage() {
       </motion.div>
 
       {/* VR vs Normal */}
-      <section className="mb-16">
+      <section className="mb-10">
         <h2 className="text-2xl font-bold mb-6 text-center">
           🥽 VR作品 vs 通常作品
         </h2>
@@ -109,7 +109,7 @@ export default function ComparePage() {
       </section>
 
       {/* Subscription vs Single */}
-      <section className="mb-16">
+      <section className="mb-10">
         <h2 className="text-2xl font-bold mb-6 text-center">
           💳 月額見放題 vs 単品購入
         </h2>
@@ -151,7 +151,7 @@ export default function ComparePage() {
       </section>
 
       {/* Verdict */}
-      <section className="glass-card p-8 text-center mb-12 border-[var(--color-primary)]/20">
+      <section className="glass-card p-8 text-center mb-8 border-[var(--color-primary)]/20">
         <h2 className="text-xl font-extrabold mb-4">📝 結論</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-left text-sm">
           <div className="bg-purple-500/5 border border-purple-500/20 rounded-xl p-4">

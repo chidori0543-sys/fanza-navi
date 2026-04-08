@@ -348,7 +348,7 @@ export default function PaymentGuidePage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
+        className="text-center mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
           💳{" "}
@@ -363,7 +363,7 @@ export default function PaymentGuidePage() {
 
       {/* ───── Introduction ───── */}
       <article>
-        <section className="mb-12">
+        <section className="mb-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -417,7 +417,7 @@ export default function PaymentGuidePage() {
         </section>
 
         {/* ───── Payment Methods Detail ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-8 text-center">
             📋 支払い方法 全6種を徹底解説
           </h2>
@@ -525,7 +525,7 @@ export default function PaymentGuidePage() {
         </section>
 
         {/* ───── Comparison Table ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             📊 支払い方法 比較表
           </h2>
@@ -579,7 +579,7 @@ export default function PaymentGuidePage() {
         </section>
 
         {/* ───── Privacy Ranking ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             🔒「バレない」支払い方法ランキング
           </h2>
@@ -629,7 +629,7 @@ export default function PaymentGuidePage() {
         </section>
 
         {/* ───── Situation-based Recommendation ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             🎯 状況別おすすめ支払い方法
           </h2>
@@ -659,7 +659,7 @@ export default function PaymentGuidePage() {
         </section>
 
         {/* ───── DMMポイントまとめ買い詳細 ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             💎 DMMポイントまとめ買い割引テーブル
           </h2>
@@ -734,7 +734,7 @@ export default function PaymentGuidePage() {
         </section>
 
         {/* ───── FAQ ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-2xl font-bold mb-6 text-center">
             ❓ よくある質問
           </h2>
@@ -768,7 +768,7 @@ export default function PaymentGuidePage() {
         </section>
 
         {/* ───── まとめ ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -835,7 +835,7 @@ export default function PaymentGuidePage() {
         </section>
 
         {/* ───── 関連記事リンク ───── */}
-        <section className="mb-12">
+        <section className="mb-8">
           <h2 className="text-xl font-bold mb-4 text-center">📚 関連記事</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <a
