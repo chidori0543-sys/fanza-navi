@@ -13,7 +13,7 @@ export function getPrimaryFanzaCtaLabel(product: Product): string {
 }
 
 export function formatPriceYen(price: number): string {
-  return `¥${price.toLocaleString()}`;
+  return `¥${price.toLocaleString()}~`;
 }
 
 export function getPresentedCurrentPrice(product: Product): number {

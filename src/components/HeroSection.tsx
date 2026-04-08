@@ -5,7 +5,7 @@ import { getPrimaryFanzaCtaLabel, getProductSupportLine } from "@/lib/product-pr
 import { ROUTES } from "@/lib/site";
 
 function formatPrice(product: Product) {
-  return `¥${(product.salePrice ?? product.price).toLocaleString()}`;
+  return `¥${(product.salePrice ?? product.price).toLocaleString()}~`;
 }
 
 function SnapshotCard({
@@ -188,7 +188,7 @@ export default function HeroSection({
                       <div>
                         <p className="text-[11px] tracking-[0.08em] text-white/55">価格</p>
                         <p className="mt-1 text-2xl font-semibold text-white">
-                          {leadProduct ? formatPrice(leadProduct) : "¥1,980"}
+                          {leadProduct ? formatPrice(leadProduct) : "¥1,980~"}
                         </p>
                       </div>
                       <div className="pb-1 text-sm text-white/75">

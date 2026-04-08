@@ -49,7 +49,7 @@ export default function RecentlyViewed() {
               {entry.title}
             </p>
             <p className="text-xs font-semibold text-[var(--color-accent)]">
-              ¥{(entry.salePrice ?? entry.price).toLocaleString()}
+              ¥{(entry.salePrice ?? entry.price).toLocaleString()}~
             </p>
           </Link>
         ))}

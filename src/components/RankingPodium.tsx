@@ -86,11 +86,11 @@ export default function RankingPodium({ products }: { products: Product[] }) {
                     <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-muted)]">Price</p>
                     <div className="mt-1 flex flex-wrap items-center gap-1.5">
                       <span className={`${isLeadCard ? "text-lg" : "text-base"} font-semibold text-[var(--color-text-primary)]`}>
-                        ¥{(product.salePrice ?? product.price).toLocaleString()}
+                        ¥{(product.salePrice ?? product.price).toLocaleString()}~
                       </span>
                       {product.salePrice ? (
                         <span className="text-xs text-[var(--color-text-muted)] line-through">
-                          ¥{product.price.toLocaleString()}
+                          ¥{product.price.toLocaleString()}~
                         </span>
                       ) : null}
                     </div>

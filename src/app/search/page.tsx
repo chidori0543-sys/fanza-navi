@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import SearchPage from "./SearchPage";
 import { ROUTES } from "@/lib/site";
 import { buildPageMetadata } from "@/lib/metadata";
-import { sampleProducts } from "@/data/products";
+import { loadSearchProducts } from "@/lib/catalog";
 import { genrePages } from "@/data/genres";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -12,6 +12,7 @@ export const metadata: Metadata = buildPageMetadata({
   path: ROUTES.search,
 });
 
-export default function Page() {
-  return <SearchPage allProducts={sampleProducts} genres={genrePages} />;
+export default async function Page() {
+  const allProducts = await loadSearchProducts({ limit: 100 });
+  return <SearchPage allProducts={allProducts} genres={genrePages} />;
 }

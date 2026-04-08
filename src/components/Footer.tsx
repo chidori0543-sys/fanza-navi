@@ -1,6 +1,6 @@
 "use client";
 
-import { FaFire, FaChartLine, FaTags, FaCompass, FaBookOpen } from "react-icons/fa";
+import { FaChartLine, FaTags, FaCompass, FaBookOpen } from "react-icons/fa";
 import { ROUTES, getGenreRoute } from "@/lib/site";
 
 const navSections = [
@@ -41,7 +41,9 @@ export default function Footer() {
           <div>
             <a href={ROUTES.home} className="inline-flex items-center gap-2.5 group">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent-strong)] text-white">
-                <FaFire size={13} />
+                <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
+                  <path d="M5 20V4h3.5l7 9.5V4H19v16h-3.5L8.5 10.5V20H5z" fill="currentColor" />
+                </svg>
               </span>
               <span className="text-lg font-bold tracking-tight">
                 <span className="text-[var(--color-accent)]">FANZA</span><span className="gradient-text">オトナビ</span>

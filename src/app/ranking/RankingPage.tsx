@@ -17,7 +17,7 @@ const featuredGenres = genrePages.filter((genre) =>
 );
 
 export default async function RankingPage() {
-  const products = await loadRankingProducts({ limit: 20 });
+  const products = await loadRankingProducts({ limit: 30 });
   const podiumProducts = products.slice(0, 3);
   const moreProducts = products.slice(3);
   const topActresses = buildActressRanking(products, 5);

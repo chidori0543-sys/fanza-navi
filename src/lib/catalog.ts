@@ -179,13 +179,13 @@ function getCuratedSeriesProducts(
   );
 }
 
-function mapApiProducts(items: DmmProduct[] | undefined, preserveRank = false): Product[] {
+function mapApiProducts(items: DmmProduct[] | undefined, preserveRank = false, mapOptions?: { isSale?: boolean }): Product[] {
   if (!Array.isArray(items)) {
     return [];
   }
 
   return items.map((item, index) => {
-    const product = toProduct(item, preserveRank ? index + 1 : undefined);
+    const product = toProduct(item, preserveRank ? index + 1 : undefined, mapOptions);
     return preserveRank ? product : stripRank(product);
   });
 }
@@ -194,11 +194,12 @@ async function loadCatalogProducts(
   fetcher: () => Promise<DmmProduct[]>,
   fallback: Product[],
   options: CatalogLoadOptions = {},
-  preserveRank = false
+  preserveRank = false,
+  mapOptions?: { isSale?: boolean }
 ): Promise<Product[]> {
   const limit = normalizeLimit(options);
   const apiItems = await fetcher();
-  const apiProducts = mapApiProducts(apiItems, preserveRank);
+  const apiProducts = mapApiProducts(apiItems, preserveRank, mapOptions);
 
   return mergeProducts(apiProducts, fallback, limit, new Set(), preserveRank);
 }
@@ -226,7 +227,9 @@ export async function loadSaleProducts(
   return loadCatalogProducts(
     () => fetchSaleProducts(hits),
     getCuratedSale(limit),
-    { limit }
+    { limit },
+    false,
+    { isSale: true }
   );
 }
 
@@ -458,4 +461,26 @@ export async function loadMakerProducts(
   const fallback = getCuratedMakerProducts(normalizedName, limit, excludedIds);
 
   return mergeProducts(primary, fallback, limit, excludedIds);
+}
+
+export async function loadSearchProducts(
+  options: CatalogLoadOptions = {}
+): Promise<Product[]> {
+  const limit = normalizeLimit(options);
+  const [ranking, sale, newReleases] = await Promise.all([
+    loadRankingProducts({ limit: Math.ceil(limit * 0.5) }),
+    loadSaleProducts({ limit: Math.ceil(limit * 0.3) }),
+    loadNewProducts({ limit: Math.ceil(limit * 0.3) }),
+  ]);
+
+  const seen = new Set<string>();
+  const merged: Product[] = [];
+  for (const product of [...ranking, ...sale, ...newReleases]) {
+    if (!seen.has(product.id) && product.affiliateUrl.trim()) {
+      seen.add(product.id);
+      merged.push(product);
+    }
+    if (merged.length >= limit) break;
+  }
+  return merged;
 }

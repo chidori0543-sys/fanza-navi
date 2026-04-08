@@ -26,15 +26,15 @@ describe("ProductCard Component", () => {
 
   it("renders price correctly", () => {
     render(<ProductCard product={baseProduct} index={0} />);
-    const prices = screen.getAllByText("¥1,980");
+    const prices = screen.getAllByText("¥1,980~");
     expect(prices.length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders sale price when available", () => {
     const saleProduct = { ...baseProduct, salePrice: 980, isSale: true };
     render(<ProductCard product={saleProduct} index={0} />);
-    expect(screen.getByText("¥980")).toBeInTheDocument();
-    const origPrices = screen.getAllByText("¥1,980");
+    expect(screen.getByText("¥980~")).toBeInTheDocument();
+    const origPrices = screen.getAllByText("¥1,980~");
     expect(origPrices.length).toBeGreaterThanOrEqual(1);
   });
 

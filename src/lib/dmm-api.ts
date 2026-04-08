@@ -85,20 +85,31 @@ function getConfig(): DmmApiConfig {
   return { apiId, affiliateId };
 }
 
-function buildUrl(
+function buildBaseUrl(
   endpoint: string,
-  params: Record<string, string>
+  params: Record<string, string> = {}
 ): string {
   const { apiId, affiliateId } = getConfig();
   const searchParams = new URLSearchParams({
     api_id: apiId,
     affiliate_id: affiliateId,
-    site: "FANZA",
-    service: "digital",
     output: "json",
     ...params,
   });
   return `${DMM_API_BASE}/${endpoint}?${searchParams.toString()}`;
+}
+
+function buildUrl(
+  endpoint: string,
+  params: Record<string, string>
+): string {
+  const { fanzaFloor } = getSiteConfig();
+  return buildBaseUrl(endpoint, {
+    site: "FANZA",
+    service: "digital",
+    floor: fanzaFloor,
+    ...params,
+  });
 }
 
 // ランキング取得（人気順）
@@ -201,9 +212,18 @@ async function fetchProducts(url: string): Promise<DmmProduct[]> {
 // DmmProduct → 表示用Productへの変換
 import type { Product } from "@/data/products";
 
-export function toProduct(item: DmmProduct, rank?: number): Product {
+function extractDiscountFromTitle(title: string): number | null {
+  const match = title.match(/(\d+)\s*%\s*OFF/i);
+  if (match) {
+    const discount = parseInt(match[1]);
+    if (discount > 0 && discount <= 95) return discount;
+  }
+  return null;
+}
+
+export function toProduct(item: DmmProduct, rank?: number, options?: { isSale?: boolean }): Product {
   const priceStr = item.prices?.price?.replace(/[^0-9]/g, "") || "0";
-  const price = parseInt(priceStr) || 0;
+  const rawPrice = parseInt(priceStr) || 0;
   const genres = item.iteminfo?.genre?.map((g) => g.name) || [];
   const genreKey = mapGenreLabelToKey(genres[0]);
   const rating = Number(item.review?.average ?? 0) || 0;
@@ -213,13 +233,25 @@ export function toProduct(item: DmmProduct, rank?: number): Product {
   const label = item.iteminfo?.label?.[0]?.name;
   const series = item.iteminfo?.series?.[0]?.name ?? label;
 
+  const discountFromTitle = extractDiscountFromTitle(item.title);
+  const isSale = options?.isSale || !!discountFromTitle;
+
+  let price = rawPrice;
+  let salePrice: number | undefined;
+
+  if (discountFromTitle && rawPrice > 0) {
+    salePrice = rawPrice;
+    price = Math.round(rawPrice / (1 - discountFromTitle / 100));
+  }
+
   return {
     id: item.content_id,
     title: item.title,
     description: genres.join(" / ") || "FANZA作品",
     imageUrl: item.imageURL?.large || item.imageURL?.small || "",
     affiliateUrl: item.affiliateURL || (item.URL ? buildAffiliateUrl(item.URL) : ""),
-    price: price,
+    price,
+    salePrice,
     rating: rating,
     reviewCount: reviewCount,
     genre: genreKey,
@@ -230,6 +262,7 @@ export function toProduct(item: DmmProduct, rank?: number): Product {
     actresses,
     rank: rank,
     isNew: isNewRelease(item.date),
+    isSale,
     releaseDate: item.date || "",
   };
 }
@@ -240,4 +273,147 @@ function isNewRelease(dateStr?: string): boolean {
   const now = new Date();
   const diff = now.getTime() - d.getTime();
   return diff < 7 * 24 * 60 * 60 * 1000; // 7日以内
+}
+
+// ── 追加 API 型定義 ──
+
+export interface DmmActress {
+  id: string;
+  name: string;
+  ruby?: string;
+  bust?: string;
+  cup?: string;
+  waist?: string;
+  hip?: string;
+  height?: string;
+  birthday?: string;
+  blood_type?: string;
+  prefectures?: string;
+  imageurl?: { small?: string; large?: string };
+  listurl?: { digital?: string };
+}
+
+export interface DmmGenreInfo {
+  genre_id: string;
+  name: string;
+  ruby?: string;
+  list_url?: string;
+}
+
+export interface DmmMakerInfo {
+  maker_id: string;
+  name: string;
+  ruby?: string;
+  list_url?: string;
+}
+
+export interface DmmSeriesInfo {
+  series_id: string;
+  name: string;
+  ruby?: string;
+  list_url?: string;
+}
+
+export interface DmmFloorInfo {
+  id: string;
+  name: string;
+  code: string;
+}
+
+// ── 追加 API 関数 ──
+
+async function fetchBaseApi<T>(endpoint: string, params: Record<string, string>, resultKey: string): Promise<T[]> {
+  const { apiId } = getConfig();
+  if (!apiId) return [];
+  const url = buildBaseUrl(endpoint, params);
+  try {
+    const res = await fetch(url, { next: { revalidate: 86400 } });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data?.result?.[resultKey] ?? [];
+  } catch {
+    return [];
+  }
+}
+
+// 女優検索API
+export async function fetchActresses(params: {
+  keyword?: string;
+  initial?: string;
+  hits?: number;
+  offset?: number;
+  sort?: string;
+} = {}): Promise<DmmActress[]> {
+  const urlParams: Record<string, string> = {
+    hits: String(params.hits ?? 30),
+    offset: String(params.offset ?? 1),
+  };
+  if (params.keyword) urlParams.keyword = params.keyword;
+  if (params.initial) urlParams.initial = params.initial;
+  if (params.sort) urlParams.sort = params.sort;
+  return fetchBaseApi<DmmActress>("ActressSearch", urlParams, "actress");
+}
+
+// ジャンル検索API
+export async function fetchGenres(floorId: string | number = 43, params?: {
+  initial?: string;
+  hits?: number;
+  offset?: number;
+}): Promise<DmmGenreInfo[]> {
+  const urlParams: Record<string, string> = {
+    floor_id: String(floorId),
+    hits: String(params?.hits ?? 100),
+    offset: String(params?.offset ?? 1),
+  };
+  if (params?.initial) urlParams.initial = params.initial;
+  return fetchBaseApi<DmmGenreInfo>("GenreSearch", urlParams, "genre");
+}
+
+// メーカー検索API
+export async function fetchMakers(floorId: string | number = 43, params?: {
+  initial?: string;
+  hits?: number;
+  offset?: number;
+}): Promise<DmmMakerInfo[]> {
+  const urlParams: Record<string, string> = {
+    floor_id: String(floorId),
+    hits: String(params?.hits ?? 100),
+    offset: String(params?.offset ?? 1),
+  };
+  if (params?.initial) urlParams.initial = params.initial;
+  return fetchBaseApi<DmmMakerInfo>("MakerSearch", urlParams, "maker");
+}
+
+// シリーズ検索API
+export async function fetchSeriesList(floorId: string | number = 43, params?: {
+  initial?: string;
+  hits?: number;
+  offset?: number;
+}): Promise<DmmSeriesInfo[]> {
+  const urlParams: Record<string, string> = {
+    floor_id: String(floorId),
+    hits: String(params?.hits ?? 100),
+    offset: String(params?.offset ?? 1),
+  };
+  if (params?.initial) urlParams.initial = params.initial;
+  return fetchBaseApi<DmmSeriesInfo>("SeriesSearch", urlParams, "series");
+}
+
+// フロアAPI
+export async function fetchFloors(): Promise<DmmFloorInfo[]> {
+  const { apiId } = getConfig();
+  if (!apiId) return [];
+  const url = buildBaseUrl("FloorList", {});
+  try {
+    const res = await fetch(url, { next: { revalidate: 86400 } });
+    if (!res.ok) return [];
+    const data = await res.json();
+    const sites = data?.result?.site ?? [];
+    const fanza = sites.find((s: { code: string }) => s.code === "FANZA");
+    if (!fanza) return [];
+    const digital = fanza.service?.find((s: { code: string }) => s.code === "digital");
+    return digital?.floor ?? [];
+  } catch {
+    return [];
+  }
 }

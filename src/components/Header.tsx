@@ -7,7 +7,6 @@ import {
   FaBookOpen,
   FaChartLine,
   FaCompass,
-  FaFire,
   FaSearch,
   FaTags,
   FaTimes,
@@ -37,7 +36,9 @@ export default function Header() {
           <a href={ROUTES.home} className="group min-w-0">
             <div className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-border-strong)] bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent-strong)] text-white shadow-lg shadow-[rgba(143,29,70,0.2)] transition-transform duration-200 group-hover:scale-105">
-                <FaFire size={15} />
+                <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+                  <path d="M5 20V4h3.5l7 9.5V4H19v16h-3.5L8.5 10.5V20H5z" fill="currentColor" />
+                </svg>
               </span>
               <div className="min-w-0">
                 <p className="truncate text-lg font-bold tracking-tight">

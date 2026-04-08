@@ -19,9 +19,9 @@ function pickDistinctProduct(products: Product[], excludedIds: string[] = []) {
 
 export default async function HomePage() {
   const [rankingPreview, saleProducts, newPreview] = await Promise.all([
-    loadRankingProducts({ limit: 12 }),
-    loadSaleProducts({ limit: 8 }),
-    loadNewProducts({ limit: 8 }),
+    loadRankingProducts({ limit: 20 }),
+    loadSaleProducts({ limit: 16 }),
+    loadNewProducts({ limit: 16 }),
   ]);
   const salePreview = sortSalePreview(saleProducts);
   const leadProduct = rankingPreview[0];
