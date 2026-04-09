@@ -205,7 +205,7 @@ async function fetchAll(sort, concurrency, seenIds, queryWord = null) {
 // ── main ──────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
 const targetIdx = args.indexOf("--target");
-const TARGET = targetIdx >= 0 ? parseInt(args[targetIdx + 1], 10) : 100000;
+const TARGET = targetIdx >= 0 ? parseInt(args[targetIdx + 1], 10) : 210000;
 const concIdx = args.indexOf("--concurrency");
 const CONCURRENCY = concIdx >= 0 ? parseInt(args[concIdx + 1], 10) : 8;
 

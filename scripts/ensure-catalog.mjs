@@ -6,6 +6,7 @@ import { join } from "node:path";
 
 const manifestPath = join(process.cwd(), "public", "catalog", "manifest.json");
 const buildScriptPath = join(process.cwd(), "scripts", "build-catalog.mjs");
+const MIN_PRODUCTS = 210000;
 
 function hasValidCatalog() {
   if (!existsSync(manifestPath)) {
@@ -14,7 +15,7 @@ function hasValidCatalog() {
 
   try {
     const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-    return Number(manifest?.totalProducts ?? 0) >= 100000 && Number(manifest?.allShardCount ?? 0) > 0;
+    return Number(manifest?.totalProducts ?? 0) >= MIN_PRODUCTS && Number(manifest?.allShardCount ?? 0) > 0;
   } catch {
     return false;
   }
@@ -27,9 +28,18 @@ if (hasValidCatalog()) {
 
 console.log("📚 Static catalog missing or invalid. Generating before build...");
 
-const result = spawnSync(process.execPath, [buildScriptPath], {
+const result = spawnSync(process.execPath, [buildScriptPath, "--target", String(MIN_PRODUCTS)], {
   stdio: "inherit",
   env: process.env,
 });
 
-process.exit(result.status ?? 1);
+if ((result.status ?? 1) !== 0) {
+  process.exit(result.status ?? 1);
+}
+
+if (!hasValidCatalog()) {
+  console.error(`❌ Static catalog generation finished, but the result is below ${MIN_PRODUCTS.toLocaleString()} products.`);
+  process.exit(1);
+}
+
+console.log("✅ Static catalog is ready for build.");
