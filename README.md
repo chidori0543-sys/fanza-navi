@@ -24,9 +24,11 @@ FANZA / DMM アフィリエイト向けの静的メディアです。
 | `/watchlist` | **ウォッチリスト**。ブラウザ保存で作品を溜めて、値下げ候補や次候補まで管理する |
 | `/personalized` | ウォッチリスト起点のパーソナライズフィード |
 | `/search` | 検索入口。Workers 接続時は FANZA 全体検索、未接続時は 1,200 件超の高速モード |
+| `/gacha` | ランダム提案。Workers 接続時は FANZA 全体母数、未接続時はローカル作品プール |
 | `/trend-radar` | 急上昇・今夜向き・セール勢いをまとめて見る再訪導線 |
 | `/deep-dive` | ウォッチリスト起点で女優・メーカー・シリーズを芋づる提案 |
 | `/reviews` | みんなのおすすめ作品レビュー。Workers 接続時は共有レビューとして動作 |
+| `/contact` | 問い合わせ・新機能募集フォーム。Workers 経由で受け付け、運営メールは非公開 |
 | `/ranking` | 売上ランキング |
 | `/custom-ranking` | 独自ランキング |
 | `/sale` | セール作品一覧 |
@@ -36,7 +38,7 @@ FANZA / DMM アフィリエイト向けの静的メディアです。
 ## 独自機能
 
 - `/daily-pick` 今日のおすすめ
-- `/gacha` ランダム提案
+- `/gacha` ランダム提案（Workers 接続時は FANZA 全体母数）
 - `/trend-radar` 急上昇レーダー
 - `/cospa-calc` コスパ計算
 - `/price-history` 価格推移の確認
@@ -96,8 +98,8 @@ cp .env.example .env.local
 - `SITE_URL` 未設定時は `http://localhost:3000` を使います
 - `SITE_URL` 未設定の build では sitemap は空、robots は noindex 相当で出力します
 - アフィリエイトリンクは `src/lib/affiliate.ts` を通して生成します
-- `DMM_API_ID` 未設定のローカル build はフォールバック作品を使うため、商品画像はプレースホルダー表示になります
-- `NEXT_PUBLIC_WORKERS_API` 未設定時、`/search` はローカル高速モードのみ、`/reviews` はブラウザ内保存モードで動作します
+- `DMM_API_ID` 未設定のローカル build はフォールバック作品を使いますが、商品画像は生成カバー、CTA は作品名ベースの FANZA 検索リンクで補完されます
+- `NEXT_PUBLIC_WORKERS_API` 未設定時、`/search` はローカル高速モード、`/reviews` はブラウザ内保存、`/gacha` はローカル作品プール、`/contact` は接続待ち表示で動作します
 
 ## Cloudflare Pages
 
@@ -115,7 +117,7 @@ cp .env.example .env.local
 
 ## 運用メモ
 
-- DMM API が取れない場合でもフォールバックデータで一覧が空になりにくい構成です
-- ローカル確認で商品画像が出ない場合は異常ではなく、`DMM_API_ID` 未設定時のフォールバック表示です
+- DMM API が取れない場合でもフォールバックデータで一覧が空になりにくく、トップランキングも生成カバー画像つきで崩れにくい構成です
+- `workers/wrangler.toml` の D1 `database_id` を実値に差し替え、`wrangler login` 後に `schema.sql` を再適用しないと `/contact` と共有機能は本番接続できません
 - 18歳確認ゲート、ヘッダー開示表記、運営情報ページは公開前の確認対象です
 - 運用フローや SNS 自動化は `OPERATIONS.md` を参照してください
