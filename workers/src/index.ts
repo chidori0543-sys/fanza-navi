@@ -82,6 +82,27 @@ function json(data: unknown, corsHeaders: Record<string, string>, status = 200) 
   });
 }
 
+function isAllowedOrigin(requestOrigin: string | null, env: Env) {
+  const configuredOrigin = env.CORS_ORIGIN || "*";
+
+  if (!requestOrigin || configuredOrigin === "*") {
+    return true;
+  }
+
+  if (requestOrigin === configuredOrigin) {
+    return true;
+  }
+
+  try {
+    const configuredHost = new URL(env.SITE_URL || configuredOrigin).hostname;
+    const requestHost = new URL(requestOrigin).hostname;
+
+    return requestHost === configuredHost || requestHost.endsWith(`.${configuredHost}`);
+  } catch {
+    return false;
+  }
+}
+
 function getCorsOrigin(request: Request, env: Env) {
   const configuredOrigin = env.CORS_ORIGIN || "*";
   const requestOrigin = request.headers.get("Origin")?.trim();
@@ -90,22 +111,21 @@ function getCorsOrigin(request: Request, env: Env) {
     return configuredOrigin;
   }
 
-  if (configuredOrigin === "*" || requestOrigin === configuredOrigin) {
+  if (isAllowedOrigin(requestOrigin, env)) {
     return requestOrigin;
   }
 
-  try {
-    const configuredHost = new URL(env.SITE_URL || configuredOrigin).hostname;
-    const requestHost = new URL(requestOrigin).hostname;
+  return configuredOrigin;
+}
 
-    if (requestHost === configuredHost || requestHost.endsWith(`.${configuredHost}`)) {
-      return requestOrigin;
-    }
-  } catch {
-    return configuredOrigin;
+function validateOrigin(request: Request, env: Env, corsHeaders: Record<string, string>) {
+  const requestOrigin = request.headers.get("Origin")?.trim() || null;
+
+  if (!isAllowedOrigin(requestOrigin, env)) {
+    return json({ error: "origin not allowed" }, corsHeaders, 403);
   }
 
-  return configuredOrigin;
+  return null;
 }
 
 function clampInt(value: number, min: number, max: number, fallback: number) {
@@ -959,10 +979,18 @@ export default {
       "Access-Control-Allow-Origin": getCorsOrigin(request, env),
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
+      Vary: "Origin",
     };
 
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
+    }
+
+    if (request.method !== "GET") {
+      const blocked = validateOrigin(request, env, corsHeaders);
+      if (blocked) {
+        return blocked;
+      }
     }
 
     try {
