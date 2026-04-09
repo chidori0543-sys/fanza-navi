@@ -7,6 +7,7 @@
 
 import type { Product } from "@/data/products";
 import { buildAffiliateUrl } from "@/lib/affiliate";
+import { buildProductFallbackImageUrl } from "@/lib/fallback-product-image";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -120,11 +121,21 @@ function genreShardPath(genre: string, index: number): string {
 
 function toProduct(raw: RawProduct, rank?: number): Product {
   const contentUrl = `${VIDEO_CONTENT_BASE}?id=${encodeURIComponent(raw.id)}`;
+  const imageUrl =
+    raw.imageUrl ||
+    buildProductFallbackImageUrl({
+      title: raw.title,
+      genre: raw.genre,
+      tags: raw.tags,
+      rank,
+      actresses: raw.actresses,
+      maker: raw.maker,
+    });
   return {
     id: raw.id,
     title: raw.title,
     description: raw.description,
-    imageUrl: raw.imageUrl,
+    imageUrl,
     affiliateUrl: buildAffiliateUrl(contentUrl),
     price: raw.price,
     salePrice: raw.salePrice,

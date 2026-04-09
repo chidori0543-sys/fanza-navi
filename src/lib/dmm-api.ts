@@ -1,4 +1,5 @@
 import { buildAffiliateUrl } from "@/lib/affiliate";
+import { buildProductFallbackImageUrl } from "@/lib/fallback-product-image";
 import { getSiteConfig } from "@/lib/env";
 
 const DMM_API_BASE = "https://api.dmm.com/affiliate/v3";
@@ -280,9 +281,17 @@ export function toProduct(item: DmmProduct, rank?: number, options?: { isSale?: 
     id: item.content_id,
     title: item.title,
     description: genres.join(" / ") || "FANZA作品",
-    imageUrl: normalizeImageUrl(
-      item.imageURL?.large || item.imageURL?.small || item.imageURL?.list || ""
-    ),
+    imageUrl:
+      normalizeImageUrl(item.imageURL?.large || item.imageURL?.small || item.imageURL?.list || "") ||
+      buildProductFallbackImageUrl({
+        title: item.title,
+        genre: genreKey,
+        tags: genres.slice(0, 3),
+        rank,
+        actresses,
+        maker,
+        series,
+      }),
     affiliateUrl: item.affiliateURL || (item.URL ? buildAffiliateUrl(item.URL) : ""),
     price,
     salePrice,

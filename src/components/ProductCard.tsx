@@ -8,6 +8,7 @@ import FavoriteButton from "@/components/FavoriteButton";
 import { getGenreBySlug } from "@/data/genres";
 import type { Product } from "@/data/products";
 import { useViewHistory } from "@/hooks/useViewHistory";
+import { buildProductFallbackImageUrl } from "@/lib/fallback-product-image";
 import {
   formatPriceYen,
   getDiscountPercent,
@@ -48,7 +49,7 @@ export default function ProductCard({
   const originalPrice = getPresentedOriginalPrice(product);
   const currentPrice = getPresentedCurrentPrice(product);
   const discountPercent = getDiscountPercent(product);
-  const showImage = product.imageUrl && !imgError;
+  const imageUrl = !imgError && product.imageUrl ? product.imageUrl : buildProductFallbackImageUrl(product);
 
   return (
     <motion.div
@@ -64,13 +65,17 @@ export default function ProductCard({
           background: `linear-gradient(135deg, ${genreColor.from}30, ${genreColor.to}18)`,
         }}
       >
-        {showImage ? (
+        {imageUrl ? (
           <img
-            src={product.imageUrl}
+            src={imageUrl}
             alt={product.title}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             loading="lazy"
-            onError={() => setImgError(true)}
+            onError={() => {
+              if (!imgError) {
+                setImgError(true);
+              }
+            }}
           />
         ) : (
           <>
@@ -205,7 +210,7 @@ export default function ProductCard({
                 record({
                   id: product.id,
                   title: product.title,
-                  imageUrl: product.imageUrl,
+                  imageUrl,
                   price: product.price,
                   salePrice: product.salePrice,
                   genre: product.genre,
