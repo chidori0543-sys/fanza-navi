@@ -221,7 +221,9 @@ npx wrangler secret put VAPID_PRIVATE_KEY
 ### 3. デプロイ
 
 ```bash
-npx wrangler deploy
+npm run doctor
+npm run db:migrate:remote
+npm run deploy:prod
 ```
 
 ### 4. Next.js側の設定

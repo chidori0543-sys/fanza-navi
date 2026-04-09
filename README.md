@@ -115,6 +115,15 @@ cp .env.example .env.local
 - `FANZA_FLOOR`
 - `FANZA_DEFAULT_GENRE`
 
+## Workers 補助コマンド
+
+```bash
+cd workers
+npm run doctor           # Cloudflare認証とD1 database_idの事前チェック
+npm run db:migrate:remote
+npm run deploy:prod
+```
+
 ## 運用メモ
 
 - DMM API が取れない場合でもフォールバックデータで一覧が空になりにくく、トップランキングも生成カバー画像つきで崩れにくい構成です

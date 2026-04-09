@@ -3,8 +3,11 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
+    "doctor": "node ./scripts/predeploy-check.mjs",
     "deploy": "wrangler deploy",
-    "db:migrate": "wrangler d1 execute fanza-otonavi --file=./schema.sql"
+    "deploy:prod": "node ./scripts/predeploy-check.mjs && wrangler deploy",
+    "db:migrate": "wrangler d1 execute fanza-otonavi --file=./schema.sql",
+    "db:migrate:remote": "node ./scripts/predeploy-check.mjs && wrangler d1 execute fanza-otonavi --remote --file=./schema.sql"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241205.0",
