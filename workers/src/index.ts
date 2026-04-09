@@ -82,6 +82,32 @@ function json(data: unknown, corsHeaders: Record<string, string>, status = 200) 
   });
 }
 
+function getCorsOrigin(request: Request, env: Env) {
+  const configuredOrigin = env.CORS_ORIGIN || "*";
+  const requestOrigin = request.headers.get("Origin")?.trim();
+
+  if (!requestOrigin) {
+    return configuredOrigin;
+  }
+
+  if (configuredOrigin === "*" || requestOrigin === configuredOrigin) {
+    return requestOrigin;
+  }
+
+  try {
+    const configuredHost = new URL(env.SITE_URL || configuredOrigin).hostname;
+    const requestHost = new URL(requestOrigin).hostname;
+
+    if (requestHost === configuredHost || requestHost.endsWith(`.${configuredHost}`)) {
+      return requestOrigin;
+    }
+  } catch {
+    return configuredOrigin;
+  }
+
+  return configuredOrigin;
+}
+
 function clampInt(value: number, min: number, max: number, fallback: number) {
   if (!Number.isFinite(value)) {
     return fallback;
@@ -105,6 +131,18 @@ function cleanMultilineText(value: unknown, maxLength: number) {
     .filter(Boolean)
     .join("\n")
     .slice(0, maxLength);
+}
+
+async function fetchDmmJson<T>(params: URLSearchParams, context: string): Promise<T> {
+  const response = await fetch(`${DMM_API_BASE}?${params.toString()}`);
+
+  if (!response.ok) {
+    const body = await response.text();
+    console.error(`[dmm:${context}] ${response.status} ${body}`);
+    throw new Error(`DMM API error: ${response.status}${body ? ` - ${body.slice(0, 240)}` : ""}`);
+  }
+
+  return (await response.json()) as T;
 }
 
 function normalizeImageUrl(url?: string): string {
@@ -292,18 +330,12 @@ async function fetchDmmBatch(
     params.set("article_id", options.genre);
   }
 
-  const response = await fetch(`${DMM_API_BASE}?${params.toString()}`);
-
-  if (!response.ok) {
-    throw new Error(`DMM API error: ${response.status}`);
-  }
-
-  const data = (await response.json()) as {
+  const data = await fetchDmmJson<{
     result?: {
       items?: DmmItem[];
       total_count?: number;
     };
-  };
+  }>(params, "catalog-search");
 
   return {
     items: data.result?.items ?? [],
@@ -360,12 +392,11 @@ async function recordPrices(env: Env) {
     output: "json",
   });
 
-  const response = await fetch(`${DMM_API_BASE}?${params}`);
-  const data = (await response.json()) as {
+  const data = await fetchDmmJson<{
     result?: {
       items?: Array<Record<string, unknown>>;
     };
-  };
+  }>(params, "price-tracker");
 
   if (data?.result?.items) {
     const statement = env.DB.prepare(
@@ -692,77 +723,82 @@ async function handleCatalogSearch(url: URL, env: Env, headers: Record<string, s
     minReviewCount,
   };
 
-  const requiredCount = page * pageSize;
-  const seenIds = new Set<string>();
-  const collected: Array<ReturnType<typeof toSearchProduct>> = [];
-  const batchSize = 100;
-  const maxBatches = keyword ? 8 : 12;
-  let offset = 1;
-  let scannedCount = 0;
-  let totalCount: number | null = null;
-  let exhausted = false;
+  try {
+    const requiredCount = page * pageSize;
+    const seenIds = new Set<string>();
+    const collected: Array<ReturnType<typeof toSearchProduct>> = [];
+    const batchSize = 100;
+    const maxBatches = keyword ? 8 : 12;
+    let offset = 1;
+    let scannedCount = 0;
+    let totalCount: number | null = null;
+    let exhausted = false;
 
-  for (let batchIndex = 0; batchIndex < maxBatches; batchIndex += 1) {
-    const batch = await fetchDmmBatch(env, {
-      keyword: keyword || undefined,
-      genre: genre || undefined,
-      sort,
-      hits: batchSize,
-      offset,
-    });
+    for (let batchIndex = 0; batchIndex < maxBatches; batchIndex += 1) {
+      const batch = await fetchDmmBatch(env, {
+        keyword: keyword || undefined,
+        genre: genre || undefined,
+        sort,
+        hits: batchSize,
+        offset,
+      });
 
-    totalCount = batch.totalCount;
-    scannedCount += batch.items.length;
+      totalCount = batch.totalCount;
+      scannedCount += batch.items.length;
 
-    if (batch.items.length === 0) {
-      exhausted = true;
-      break;
-    }
-
-    batch.items.forEach((item, itemIndex) => {
-      const product = toSearchProduct(item, offset + itemIndex);
-
-      if (!product.id || seenIds.has(product.id)) {
-        return;
-      }
-      if (!matchesSearchFilters(product, filters)) {
-        return;
+      if (batch.items.length === 0) {
+        exhausted = true;
+        break;
       }
 
-      seenIds.add(product.id);
-      collected.push(product);
-    });
+      batch.items.forEach((item, itemIndex) => {
+        const product = toSearchProduct(item, offset + itemIndex);
 
-    if (collected.length >= requiredCount + pageSize) {
-      break;
-    }
-    if (batch.items.length < batchSize) {
-      exhausted = true;
-      break;
-    }
-    if (typeof totalCount === "number" && offset + batchSize > totalCount) {
-      exhausted = true;
-      break;
+        if (!product.id || seenIds.has(product.id)) {
+          return;
+        }
+        if (!matchesSearchFilters(product, filters)) {
+          return;
+        }
+
+        seenIds.add(product.id);
+        collected.push(product);
+      });
+
+      if (collected.length >= requiredCount + pageSize) {
+        break;
+      }
+      if (batch.items.length < batchSize) {
+        exhausted = true;
+        break;
+      }
+      if (typeof totalCount === "number" && offset + batchSize > totalCount) {
+        exhausted = true;
+        break;
+      }
+
+      offset += batchSize;
     }
 
-    offset += batchSize;
+    const start = (page - 1) * pageSize;
+    const items = collected.slice(start, start + pageSize);
+
+    return json(
+      {
+        items,
+        total: hasPostFilters ? null : totalCount,
+        page,
+        pageSize,
+        hasMore: !exhausted || collected.length > start + pageSize,
+        scannedCount,
+        source: "remote",
+      },
+      headers
+    );
+  } catch (error) {
+    console.error("[catalog-search] remote search failed", error);
+    return json({ error: "catalog search unavailable" }, headers, 502);
   }
-
-  const start = (page - 1) * pageSize;
-  const items = collected.slice(start, start + pageSize);
-
-  return json(
-    {
-      items,
-      total: hasPostFilters ? null : totalCount,
-      page,
-      pageSize,
-      hasMore: !exhausted || collected.length > start + pageSize,
-      scannedCount,
-      source: "remote",
-    },
-    headers
-  );
 }
 
 // ─── Sale Alert Bot ─────────────────────────────────────────────────────────
@@ -799,12 +835,11 @@ async function checkSaleAlerts(env: Env) {
     output: "json",
   });
 
-  const response = await fetch(`${DMM_API_BASE}?${params}`);
-  const data = (await response.json()) as {
+  const data = await fetchDmmJson<{
     result?: {
       items?: Array<Record<string, unknown>>;
     };
-  };
+  }>(params, "sale-alerts");
 
   if (!data?.result?.items) return;
 
@@ -921,7 +956,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const corsHeaders: Record<string, string> = {
-      "Access-Control-Allow-Origin": env.CORS_ORIGIN || "*",
+      "Access-Control-Allow-Origin": getCorsOrigin(request, env),
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     };
