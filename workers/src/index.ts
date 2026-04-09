@@ -37,9 +37,114 @@ interface DmmItem {
   };
 }
 
+interface VideoSearchContent {
+  id?: string;
+  title?: string;
+  packageImage?: {
+    mediumUrl?: string;
+    largeUrl?: string;
+  };
+  review?: {
+    average?: number | string;
+    count?: number | string;
+  };
+  salesInfo?: {
+    lowestPrice?: {
+      productId?: string;
+      price?: number | string;
+      discountPrice?: number | string | null;
+      legacyProductType?: string;
+    };
+    campaign?: {
+      name?: string;
+      endAt?: string;
+    } | null;
+    pointRewardCampaign?: {
+      name?: string;
+    } | null;
+    hasMultiplePrices?: boolean;
+  };
+  isOnSale?: boolean;
+  deliveryStartAt?: string;
+  contentType?: string;
+  actresses?: Array<{ id?: string; name?: string }>;
+  maker?: { id?: string; name?: string } | null;
+}
+
 type SearchSort = "popular" | "price-asc" | "price-desc" | "rating" | "new";
 
 const DMM_API_BASE = "https://api.dmm.com/affiliate/v3/ItemList";
+const VIDEO_GRAPHQL_ENDPOINT = "https://api.video.dmm.co.jp/graphql";
+const VIDEO_CONTENT_BASE_URL = "https://video.dmm.co.jp/av/content/";
+const DMM_AFFILIATE_TRACKING_URL = "https://al.dmm.co.jp/";
+const DMM_DEFAULT_OUTBOUND_URL = "https://www.dmm.co.jp/digital/videoa/";
+const VIDEO_SEARCH_QUERY = `query WorkerAvSearch(
+  $limit: Int!
+  $offset: Int!
+  $sort: ContentSearchPPVSort!
+  $queryWord: String
+  $filter: ContentSearchPPVFilterInput
+) {
+  legacySearchPPV(
+    limit: $limit
+    offset: $offset
+    floor: AV
+    sort: $sort
+    queryWord: $queryWord
+    filter: $filter
+    facetLimit: 1
+    includeExplicit: true
+    excludeUndelivered: false
+  ) {
+    result {
+      contents {
+        id
+        title
+        packageImage {
+          mediumUrl
+          largeUrl
+        }
+        review {
+          average
+          count
+        }
+        salesInfo {
+          lowestPrice {
+            productId
+            price
+            discountPrice
+            legacyProductType
+          }
+          campaign {
+            name
+            endAt
+          }
+          pointRewardCampaign {
+            name
+          }
+          hasMultiplePrices
+        }
+        isOnSale
+        deliveryStartAt
+        contentType
+        actresses {
+          id
+          name
+        }
+        maker {
+          id
+          name
+        }
+      }
+      pageInfo {
+        offset
+        limit
+        hasNext
+        totalCount
+      }
+    }
+  }
+}`;
 const CANONICAL_GENRE_ALIASES: Record<string, string> = {
   popular: "popular",
   "人気": "popular",
@@ -165,6 +270,38 @@ async function fetchDmmJson<T>(params: URLSearchParams, context: string): Promis
   return (await response.json()) as T;
 }
 
+async function fetchVideoSearchJson<T>(
+  body: Record<string, unknown>,
+  context: string
+): Promise<T> {
+  const response = await fetch(VIDEO_GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Origin: "https://video.dmm.co.jp",
+      Referer: "https://video.dmm.co.jp/av/list/",
+      "User-Agent": "Mozilla/5.0 (compatible; FANZA Tokunavi Worker/1.0)",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    console.error(`[video-search:${context}] ${response.status} ${text}`);
+    throw new Error(`Video search error: ${response.status}${text ? ` - ${text.slice(0, 240)}` : ""}`);
+  }
+
+  const data = (await response.json()) as { errors?: Array<{ message?: string }> } & T;
+
+  if (Array.isArray(data.errors) && data.errors.length > 0) {
+    const message = data.errors.map((entry) => entry.message || "unknown").join(" / ");
+    console.error(`[video-search:${context}] graphql errors: ${message}`);
+    throw new Error(`Video search graphql error: ${message}`);
+  }
+
+  return data;
+}
+
 function normalizeImageUrl(url?: string): string {
   const value = url?.trim();
 
@@ -172,11 +309,81 @@ function normalizeImageUrl(url?: string): string {
     return "";
   }
 
+  try {
+    const parsed = new URL(value.startsWith("//") ? `https:${value}` : value);
+
+    if (parsed.hostname === "awsimgsrc.dmm.co.jp" && parsed.pathname.startsWith("/pics_dig/")) {
+      return `https://pics.dmm.co.jp${parsed.pathname.replace(/^\/pics_dig/, "")}${parsed.search}`;
+    }
+
+    return parsed.toString().replace(/^http:\/\//i, "https://");
+  } catch {
+    // Fall through to the legacy normalization below.
+  }
+
   if (value.startsWith("//")) {
     return `https:${value}`;
   }
 
   return value.replace(/^http:\/\//i, "https://");
+}
+
+function isAllowedOutboundHost(hostname: string) {
+  return (
+    hostname === "dmm.co.jp" ||
+    hostname.endsWith(".dmm.co.jp") ||
+    hostname === "fanza.com" ||
+    hostname.endsWith(".fanza.com")
+  );
+}
+
+function normalizeAffiliateTarget(target: string = "") {
+  const trimmedTarget = target.trim();
+
+  if (!trimmedTarget) {
+    return DMM_DEFAULT_OUTBOUND_URL;
+  }
+
+  try {
+    const parsed = new URL(trimmedTarget);
+
+    if ((parsed.protocol !== "http:" && parsed.protocol !== "https:") || !isAllowedOutboundHost(parsed.hostname)) {
+      return DMM_DEFAULT_OUTBOUND_URL;
+    }
+
+    return parsed.toString();
+  } catch {
+    return DMM_DEFAULT_OUTBOUND_URL;
+  }
+}
+
+function buildAffiliateUrl(target: string, affiliateId?: string) {
+  const normalizedTarget = normalizeAffiliateTarget(target);
+
+  if (!affiliateId) {
+    return normalizedTarget;
+  }
+
+  const params = new URLSearchParams({
+    lurl: normalizedTarget,
+    af_id: affiliateId,
+  });
+
+  return `${DMM_AFFILIATE_TRACKING_URL}?${params.toString()}`;
+}
+
+function buildVideoContentUrl(contentId: string, rank?: number) {
+  const url = new URL(VIDEO_CONTENT_BASE_URL);
+  url.searchParams.set("id", contentId);
+
+  if (rank && rank > 0) {
+    url.searchParams.set("i3_ref", "search");
+    url.searchParams.set("i3_ord", String(rank));
+    url.searchParams.set("i3_pst", "1");
+    url.searchParams.set("dmmref", "video_search");
+  }
+
+  return url.toString();
 }
 
 function mapGenreLabelToKey(label?: string): string {
@@ -191,6 +398,85 @@ function mapGenreLabelToKey(label?: string): string {
     CANONICAL_GENRE_ALIASES[normalized.toLowerCase()] ||
     normalized
   );
+}
+
+function inferSearchGenre(product: {
+  title: string;
+  contentType?: string;
+  isSale: boolean;
+  isNew: boolean;
+  rating: number;
+  reviewCount: number;
+}) {
+  const haystack = product.title;
+
+  if (product.contentType === "VR" || /\bVR\b/i.test(haystack)) {
+    return "vr";
+  }
+  if (/素人/u.test(haystack)) {
+    return "amateur";
+  }
+  if (/熟女|人妻/u.test(haystack)) {
+    return "mature";
+  }
+  if (/巨乳|爆乳|[GHIJKLＭN]カップ/u.test(haystack)) {
+    return "busty";
+  }
+  if (/コスプレ|制服|ランジェリー/u.test(haystack)) {
+    return "cosplay";
+  }
+  if (/アイドル|芸能人|グラビア/u.test(haystack)) {
+    return "idol";
+  }
+  if (/企画|モニタリング|検証|ナンパ|ドキュメント/u.test(haystack)) {
+    return "planning";
+  }
+  if (/ドラマ|寝取られ|NTR|物語|義母|純愛/u.test(haystack)) {
+    return "drama";
+  }
+  if (product.isNew) {
+    return "new-release";
+  }
+  if (product.isSale) {
+    return "sale";
+  }
+  if (product.rating >= 4.5 && product.reviewCount >= 20) {
+    return "high-rated";
+  }
+
+  return "popular";
+}
+
+function buildSearchTags(options: {
+  title: string;
+  contentType?: string;
+  maker: string;
+  actresses: string[];
+  isSale: boolean;
+  isNew: boolean;
+  rating: number;
+  reviewCount: number;
+  campaignName?: string;
+}) {
+  const tags: string[] = [];
+  const genreKey = inferSearchGenre(options);
+
+  if (genreKey === "vr") tags.push("VR");
+  if (genreKey === "amateur") tags.push("素人");
+  if (genreKey === "mature") tags.push("熟女");
+  if (genreKey === "busty") tags.push("巨乳");
+  if (genreKey === "cosplay") tags.push("コスプレ");
+  if (genreKey === "idol") tags.push("アイドル");
+  if (genreKey === "planning") tags.push("企画");
+  if (genreKey === "drama") tags.push("ドラマ");
+  if (options.isNew) tags.push("新作");
+  if (options.isSale) tags.push("セール");
+  if (options.rating >= 4.5 && options.reviewCount >= 20) tags.push("高評価");
+  if (options.campaignName) tags.push(cleanText(options.campaignName, 24));
+  if (options.actresses[0]) tags.push(cleanText(options.actresses[0], 24));
+  if (options.maker) tags.push(cleanText(options.maker, 24));
+
+  return Array.from(new Set(tags.filter(Boolean))).slice(0, 4);
 }
 
 function parsePrice(prices: Record<string, unknown> | undefined): number {
@@ -303,6 +589,67 @@ function toSearchProduct(item: DmmItem, rank?: number) {
   };
 }
 
+function toVideoSearchProduct(item: VideoSearchContent, affiliateId?: string, rank?: number) {
+  const actresses = item.actresses?.map((entry) => entry.name || "").filter(Boolean) || [];
+  const maker = item.maker?.name || "";
+  const priceInfo = item.salesInfo?.lowestPrice;
+  const basePrice = Number(priceInfo?.price ?? 0) || 0;
+  const discountPrice = Number(priceInfo?.discountPrice ?? 0) || 0;
+  const price = basePrice > 0 ? basePrice : discountPrice;
+  const salePrice = discountPrice > 0 ? discountPrice : undefined;
+  const rating = Number(item.review?.average ?? 0) || 0;
+  const reviewCount = Number(item.review?.count ?? 0) || 0;
+  const isSale = Boolean(item.isOnSale || discountPrice > 0);
+  const releaseDate = item.deliveryStartAt || "";
+  const isNew = isNewRelease(releaseDate);
+  const title = cleanText(item.title, 240);
+  const genre = inferSearchGenre({
+    title,
+    contentType: item.contentType,
+    isSale,
+    isNew,
+    rating,
+    reviewCount,
+  });
+  const campaignName = item.salesInfo?.campaign?.name || item.salesInfo?.pointRewardCampaign?.name || "";
+  const tags = buildSearchTags({
+    title,
+    contentType: item.contentType,
+    maker,
+    actresses,
+    isSale,
+    isNew,
+    rating,
+    reviewCount,
+    campaignName,
+  });
+  const description = [genre === "vr" ? "VR作品" : "", campaignName, maker, actresses[0] || ""]
+    .filter(Boolean)
+    .join(" / ");
+
+  return {
+    id: cleanText(item.id, 64),
+    title,
+    description: description || "FANZA作品",
+    imageUrl: normalizeImageUrl(item.packageImage?.largeUrl || item.packageImage?.mediumUrl),
+    affiliateUrl: buildAffiliateUrl(buildVideoContentUrl(cleanText(item.id, 64), rank), affiliateId),
+    price,
+    salePrice,
+    rating,
+    reviewCount,
+    genre,
+    tags,
+    maker,
+    label: "",
+    series: "",
+    actresses,
+    rank,
+    isNew,
+    isSale,
+    releaseDate,
+  };
+}
+
 function mapSearchSortToDmm(sort: SearchSort) {
   switch (sort) {
     case "new":
@@ -316,6 +663,21 @@ function mapSearchSortToDmm(sort: SearchSort) {
     case "popular":
     default:
       return "rank";
+  }
+}
+
+function mapSearchSortToVideo(sort: SearchSort) {
+  switch (sort) {
+    case "new":
+      return "DELIVERY_START_DATE";
+    case "price-asc":
+    case "price-desc":
+      return "LOWEST_PRICE";
+    case "rating":
+      return "REVIEW_RANK_SCORE";
+    case "popular":
+    default:
+      return "SALES_RANK_SCORE";
   }
 }
 
@@ -363,6 +725,108 @@ async function fetchDmmBatch(
   };
 }
 
+async function fetchVideoSearchBatch(
+  env: Env,
+  options: {
+    keyword?: string;
+    sort: SearchSort;
+    hits: number;
+    offset: number;
+    saleOnly: boolean;
+  }
+) {
+  const data = await fetchVideoSearchJson<{
+    data?: {
+      legacySearchPPV?: {
+        result?: {
+          contents?: VideoSearchContent[];
+          pageInfo?: {
+            offset?: number;
+            limit?: number;
+            hasNext?: boolean;
+            totalCount?: number;
+          };
+        };
+      };
+    };
+  }>(
+    {
+      operationName: "WorkerAvSearch",
+      query: VIDEO_SEARCH_QUERY,
+      variables: {
+        limit: clampInt(options.hits, 1, 120, 120),
+        offset: Math.max(0, Math.floor(options.offset)),
+        sort: mapSearchSortToVideo(options.sort),
+        queryWord: options.keyword || null,
+        filter: {
+          isSaleItemsOnly: options.saleOnly,
+        },
+      },
+    },
+    "catalog-search"
+  );
+
+  const result = data.data?.legacySearchPPV?.result;
+  const items = result?.contents ?? [];
+  const safeOffset = Math.max(0, Math.floor(result?.pageInfo?.offset ?? options.offset));
+
+  return {
+    items: items.map((item, index) => toVideoSearchProduct(item, env.DMM_AFFILIATE_ID, safeOffset + index + 1)),
+    totalCount:
+      typeof result?.pageInfo?.totalCount === "number" ? result.pageInfo.totalCount : null,
+    hasNext: Boolean(result?.pageInfo?.hasNext),
+  };
+}
+
+function matchesGenreFilter(
+  product: ReturnType<typeof toSearchProduct> | ReturnType<typeof toVideoSearchProduct>,
+  genre?: string
+) {
+  if (!genre) {
+    return true;
+  }
+
+  const haystack = [
+    product.genre,
+    product.title,
+    product.description,
+    product.maker || "",
+    product.label || "",
+    product.series || "",
+    ...product.tags,
+    ...(product.actresses || []),
+  ].join(" ");
+
+  switch (genre) {
+    case "popular":
+      return true;
+    case "sale":
+      return Boolean(product.isSale);
+    case "new-release":
+      return Boolean(product.isNew);
+    case "high-rated":
+      return product.rating >= 4.5;
+    case "vr":
+      return /\bVR\b/i.test(haystack);
+    case "amateur":
+      return /素人/u.test(haystack);
+    case "mature":
+      return /熟女|人妻/u.test(haystack);
+    case "busty":
+      return /巨乳|爆乳|[GHIJKLＭN]カップ/u.test(haystack);
+    case "planning":
+      return /企画|モニタリング|検証|ナンパ|ドキュメント/u.test(haystack);
+    case "drama":
+      return /ドラマ|寝取られ|NTR|物語|義母|純愛/u.test(haystack);
+    case "cosplay":
+      return /コスプレ|制服|ランジェリー/u.test(haystack);
+    case "idol":
+      return /アイドル|芸能人|グラビア/u.test(haystack);
+    default:
+      return product.genre === genre;
+  }
+}
+
 function matchesSearchFilters(
   product: ReturnType<typeof toSearchProduct>,
   filters: {
@@ -376,7 +840,7 @@ function matchesSearchFilters(
 ) {
   const effectivePrice = product.salePrice ?? product.price;
 
-  if (filters.genre && product.genre !== filters.genre) {
+  if (!matchesGenreFilter(product, filters.genre)) {
     return false;
   }
   if (filters.saleOnly && !product.isSale) {
@@ -707,10 +1171,6 @@ async function handleContactCreate(request: Request, env: Env, headers: Record<s
 // ─── Catalog Search ─────────────────────────────────────────────────────────
 
 async function handleCatalogSearch(url: URL, env: Env, headers: Record<string, string>) {
-  if (!env.DMM_API_ID || !env.DMM_AFFILIATE_ID) {
-    return json({ error: "search api credentials missing" }, headers, 503);
-  }
-
   const keyword = cleanText(url.searchParams.get("keyword"), 120);
   const genre = cleanText(url.searchParams.get("genre"), 48);
   const sort = (url.searchParams.get("sort") as SearchSort | null) || "popular";
@@ -732,7 +1192,7 @@ async function handleCatalogSearch(url: URL, env: Env, headers: Record<string, s
   );
 
   const hasPostFilters =
-    saleOnly || minPrice > 0 || maxPrice !== null || minRating > 0 || minReviewCount > 0;
+    Boolean(genre) || minPrice > 0 || maxPrice !== null || minRating > 0 || minReviewCount > 0;
 
   const filters = {
     genre: genre || undefined,
@@ -747,57 +1207,110 @@ async function handleCatalogSearch(url: URL, env: Env, headers: Record<string, s
     const requiredCount = page * pageSize;
     const seenIds = new Set<string>();
     const collected: Array<ReturnType<typeof toSearchProduct>> = [];
-    const batchSize = 100;
+    const batchSize = 120;
     const maxBatches = keyword ? 8 : 12;
-    let offset = 1;
+    let offset = 0;
     let scannedCount = 0;
     let totalCount: number | null = null;
     let exhausted = false;
 
-    for (let batchIndex = 0; batchIndex < maxBatches; batchIndex += 1) {
-      const batch = await fetchDmmBatch(env, {
+    if (sort === "price-desc") {
+      const probe = await fetchVideoSearchBatch(env, {
         keyword: keyword || undefined,
-        genre: genre || undefined,
         sort,
-        hits: batchSize,
-        offset,
+        hits: 1,
+        offset: 0,
+        saleOnly,
       });
 
-      totalCount = batch.totalCount;
-      scannedCount += batch.items.length;
+      totalCount = probe.totalCount;
 
-      if (batch.items.length === 0) {
+      if (!totalCount || totalCount <= 0) {
         exhausted = true;
-        break;
-      }
+      } else {
+        let nextEnd = totalCount;
 
-      batch.items.forEach((item, itemIndex) => {
-        const product = toSearchProduct(item, offset + itemIndex);
+        for (let batchIndex = 0; batchIndex < maxBatches; batchIndex += 1) {
+          const currentOffset = Math.max(0, nextEnd - batchSize);
+          const currentHits = Math.min(batchSize, nextEnd - currentOffset);
+          const batch = await fetchVideoSearchBatch(env, {
+            keyword: keyword || undefined,
+            sort,
+            hits: currentHits,
+            offset: currentOffset,
+            saleOnly,
+          });
 
-        if (!product.id || seenIds.has(product.id)) {
-          return;
+          scannedCount += batch.items.length;
+
+          if (batch.items.length === 0) {
+            exhausted = true;
+            break;
+          }
+
+          [...batch.items].reverse().forEach((product) => {
+            if (!product.id || seenIds.has(product.id)) {
+              return;
+            }
+            if (!matchesSearchFilters(product, filters)) {
+              return;
+            }
+
+            seenIds.add(product.id);
+            collected.push(product);
+          });
+
+          if (collected.length >= requiredCount + pageSize) {
+            break;
+          }
+          if (currentOffset === 0) {
+            exhausted = true;
+            break;
+          }
+
+          nextEnd = currentOffset;
         }
-        if (!matchesSearchFilters(product, filters)) {
-          return;
+      }
+    } else {
+      for (let batchIndex = 0; batchIndex < maxBatches; batchIndex += 1) {
+        const batch = await fetchVideoSearchBatch(env, {
+          keyword: keyword || undefined,
+          sort,
+          hits: batchSize,
+          offset,
+          saleOnly,
+        });
+
+        totalCount = batch.totalCount;
+        scannedCount += batch.items.length;
+
+        if (batch.items.length === 0) {
+          exhausted = true;
+          break;
         }
 
-        seenIds.add(product.id);
-        collected.push(product);
-      });
+        batch.items.forEach((product) => {
+          if (!product.id || seenIds.has(product.id)) {
+            return;
+          }
+          if (!matchesSearchFilters(product, filters)) {
+            return;
+          }
 
-      if (collected.length >= requiredCount + pageSize) {
-        break;
-      }
-      if (batch.items.length < batchSize) {
-        exhausted = true;
-        break;
-      }
-      if (typeof totalCount === "number" && offset + batchSize > totalCount) {
-        exhausted = true;
-        break;
-      }
+          seenIds.add(product.id);
+          collected.push(product);
+        });
 
-      offset += batchSize;
+        if (collected.length >= requiredCount + pageSize) {
+          break;
+        }
+        if (!batch.hasNext) {
+          exhausted = true;
+          break;
+        }
+
+        offset += batchSize;
+      }
     }
 
     const start = (page - 1) * pageSize;
@@ -822,17 +1335,14 @@ async function handleCatalogSearch(url: URL, env: Env, headers: Record<string, s
 }
 
 async function getCatalogSearchReady(env: Env) {
-  if (!env.DMM_API_ID || !env.DMM_AFFILIATE_ID) {
-    return false;
-  }
-
   try {
-    await fetchDmmBatch(env, {
+    const batch = await fetchVideoSearchBatch(env, {
       sort: "popular",
       hits: 1,
-      offset: 1,
+      offset: 0,
+      saleOnly: false,
     });
-    return true;
+    return batch.items.length > 0 || (batch.totalCount ?? 0) >= 0;
   } catch (error) {
     console.error("[health] catalog readiness failed", error);
     return false;

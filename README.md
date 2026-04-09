@@ -85,7 +85,7 @@ cp .env.example .env.local
 
 - `SITE_URL` - canonical / OGP / sitemap 用の本番 URL
 - `DMM_AFFILIATE_LINK` - DMM アフィリエイトのトラッキング URL
-- `DMM_API_ID` - DMM Web Service API ID
+- `DMM_API_ID` - DMM Web Service API ID（ビルド時のDMM API取得や、Workerの価格追跡系を使う場合）
 - `DMM_AFFILIATE_ID` - API 用アフィリエイト ID
 - `FANZA_FLOOR` - 通常は `videoa`
 - `FANZA_DEFAULT_GENRE` - 既定ジャンル slug
@@ -100,6 +100,7 @@ cp .env.example .env.local
 - アフィリエイトリンクは `src/lib/affiliate.ts` を通して生成します
 - `DMM_API_ID` 未設定のローカル build はフォールバック作品を使いますが、商品画像は生成カバー、CTA は作品名ベースの FANZA 検索リンクで補完されます
 - `NEXT_PUBLIC_WORKERS_API` 未設定時、`/search` はローカル高速モード、`/reviews` はブラウザ内保存、`/gacha` はローカル作品プール、`/contact` は接続待ち表示で動作します
+- 本番 Worker 接続時の `/search` `/gacha` は public FANZA GraphQL を使うため、full-catalog 検索/抽選の復旧自体は `DMM_API_ID` に依存しません
 
 ## Cloudflare Pages
 
@@ -110,7 +111,7 @@ cp .env.example .env.local
 
 - `SITE_URL`
 - `DMM_AFFILIATE_LINK`
-- `DMM_API_ID`
+- `DMM_API_ID`（任意: DMM API を使う build/runtime 補助機能向け）
 - `DMM_AFFILIATE_ID`
 - `FANZA_FLOOR`
 - `FANZA_DEFAULT_GENRE`
